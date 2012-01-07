@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://ramey.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: zombies | My Octopress Blog]]></title>
+  <link href="http://ramey.github.com/blog/categories/zombies/atom.xml" rel="self"/>
   <link href="http://ramey.github.com/"/>
   <updated>2012-01-06T23:56:30-08:00</updated>
   <id>http://ramey.github.com/</id>

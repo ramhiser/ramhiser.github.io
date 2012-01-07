@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: zombies | My Octopress Blog]]></title>
-  <link href="http://ramey.github.com/blog/categories/zombies/atom.xml" rel="self"/>
-  <link href="http://ramey.github.com/"/>
-  <updated>2012-01-06T23:56:30-08:00</updated>
-  <id>http://ramey.github.com/</id>
+  <title><![CDATA[Category: zombies | ramhiser dot com]]></title>
+  <link href="http://ramhiser.com/blog/categories/zombies/atom.xml" rel="self"/>
+  <link href="http://ramhiser.com/"/>
+  <updated>2012-01-07T00:03:22-08:00</updated>
+  <id>http://ramhiser.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[John Ramey]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Zombie Ninjas Attack: A survivor's retrospective]]></title>
-    <link href="http://ramey.github.com/blog/2012/01/06/zombie-ninjas-attack-a-survivors-retrospective/"/>
+    <link href="http://ramhiser.com/blog/2012/01/06/zombie-ninjas-attack-a-survivors-retrospective/"/>
     <updated>2012-01-06T23:32:00-08:00</updated>
-    <id>http://ramey.github.com/blog/2012/01/06/zombie-ninjas-attack-a-survivors-retrospective</id>
+    <id>http://ramhiser.com/blog/2012/01/06/zombie-ninjas-attack-a-survivors-retrospective</id>
     <content type="html"><![CDATA[<p>The zombies are after me! Br-r-r-r-r-aaaaa-ins!</p>
 ]]></content>
   </entry>

@@ -7,7 +7,7 @@ title: John Ramey
 subtitle: Stats, Machine Learning, and R.
 author: John Ramey
 simple_search: http://google.com/search
-description: NEXT: Add description
+description: TODO - Add description
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -59,7 +59,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/twitter.ht
 
 # Github repositories
 github_user: ramey
-github_repo_count: 8
+github_repo_count: 5
 github_show_profile_link: true
 github_skip_forks: true
 

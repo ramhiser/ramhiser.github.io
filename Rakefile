@@ -45,7 +45,7 @@ end
 
 #######################
 # Working with Jekyll #
-xs#######################
+#######################
 
 desc "Generate jekyll site"
 task :generate do

@@ -129,6 +129,23 @@
 </section>
 
 <section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ramhiser", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ramhiser" class="twitter-follow-button" data-show-count="false">Follow @ramhiser</a>
+  
+</section>
+
+
+<section>
   <h1>Github Repos</h1>
   <ul id="gh_repos">
     <li class="loading">Status updating&#8230;</li>
@@ -155,23 +172,6 @@
     });
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("ramhiser", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/ramhiser" class="twitter-follow-button" data-show-count="false">Follow @ramhiser</a>
-  
 </section>
 
 

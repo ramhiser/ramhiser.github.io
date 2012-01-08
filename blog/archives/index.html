@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="Blog Archive 2012 When I was 29&#8230;
-Jan 07 2012 posted in personal Recent Posts When I was 29... Github Repos Status updating... @ramey on Github &hellip;">
+Jan 07 2012 posted in Thoughts Recent Posts When I was 29... Latest Tweets Status updating... $.domReady( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,7 +90,7 @@ Jan 07 2012 posted in personal Recent Posts When I was 29... Github Repos Status
 <time datetime="2012-01-07T22:03:00-08:00" pubdate><span class='month'>Jan</span> <span class='day'>07</span> <span class='year'>2012</span></time>
 
 <footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/personal/'>personal</a></span>
+  <span class="categories">posted in <a class='category' href='/blog/categories/thoughts/'>Thoughts</a></span>
 </footer>
 
 
@@ -115,6 +115,23 @@ Jan 07 2012 posted in personal Recent Posts When I was 29... Github Repos Status
     
   </ul>
 </section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ramhiser", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ramhiser" class="twitter-follow-button" data-show-count="false">Follow @ramhiser</a>
+  
+</section>
+
 
 <section>
   <h1>Github Repos</h1>
@@ -143,23 +160,6 @@ Jan 07 2012 posted in personal Recent Posts When I was 29... Github Repos Status
     });
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-<section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("ramhiser", 4, false);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/ramhiser" class="twitter-follow-button" data-show-count="false">Follow @ramhiser</a>
-  
 </section>
 
 

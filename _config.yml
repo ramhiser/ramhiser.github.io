@@ -4,10 +4,10 @@
 
 url: http://ramhiser.com
 title: John Ramey
-subtitle: Stats, Machine Learning, and R.
+subtitle: Statistics, Machine Learning, and R.
 author: John Ramey
 simple_search: http://google.com/search
-description: TODO - Add description
+description: An Octopress site for John Ramey (@ramhiser) about statistics, machine learning, R, and other data- and math-related discussions.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in

@@ -3,7 +3,6 @@ layout: post
 title: "Goals for 2012"
 date: 2012-01-09 08:18
 comments: true
-published: false
 categories: [Thoughts, Goals]
 ---
 

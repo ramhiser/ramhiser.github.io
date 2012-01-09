@@ -1,0 +1,33 @@
+---
+layout: post
+title: "Goals for 2012"
+date: 2012-01-09 08:18
+comments: true
+published: false
+categories: [Thoughts, Goals]
+---
+
+I have never been one to set New Year's resolutions. Personally, they instill a dangerous personal freedom that often yield naive, subconscious mentalities, such as I can do anything I want until December 31, and I will change abruptly the next day. However, my Ph.D. adviser has shown me the importance of setting goals in all things that I wish to accomplish as well as envisioning the finale to an arduous journey like a small child (read "John Ramey") that pictures the waning warmth of fresh chocolate chip cookies smeared on his face. My adviser has always encouraged short-term and long-term goals but never required them. As I recently found out, my employer does. In addition, these goals are reviewed at the end of the fiscal year so that employees are realistic and held accountable.
+
+Now that I must list these formally at work, I have decided to post a number of career and personal goals here in order to hold myself accountable at the end of 2012 with the implicit assumption that [the world does not end](http://en.wikipedia.org/wiki/2012_phenomenon). So, one year from now, if we are still here (**chuckle**), I will review my goal-completion success.
+
+* Read to my son (almost) nightly.
+* Hear my son laugh (almost) nightly.
+* Take my wife out for a date night each week.
+* Treat my wife to a significant outing each month.
+* Finish dissertation.
+* Successfully defend dissertation.
+* Submit 4-6 articles for publication.
+* Submit at least 3 R packages to [CRAN](http://cran.r-project.org/).
+* Attend at least three conferences.
+* Make at least two conference presentations.
+* Find/maintain employment.
+* Construct detailed plan and outline for my textbook.
+* Take a real vacation.
+* Run a half marathon. (I will consider this a success if I have signed up for a early 2013 race.)
+* Blog more.
+* Check Tweets and email twice daily at a scheduled time.
+* Spend time with my extended family.
+* Read the literature at a scheduled time.
+
+As I have assuredly not remembered the goals that I have verbally set, this list may change over the next few days.

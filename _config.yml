@@ -81,7 +81,7 @@ googleplus_user:
 googleplus_hidden: false
 
 # Pinboard
-pinboard_user:
+pinboard_user: ramhiser
 pinboard_count: 3
 
 # Delicious
@@ -93,7 +93,7 @@ disqus_short_name: johnramey
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-33406921-1
 
 # Facebook Like
 facebook_like: true

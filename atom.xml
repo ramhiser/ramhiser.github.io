@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-04T10:30:16-07:00</updated>
+  <updated>2012-08-04T10:50:45-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -83,6 +83,65 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
     <content type="html"><![CDATA[<p>Today was my 29th birthday, and I kept things simple: I ate with my wife and my newborn son at a local eatery. Later, my wife cooked steaks for dinner. For the most part, I took the day off in that I did not work on my dissertation. But I did spent much of the day tinkering with my <a href="http://octopress.org/">Octopress</a> installation &#8211; more about that later.</p>
 
 <p>The best part of the day was hearing my son laugh again and again. Yes, there were some messy diapers, but those are easily forgotten when my son gets the giggles.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Getting Started with Some Baseball Data]]></title>
+    <link href="http://ramhiser.com/blog/2011/05/24/getting-started-with-some-baseball-data/"/>
+    <updated>2011-05-24T21:34:00-07:00</updated>
+    <id>http://ramhiser.com/blog/2011/05/24/getting-started-with-some-baseball-data</id>
+    <content type="html"><![CDATA[<p>With all of the discussions (hype?) regarding applied statistics, machine learning, and data science, I have been looking for a go-to source of data unrelated to my day-to-day work. I loved baseball as
+a kid. I love baseball now. I love baseball stats. Why not do a grown-up version of what I used to do when I spent hours staring at and memorizing baseball stats on the back of a few pieces of cardboard
+on which I spent my allowance?</p>
+
+<p>To get started, I purchased a copy of <a href="http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;qid=1306290220&amp;sr=8-1">Baseball Hacks</a>. The author suggests the usage of MySQL,
+so I will oblige. First, I downloaded some baseball data in MySQL format on my web server (Ubuntu 10.04) and decompressed it; when I downloaded the data, it was timestamped as 28 March 2011, so
+double-check if there is an updated version.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir baseball
+</span><span class='line'><span class="nb">cd </span>baseball
+</span><span class='line'>wget http://www.baseball-databank.org/files/BDB-sql-2011-03-28.sql.zip
+</span><span class='line'>unzip BDB-sql-2011-03-28.sql.zip
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, in MySQL I created a user named <strong>baseball</strong>, a database entitled <strong>bbdatabank</strong> and granted all privileges on this database to the user <strong>baseball</strong>. To do this, first open MySQL as root:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -u root -p
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At the MySQL prompt, type: (Note the tick marks (`) around <strong>bbdatabank</strong> when granting privileges.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">&#39;baseball&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;YourPassword&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="k">CREATE</span> <span class="k">database</span> <span class="n">bbdatabank</span><span class="p">;</span>
+</span><span class='line'><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="o">`</span><span class="n">bbdatabank</span><span class="o">`</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;baseball&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
+</span><span class='line'><span class="n">quit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, we read the data into the database we just created by:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -u baseball -p -s bbdatabank &lt; BDB-sql-2011-03-28.sql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That’s it! Most of this code has been adapted from <a href="http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;qid=1306290220&amp;sr=8-1">Baseball Hacks</a>, although I’ve tweaked a
+couple of things. As I progress through the book, I will continue to add interesting finds and code as posts. Eventually, I will move away from the book’s code as it focuses too much on the
+&#8220;Intro to Data Exploration&#8221; reader with constant mentions of MS Access/Excel. The author means well though as he urges the reader to use *nix/Mac OS X.</p>
 ]]></content>
   </entry>
   

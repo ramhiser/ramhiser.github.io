@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-04T10:50:45-07:00</updated>
+  <updated>2012-08-04T10:57:49-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -83,6 +83,25 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
     <content type="html"><![CDATA[<p>Today was my 29th birthday, and I kept things simple: I ate with my wife and my newborn son at a local eatery. Later, my wife cooked steaks for dinner. For the most part, I took the day off in that I did not work on my dissertation. But I did spent much of the day tinkering with my <a href="http://octopress.org/">Octopress</a> installation &#8211; more about that later.</p>
 
 <p>The best part of the day was hearing my son laugh again and again. Yes, there were some messy diapers, but those are easily forgotten when my son gets the giggles.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Listing of Statistics and Machine Learning Conferences]]></title>
+    <link href="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/"/>
+    <updated>2011-06-12T17:20:00-07:00</updated>
+    <id>http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences</id>
+    <content type="html"><![CDATA[<p>Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
+meaningful other than the conferences of which I&#8217;m already aware (such as JSM, ICML, some IEEE conferences). Today, I found <a href="http://www.wikicfp.com/cfp/">WikiCFP</a>, which is a <strong>A Wiki for Calls for
+Papers</strong>. This seems to be what I needed. In particular, the following are very useful to me:</p>
+
+<ul>
+<li><a href="http://www.wikicfp.com/cfp/call?conference=machine%20learning">Machine Learning on WikiCFP</a></li>
+<li><a href="http://www.wikicfp.com/cfp/call?conference=statistics">Statistics on WikiCFP</a></li>
+</ul>
+
+
+<p>It seems limited for statistics though, as JSM is not even listed.</p>
 ]]></content>
   </entry>
   

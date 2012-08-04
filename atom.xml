@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-04T11:48:39-07:00</updated>
+  <updated>2012-08-04T11:49:37-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -91,17 +91,15 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
     <link href="http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address/"/>
     <updated>2011-12-04T13:57:00-08:00</updated>
     <id>http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address</id>
-    <content type="html"><![CDATA[<p>Given that there are almost 13 million views of Steve Jobs’ commencement address, I am certain that I missed this video when it went viral. I am glad that I did not see it until now because I may not have appreciated his words of wisdom.</p>
-
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/UF8uR6Z6KLc "></iframe></div>
-
-
-<p>And although there are numerous quotes that I could list, I think my favorites are closely related to a few words of wisdom that my grandmother told me when I was younger.</p>
+    <content type="html"><![CDATA[<p>Given that there are almost 13 million views of Steve Jobs’ commencement address, I am certain that I missed this video when it went viral. I am glad that I did not see it until now because I may not have appreciated his words of wisdom. And although there are numerous quotes that I could list, I think my favorites are closely related to a few words of wisdom that my grandmother told me when I was younger.</p>
 
 <blockquote><p>Don&#8217;t settle.</p><p>Stay hungry. Stay foolish.</p><p>You’ve got to find what you love, and that is as true for work as is for your lovers. Your work is gonna fill a large part of your life, and the only way to truly be satisfied is to do what you believe is great work, and the only way to do great work is to love what you do.</p></blockquote>
 
 
 <p>It’s good to be reminded of things like this once in a while.</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/UF8uR6Z6KLc "></iframe></div>
+
 ]]></content>
   </entry>
   

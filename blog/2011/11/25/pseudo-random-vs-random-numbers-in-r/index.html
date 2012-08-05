@@ -126,63 +126,100 @@
 
 <p>Below, I have plotted 500 x 500 bitmaps based on the <em>random</em> bits from both of <a href="http://www.r-project.org/">R</a> and <a href="http://www.random.org/">random.org</a>. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the <a href="http://www.php.net/">PHP</a> code. I am unsure if the <a href="http://www.php.net/">PHP</a> folks formally tested their <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms for <strong>randomness</strong>, but even if they did, the code in both <a href="http://www.r-project.org/">R</a> and <a href="http://www.php.net/">PHP</a> is straightforward and provides a quick eyeball test. Armed with similar plots alone, the <a href="http://www.php.net/">PHP</a> devs could have sought for better <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms — perhaps, borrowed those from <a href="http://www.r-project.org/">R</a>.</p>
 
-<div>
-  <pre>
-    <code class='r'>library(&quot;plyr&quot;)
-library(&quot;pixmap&quot;)
-library(&quot;random&quot;)
-
-rand_bit_matrix &lt;- function(num_rows = 500, num_cols = 500, max_n_random.org = 10000, 
-    seed = NULL) {
-    # I have copied the following function directly from help('integer').
-    is.wholenumber &lt;- function(x, tol = .Machine$double.eps^0.5) {
-        abs(x - round(x)) &lt; tol
-    }
-    
-    # The number of bits to draw at 'random'.
-    n &lt;- num_rows * num_cols
-    if (n &lt;= 0 || !is.wholenumber(n)) {
-        stop(&quot;The number of bits 'n' should be a natural number.&quot;)
-    }
-    
-    if (!is.null(seed)) {
-        set.seed(seed)
-    }
-    
-    # Create a matrix of pseudo-random bits.
-    bits_R &lt;- replicate(n = num_cols, sample(c(0, 1), size = num_rows, replace = TRUE))
-    
-    # Because random.org will only return a maximum of 10,000 numbers at a
-    # time, we break this up into several calls.
-    seq_n_random.org &lt;- rep.int(x = max_n_random.org, times = n%/%max_n_random.org)
-    if (n%%max_n_random.org &gt; 0) {
-        seq_n_random.org &lt;- c(seq_n_random.org, n%%max_n_random.org)
-    }
-    bits_random.org &lt;- lapply(seq_n_random.org, function(n) {
-        try_default(randomNumbers(n = n, min = 0, max = 1, col = 1), NA)
-    })
-    
-    bits_random.org &lt;- matrix(unlist(bits_random.org), nrow = num_rows, ncol = num_cols)
-    
-    list(R = bits_R, random.org = bits_random.org)
-}
-
-bit_mats &lt;- rand_bit_matrix(num_rows = 500, num_cols = 500, seed = 42)
-
-with(bit_mats, plot(pixmapGrey(data = R, nrow = nrow(R), ncol = ncol(R)), 
-    main = &quot;R&quot;))</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='r'><span class='line'>library<span class="p">(</span><span class="s">&quot;plyr&quot;</span><span class="p">)</span>
+</span><span class='line'>library<span class="p">(</span><span class="s">&quot;pixmap&quot;</span><span class="p">)</span>
+</span><span class='line'>library<span class="p">(</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>rand_bit_matrix <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>num_rows <span class="o">=</span> <span class="m">500</span><span class="p">,</span> num_cols <span class="o">=</span> <span class="m">500</span><span class="p">,</span> max_n_random.org <span class="o">=</span> <span class="m">10000</span><span class="p">,</span>
+</span><span class='line'>    seed <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1"># I have copied the following function directly from help(&#39;integer&#39;).</span>
+</span><span class='line'>    is.wholenumber <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> tol <span class="o">=</span> <span class="m">.</span>Machine<span class="p">$</span>double.eps<span class="o">^</span><span class="m">0.5</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        abs<span class="p">(</span>x <span class="o">-</span> round<span class="p">(</span>x<span class="p">))</span> <span class="o">&lt;</span> tol
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># The number of bits to draw at &#39;random&#39;.</span>
+</span><span class='line'>    n <span class="o">&lt;-</span> num_rows <span class="o">*</span> num_cols
+</span><span class='line'>    <span class="kr">if</span> <span class="p">(</span>n <span class="o">&lt;=</span> <span class="m">0</span> <span class="o">||</span> !is.wholenumber<span class="p">(</span>n<span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        stop<span class="p">(</span><span class="s">&quot;The number of bits &#39;n&#39; should be a natural number.&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">if</span> <span class="p">(</span>!is.null<span class="p">(</span>seed<span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        set.seed<span class="p">(</span>seed<span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Create a matrix of pseudo-random bits.</span>
+</span><span class='line'>    bits_R <span class="o">&lt;-</span> replicate<span class="p">(</span>n <span class="o">=</span> num_cols<span class="p">,</span> sample<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> size <span class="o">=</span> num_rows<span class="p">,</span> replace <span class="o">=</span> <span class="kc">TRUE</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Because random.org will only return a maximum of 10,000 numbers at a</span>
+</span><span class='line'>    <span class="c1"># time, we break this up into several calls.</span>
+</span><span class='line'>    seq_n_random.org <span class="o">&lt;-</span> rep.int<span class="p">(</span>x <span class="o">=</span> max_n_random.org<span class="p">,</span> times <span class="o">=</span> n<span class="o">%/%</span>max_n_random.org<span class="p">)</span>
+</span><span class='line'>    <span class="kr">if</span> <span class="p">(</span>n<span class="o">%%</span>max_n_random.org <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        seq_n_random.org <span class="o">&lt;-</span> c<span class="p">(</span>seq_n_random.org<span class="p">,</span> n<span class="o">%%</span>max_n_random.org<span class="p">)</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    bits_random.org <span class="o">&lt;-</span> lapply<span class="p">(</span>seq_n_random.org<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>n<span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        try_default<span class="p">(</span>randomNumbers<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> min <span class="o">=</span> <span class="m">0</span><span class="p">,</span> max <span class="o">=</span> <span class="m">1</span><span class="p">,</span> col <span class="o">=</span> <span class="m">1</span><span class="p">),</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>    bits_random.org <span class="o">&lt;-</span> matrix<span class="p">(</span>unlist<span class="p">(</span>bits_random.org<span class="p">),</span> nrow <span class="o">=</span> num_rows<span class="p">,</span> ncol <span class="o">=</span> num_cols<span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    list<span class="p">(</span>R <span class="o">=</span> bits_R<span class="p">,</span> random.org <span class="o">=</span> bits_random.org<span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>bit_mats <span class="o">&lt;-</span> rand_bit_matrix<span class="p">(</span>num_rows <span class="o">=</span> <span class="m">500</span><span class="p">,</span> num_cols <span class="o">=</span> <span class="m">500</span><span class="p">,</span> seed <span class="o">=</span> <span class="m">42</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>with<span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> R<span class="p">,</span> nrow <span class="o">=</span> nrow<span class="p">(</span>R<span class="p">),</span> ncol <span class="o">=</span> ncol<span class="p">(</span>R<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;R&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://i.imgur.com/hZd2N.png" alt="plot of chunk code" /></p>
 
-<div>
-  <pre>
-    <code class='r'>with(bit_mats, plot(pixmapGrey(data = random.org, nrow = nrow(random.org), 
-    ncol = ncol(random.org)), main = &quot;random.org&quot;))</code>
-  </pre>
-</div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='r'><span class='line'>with<span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> random.org<span class="p">,</span> nrow <span class="o">=</span> nrow<span class="p">(</span>random.org<span class="p">),</span>
+</span><span class='line'>    ncol <span class="o">=</span> ncol<span class="p">(</span>random.org<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;random.org&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://i.imgur.com/E59lB.png" alt="plot of chunk code" /></p>

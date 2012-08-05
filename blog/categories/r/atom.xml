@@ -4,7 +4,7 @@
   <title><![CDATA[Category: R | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/r/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-04T22:44:40-07:00</updated>
+  <updated>2012-08-04T22:46:51-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -36,24 +36,23 @@
 
 <p>Below, I have plotted 500 x 500 bitmaps based on the <em>random</em> bits from both of <a href="http://www.r-project.org/">R</a> and <a href="http://www.random.org/">random.org</a>. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the <a href="http://www.php.net/">PHP</a> code. I am unsure if the <a href="http://www.php.net/">PHP</a> folks formally tested their <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms for <strong>randomness</strong>, but even if they did, the code in both <a href="http://www.r-project.org/">R</a> and <a href="http://www.php.net/">PHP</a> is straightforward and provides a quick eyeball test. Armed with similar plots alone, the <a href="http://www.php.net/">PHP</a> devs could have sought for better <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms — perhaps, borrowed those from <a href="http://www.r-project.org/">R</a>.</p>
 
-<p><div>
-  <pre>
-    <code class='r'>library(&quot;plyr&quot;)
-library(&quot;pixmap&quot;)
-library(&quot;random&quot;)&lt;/p&gt;
+<p>``` r
+library("plyr")
+library("pixmap")
+library("random")</p>
 
-&lt;p&gt;rand_bit_matrix &amp;lt;- function(num_rows = 500, num_cols = 500, max_n_random.org = 10000,&lt;/p&gt;
+<p>rand_bit_matrix &lt;- function(num_rows = 500, num_cols = 500, max_n_random.org = 10000,</p>
 
-&lt;pre&gt;&lt;code&gt;seed = NULL) {
+<pre><code>seed = NULL) {
 # I have copied the following function directly from help('integer').
-is.wholenumber &amp;lt;- function(x, tol = .Machine$double.eps^0.5) {
-    abs(x - round(x)) &amp;lt; tol
+is.wholenumber &lt;- function(x, tol = .Machine$double.eps^0.5) {
+    abs(x - round(x)) &lt; tol
 }
 
 # The number of bits to draw at 'random'.
-n &amp;lt;- num_rows * num_cols
-if (n &amp;lt;= 0 || !is.wholenumber(n)) {
-    stop(&quot;The number of bits 'n' should be a natural number.&quot;)
+n &lt;- num_rows * num_cols
+if (n &lt;= 0 || !is.wholenumber(n)) {
+    stop("The number of bits 'n' should be a natural number.")
 }
 
 if (!is.null(seed)) {
@@ -61,50 +60,39 @@ if (!is.null(seed)) {
 }
 
 # Create a matrix of pseudo-random bits.
-bits_R &amp;lt;- replicate(n = num_cols, sample(c(0, 1), size = num_rows, replace = TRUE))
+bits_R &lt;- replicate(n = num_cols, sample(c(0, 1), size = num_rows, replace = TRUE))
 
 # Because random.org will only return a maximum of 10,000 numbers at a
 # time, we break this up into several calls.
-seq_n_random.org &amp;lt;- rep.int(x = max_n_random.org, times = n%/%max_n_random.org)
-if (n%%max_n_random.org &amp;gt; 0) {
-    seq_n_random.org &amp;lt;- c(seq_n_random.org, n%%max_n_random.org)
+seq_n_random.org &lt;- rep.int(x = max_n_random.org, times = n%/%max_n_random.org)
+if (n%%max_n_random.org &gt; 0) {
+    seq_n_random.org &lt;- c(seq_n_random.org, n%%max_n_random.org)
 }
-bits_random.org &amp;lt;- lapply(seq_n_random.org, function(n) {
+bits_random.org &lt;- lapply(seq_n_random.org, function(n) {
     try_default(randomNumbers(n = n, min = 0, max = 1, col = 1), NA)
 })
 
-bits_random.org &amp;lt;- matrix(unlist(bits_random.org), nrow = num_rows, ncol = num_cols)
+bits_random.org &lt;- matrix(unlist(bits_random.org), nrow = num_rows, ncol = num_cols)
 
 list(R = bits_R, random.org = bits_random.org)
-&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
 
-&lt;p&gt;}&lt;/p&gt;
+<p>}</p>
 
-&lt;p&gt;bit_mats &amp;lt;- rand_bit_matrix(num_rows = 500, num_cols = 500, seed = 42)&lt;/p&gt;
+<p>bit_mats &lt;- rand_bit_matrix(num_rows = 500, num_cols = 500, seed = 42)</p>
 
-&lt;p&gt;with(bit_mats, plot(pixmapGrey(data = R, nrow = nrow(R), ncol = ncol(R)),&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;main = &quot;R&quot;))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;</code>
-  </pre>
-</div>
-</p>
+<p>with(bit_mats, plot(pixmapGrey(data = R, nrow = nrow(R), ncol = ncol(R)), main = "R"))
+```</p>
 
 <p><img src="http://i.imgur.com/hZd2N.png" alt="plot of chunk code" /></p>
 
-<p><div>
-  <pre>
-    <code class='r'>with(bit_mats, plot(pixmapGrey(data = random.org, nrow = nrow(random.org),&lt;/p&gt;
+<p>``` r
+with(bit_mats, plot(pixmapGrey(data = random.org, nrow = nrow(random.org),</p>
 
-&lt;pre&gt;&lt;code&gt;ncol = ncol(random.org)), main = &quot;random.org&quot;))
-&lt;/code&gt;&lt;/pre&gt;
+<pre><code>ncol = ncol(random.org)), main = "random.org"))
+</code></pre>
 
-&lt;p&gt;</code>
-  </pre>
-</div>
-</p>
+<p>```</p>
 
 <p><img src="http://i.imgur.com/E59lB.png" alt="plot of chunk code" /></p>
 ]]></content>

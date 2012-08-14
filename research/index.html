@@ -89,7 +89,7 @@
   
   <p>Below is a research statement that I wrote in the recent past. Right now, it is lacking an emphasis on bioinformatics, which is the primary source of my applications of machine learning and multivariate statistics. I aim to update the statement soon.</p>
 
-<h1>Introduction</h1>
+<h2>Introduction</h2>
 
 <p>We are quickly approaching an era in which modern machines and devices will be transitioned to systems that require more automated decisions. I envision that many of these systems will become completely autonomous, while others will depend on persistent human feedback and interaction. In either case, these systems will likely rely on statistical and machine learning models and algorithms, will depend on large, complex data sets, and will present new, unique challenges. Can we model these data sets with traditional methods? How do we implement these methods if an autonomous system requires nearly instantaneous results? How do we know if our selected models will be effective after the system has been deployed? For systems that require human interaction, how can we present intelligible, meaningful results to an expert for feedback without oversimplifying the underlying system?</p>
 
@@ -97,7 +97,7 @@
 
 <p>Specifically, my research interests are clustering evaluation and consensus clustering, naive Bayesian models, active learning, and Quasi-Monte Carlo methods. Below, I discuss my current and ongoing work in these areas.</p>
 
-<h1>Clustering Evaluation and Consensus Clustering</h1>
+<h2>Clustering Evaluation and Consensus Clustering</h2>
 
 <p>The evaluation of clustering algorithms is arguably as important as the actual clustering algorithms(see <a href="http://www.ncbi.nlm.nih.gov/pubmed/11301299">Yeung, Haynor, and Ruzzo (2001)</a>), yet assessment methods have not been well-studied and are not as straightforward as the evaluation of supervised learning models. In practice, clusters are generally evaluated via subjective judgment of visualization tools that are prone to oversimplify geometric structure in the data and can be difficult to interpret and misleading. However, as a vital part of exploratory data analysis and initial knowledge discovery, clustering algorithms are often necessary to determine preliminary data patterns and to motivate future modeling assumptions. Hence, preliminary research that depends on fallacious clusters can lead to wasted time and resources as well as invalid preliminary findings.</p>
 
@@ -109,7 +109,7 @@
 
 <p>While developing the above method, I realized that the similarity coefficients that are largely used to compare clustering algorithms are equivalent to a likelihood-based method having unreasonable assumptions. From this perspective, I am currently developing a Bayesian method to compare clustering algorithms in a more appropriate manner that has a clear, probabilistic interpretation. This Bayesian approach is closely related to and generalizes the <a href="http://www.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&amp;paper_id=87">consensus clustering method proposed by Monti, Tamayo, Mesirov, and Golub</a> that was developed as an ensemble method of clustering algorithms analogous to committee and ensemble methods in the supervised learning literature. The Bayesian generalization of consensus clustering allows for an aggregation of clustering algorithms. Moreover, not only can individual problematic clusters be identified, but also individual observations about which the considered clustering algorithms disagree can be identified for further analysis to create more robust aggregate clustering.</p>
 
-<h1>Naive Bayesian Models</h1>
+<h2>Naive Bayesian Models</h2>
 
 <p>The Naive Bayes (NB) classifier is a simple and powerful supervised classification model that is scalable with modern data sets and is extremely fast to compute when combined with modern technology frameworks, such as MapReduce and Hadoop, because the model requires the naive assumption that variables (features) are independent within each class or population. The NB model is typically effective even when the variables are slightly correlated and has been demonstrated to perform well within the natural language processing and bioinformatics literatures. Despite its empirical successes, the NB model assumptions can be problematic and can yield underperforming classification accuracy when features are correlated.</p>
 
@@ -117,7 +117,7 @@
 
 <p>My proposed method necessarily reduces the naivety of the NB model, thereby reducing its computational runtime. To overcome this challenge, I am presently utilizing parallel processing to speed up the calculations and am working to develop approximate solutions to induce significant gains in runtime.</p>
 
-<h1>Active Learning</h1>
+<h2>Active Learning</h2>
 
 <p>Relatively few observations in many modern data sets have classification labels for usage with supervised learning methods because the labeling process can be expensive and time-consuming and can require input from a domain expert. When few observations actually have a classification label, the classification performance of routine classifiers can severely degrade, especially when the number of measured variables is large. Methods have been proposed in the semi-supervised learning (SSL) and semi-supervised clustering (SSC) literatures to improve classification accuracy with a large number of unlabeled observations and few labeled observations. Whether supervised learning, SSL, or SSC methods are employed, intuitively, classification accuracy should be improved as we obtain more labels for the unlabeled data by presenting an expert with a subset of well-chosen unlabeled observations to label.</p>
 
@@ -125,13 +125,13 @@
 
 <p>My ongoing work in active learning is extending the current methods to include time-dependent features. Currently, the majority of active learning approaches assume that the observations are independent, which can lead to problematic results.</p>
 
-<h1>Quasi-Monte Carlo Methods</h1>
+<h2>Quasi-Monte Carlo Methods</h2>
 
 <p>A large portion of my training has been in Bayesian statistics, and although the Bayesian paradigm is philosophically appealing and allows for comprehensible results as probability statements, the amount of computation required by Markov Chain Monte Carlo (MCMC) algorithms is usually quite large. For large-scale data sets, these MCMC methods can generally inhibit the computational performance and practicality of Bayesian modeling; see <a href="http://bayesian.org/sites/default/files/fm/bulletins/1106.pdf">Professor Mike Jordan&#8217;s commentary on <strong>The Era of Big Data</strong></a>.</p>
 
 <p>For Bayesian machine learning models, Quasi-Monte Carlo (QMC) methods should be considered as a possible alternative to MCMC for automated predictions and classifications. Although QMC methods are unable to provide direct estimates of standard errors, they provide a much quicker approach to model estimation, which is necessary for automated systems. Moreover, some of the deterministic (quasi) random number generation methods involved in QMC methods are embarrassingly parallel and can be employed with modern HPC systems. I am currently investigating how to apply QMC methods as an alternative to MCMC methods with Bayesian machine learning methods.</p>
 
-<h1>Conclusion</h1>
+<h2>Conclusion</h2>
 
 <p>As I have discussed, I am largely interested in statistical and machine learning modeling in modern, automated systems that potentially require persistent input and feedback from human experts. My short-term research goals are ambitious and involve the completion of my current work on clustering evaluation, consensus clustering, naive Bayesian models, active learning, and QMC approaches to Bayesian machine learning. I hope to establish myself as an excellent researcher in these areas and more generally in Bayesian approaches to statistical and machine learning. In the long term, I wish to be at an institution that continually produces cutting-edge research and work with talented, experienced individuals while learning from one another. My long-term aim is to continually utilize state-of-the-art technologies to improve the methodologies in machine learning.</p>
 

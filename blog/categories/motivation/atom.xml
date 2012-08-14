@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Motivation | John Ramey]]></title>
+  <link href="http://ramhiser.com/blog/categories/motivation/atom.xml" rel="self"/>
+  <link href="http://ramhiser.com/"/>
+  <updated>2012-08-13T22:57:23-07:00</updated>
+  <id>http://ramhiser.com/</id>
+  <author>
+    <name><![CDATA[John Ramey]]></name>
+    <email><![CDATA[johnramey@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Steve Jobs' 2005 Stanford Commencement Address]]></title>
+    <link href="http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address/"/>
+    <updated>2011-12-04T13:57:00-08:00</updated>
+    <id>http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address</id>
+    <content type="html"><![CDATA[<p>Given that there are almost 13 million views of Steve Jobs’ commencement address, I am certain that I missed this video when it went viral. I am glad that I did not see it until now because I may not have appreciated his words of wisdom. And although there are numerous quotes that I could list, I think my favorites are closely related to a few words of wisdom that my grandmother told me when I was younger.</p>
+
+<p><blockquote><p>Don't settle.</p></p><p><p>Stay hungry. Stay foolish.</p></p><p><p>You’ve got to find what you love, and that is as true for work as is for your lovers. Your work is gonna fill a large part of your life, and the only way to truly be satisfied is to do what you believe is great work, and the only way to do great work is to love what you do.</p><footer><strong>Steve Jobs</strong> <cite><a href='http://youtu.be/UF8uR6Z6KLc'>youtu.be/UF8uR6Z6KLc/&hellip;</a></cite></footer></blockquote></p>
+
+<p>It’s good to be reminded of things like this once in a while.</p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/UF8uR6Z6KLc "></iframe></div></p>
+]]></content>
+  </entry>
+  
+</feed>

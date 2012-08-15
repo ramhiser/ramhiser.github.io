@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bioinformatics | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/bioinformatics/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-14T22:23:43-07:00</updated>
+  <updated>2012-08-14T22:47:23-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -40,9 +40,19 @@ P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
 <p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
 
 <blockquote>
-  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each having the exponential distribution. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
+  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each having the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a> with rate parameter <script type="math/tex">\lambda > 0</script>. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
 </blockquote>
 
+<p>This set of questions is concerned with the mean and variance of the sample median, <script type="math/tex">X_{(m + 1)}</script>, where <script type="math/tex">X_{(i)}</script> denotes the <script type="math/tex">i</script>th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, from the following argument</p>
+
+<p>Therefore,
+$$
+E[X<em>{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
+$$
+and
+$$
+Var[X</em>{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}
+$$</p>
 ]]></content>
   </entry>
   

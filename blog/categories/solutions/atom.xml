@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Solutions | John Ramey]]></title>
+  <link href="http://ramhiser.com/blog/categories/solutions/atom.xml" rel="self"/>
+  <link href="http://ramhiser.com/"/>
+  <updated>2012-08-14T20:39:57-07:00</updated>
+  <id>http://ramhiser.com/</id>
+  <author>
+    <name><![CDATA[John Ramey]]></name>
+    <email><![CDATA[johnramey@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Textbook - Statistical Methods in Bioinformatics]]></title>
+    <link href="http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics/"/>
+    <updated>2012-08-14T20:17:00-07:00</updated>
+    <id>http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics</id>
+    <content type="html"><![CDATA[<p>As part of my effort to acquaint myself more with biology, bioinformatics, and statistical genetics, I am trying to find as many resources as I can that provide a solid foundation. For instance, I am wading through <a href="http://amzn.to/Mx5jCm">Molecular Biology of the Cell</a> at a pace of about 10-15 pages per day -- this takes nearly an hour every day.</p>
+
+<p>I am also going through <a href="http://amzn.to/PiXCiU">Statistical Methods in Bioinformatics by Ewens and Grant</a> and working selected problems for each chapter. My intention is to post my solutions to these chapter exercises. Thus far, I have made it through the first three chapters, and I will begin posting my solutions soon.</p>
+]]></content>
+  </entry>
+  
+</feed>

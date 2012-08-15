@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SQL | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/sql/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-14T21:54:06-07:00</updated>
+  <updated>2012-08-14T22:01:58-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -57,7 +57,7 @@ mysql -u baseball -p -s bbdatabank &lt; BDB-sql-2011-03-28.sql
 
 <p>That’s it! Most of this code has been adapted from <a href="http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;qid=1306290220&amp;sr=8-1">Baseball Hacks</a>, although I’ve tweaked a
 couple of things. As I progress through the book, I will continue to add interesting finds and code as posts. Eventually, I will move away from the book’s code as it focuses too much on the
-"Intro to Data Exploration" reader with constant mentions of MS Access/Excel. The author means well though as he urges the reader to use *nix/Mac OS X.</p>
+“Intro to Data Exploration” reader with constant mentions of MS Access/Excel. The author means well though as he urges the reader to use *nix/Mac OS X.</p>
 ]]></content>
   </entry>
   

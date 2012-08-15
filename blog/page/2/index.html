@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Listing of Statistics and Machine Learning Conferences - John Ramey</title>
+  <title>John Ramey</title>
   <meta name="author" content="John Ramey">
 
   
-  <meta name="description" content="Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. &hellip;">
+  <meta name="description" content="With all of the discussions (hype?) regarding applied statistics, machine learning, and data science, I have been looking for a go-to source of data &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/">
+  <link rel="canonical" href="http://ramhiser.com/blog/page/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,12 +79,15 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article class="hentry" role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
     
-      <h1 class="entry-title">Listing of Statistics and Machine Learning Conferences</h1>
+      <h1 class="entry-title"><a href="/blog/2011/05/24/getting-started-with-some-baseball-data/">Getting Started With Some Baseball Data</a></h1>
     
     
       <p class="meta">
@@ -100,88 +103,79 @@
   
 
 
-<time datetime="2011-06-12T17:20:00-07:00" pubdate data-updated="true">Jun 12<span>th</span>, 2011</time>
+<time datetime="2011-05-24T21:34:00-07:00" pubdate data-updated="true">May 24<span>th</span>, 2011</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
-meaningful other than the conferences of which I&#8217;m already aware (such as JSM, ICML, some IEEE conferences). Today, I found <a href="http://www.wikicfp.com/cfp/">WikiCFP</a>, which is a <strong>A Wiki for Calls for
-Papers</strong>. This seems to be what I needed. In particular, the following are very useful to me:</p>
+  <div class="entry-content"><p>With all of the discussions (hype?) regarding applied statistics, machine learning, and data science, I have been looking for a go-to source of data unrelated to my day-to-day work. I loved baseball as
+a kid. I love baseball now. I love baseball stats. Why not do a grown-up version of what I used to do when I spent hours staring at and memorizing baseball stats on the back of a few pieces of cardboard
+on which I spent my allowance?</p>
 
-<ul>
-<li><a href="http://www.wikicfp.com/cfp/call?conference=machine%20learning">Machine Learning on WikiCFP</a></li>
-<li><a href="http://www.wikicfp.com/cfp/call?conference=statistics">Statistics on WikiCFP</a></li>
-</ul>
+<p>To get started, I purchased a copy of <a href="http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;qid=1306290220&amp;sr=8-1">Baseball Hacks</a>. The author suggests the usage of MySQL,
+so I will oblige. First, I downloaded some baseball data in MySQL format on my web server (Ubuntu 10.04) and decompressed it; when I downloaded the data, it was timestamped as 28 March 2011, so
+double-check if there is an updated version.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir baseball
+</span><span class='line'><span class="nb">cd </span>baseball
+</span><span class='line'>wget http://www.baseball-databank.org/files/BDB-sql-2011-03-28.sql.zip
+</span><span class='line'>unzip BDB-sql-2011-03-28.sql.zip
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>It seems limited for statistics though, as JSM is not even listed.</p>
+<p>Next, in MySQL I created a user named <strong>baseball</strong>, a database entitled <strong>bbdatabank</strong> and granted all privileges on this database to the user <strong>baseball</strong>. To do this, first open MySQL as root:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -u root -p
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At the MySQL prompt, type: (Note the tick marks (`) around <strong>bbdatabank</strong> when granting privileges.)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">&#39;baseball&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;YourPassword&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="k">CREATE</span> <span class="k">database</span> <span class="n">bbdatabank</span><span class="p">;</span>
+</span><span class='line'><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="o">`</span><span class="n">bbdatabank</span><span class="o">`</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;baseball&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
+</span><span class='line'><span class="n">quit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, we read the data into the database we just created by:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mysql -u baseball -p -s bbdatabank &lt; BDB-sql-2011-03-28.sql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That’s it! Most of this code has been adapted from <a href="http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;qid=1306290220&amp;sr=8-1">Baseball Hacks</a>, although I’ve tweaked a
+couple of things. As I progress through the book, I will continue to add interesting finds and code as posts. Eventually, I will move away from the book’s code as it focuses too much on the
+&#8220;Intro to Data Exploration&#8221; reader with constant mentions of MS Access/Excel. The author means well though as he urges the reader to use *nix/Mac OS X.</p>
 </div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">John Ramey</span></span>
-
-      
-
-
-
-
-
-
-
-
   
 
 
-<time datetime="2011-06-12T17:20:00-07:00" pubdate data-updated="true">Jun 12<span>th</span>, 2011</time>
-      
-
-<span class="categories">
+    </article>
   
-    <a class='category' href='/blog/categories/conferences/'>Conferences</a>, <a class='category' href='/blog/categories/machine-learning/'>Machine Learning</a>, <a class='category' href='/blog/categories/statistical-learning/'>Statistical Learning</a>, <a class='category' href='/blog/categories/statistics/'>Statistics</a>
-  
-</span>
-
-
-    </p>
+  <div class="pagination">
     
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/" data-via="ramhiser" data-counturl="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/" >Tweet</a>
-  
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
+    <a href="/blog/archives">Blog Archives</a>
     
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/" title="Previous Post: Conway's Game of Life in R with ggplot2 and animation">&laquo; Conway's Game of Life in R with ggplot2 and animation</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r/" title="Next Post: Pseudo-Random vs. Random Numbers in R">Pseudo-Random vs. Random Numbers in R &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
 </div>
-  </section>
-
-</div>
-
 <aside class="sidebar">
   
     <section>
@@ -214,7 +208,7 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating...</li>
+    <li class="loading">Status updating&#8230;</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -231,7 +225,7 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
+    <li class="loading">Status updating&#8230;</li>
   </ul>
   
   <a href="https://github.com/ramey">@ramey</a> on GitHub
@@ -260,7 +254,7 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
 
 <section>
   <h1>My Pinboard</h1>
-  <ul id="pinboard_linkroll">Fetching linkroll...</ul>
+  <ul id="pinboard_linkroll">Fetching linkroll&#8230;</ul>
   <p><a href="http://pinboard.in/u:ramhiser">My Pinboard Bookmarks &raquo;</a></p>
 </section>
 <script type="text/javascript">
@@ -282,7 +276,6 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
   
 </aside>
 
-
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -297,10 +290,7 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
       var disqus_shortname = 'johnramey';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/';
-        var disqus_url = 'http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -48,10 +48,13 @@ $$
 where $$\gamma$$ is [Euler's constant](http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant). Then, we can write the expected sample median as
 
 $$
+\begin{aligned}
 E[X_{(m + 1)}] &= \frac{1}{\lambda} \sum_{k=m+1}^{2m+1} \frac{1}{k}\\
 &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
-&\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma)\\
-&= \frac{1}{\lambda} \log \left(2 + \frac{1}{m}).
+&\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\\
+&= \frac{1}{\lambda} \log \left(2 + \frac{1}{m} \right).
+\end{aligned}
 $$
 
 Hence, as $$n \rightarrow \infty$$, this approximation goes to $$ \frac{\log 2}{\lambda}$$, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to $$F_X(x) = 1/2$$, where $$F_X$$ denotes the [cumulative distribution function](http://en.wikipedia.org/wiki/Cumulative_distribution_function) of the random variable $$X$$.
+

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Textbook | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/textbook/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-15T08:11:05-07:00</updated>
+  <updated>2012-08-15T08:14:01-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -12,71 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Chapter 2 Solutions - Statistical Methods in Bioinformatics]]></title>
-    <link href="http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/"/>
-    <updated>2012-08-14T20:42:00-07:00</updated>
-    <id>http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics</id>
-    <content type="html"><![CDATA[<p>As I have mentioned previously, I have begun reading <a href="http://amzn.to/PiXCiU">Statistical Methods in Bioinformatics by Ewens and Grant</a> and working selected problems for each chapter. In this post, I will give my solution to two problems. The first problem is pretty straightforward.</p>
-
-<h2 id="problem-220">Problem 2.20</h2>
-<blockquote>
-  <p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and <strong>the genes that are transmitted to each of the three children are independent</strong>. Let <script type="math/tex">I_1 = 1</script> if children 1 and 2 had the same gene transmitted, and <script type="math/tex">I_1 = 0</script> otherwise. Similarly, let <script type="math/tex">I_2 = 1</script> if children 1 and 3 had the same gene transmitted, <script type="math/tex">I_2 = 0</script> otherwhise, and let <script type="math/tex">I_3 = 1</script> if children 2 and 3 had the same gene transmitted, <script type="math/tex">I_3 = 0</script> otherwise.</p>
-</blockquote>
-
-<p>The question first asks us to how that the three random variables are pairwise independent but not independent. The pairwise independence comes directly from the bolded phrase in the problem statement. Now, to show that the three random variables are not independent, denote by <script type="math/tex">p_j</script> the probability that <script type="math/tex">I_j = 1</script>, <script type="math/tex">j = 1, 2, 3</script>. If we had independence, then the following statement would be true:</p>
-
-<script type="math/tex; mode=display">
-P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
-</script>
-
-<p>However, notice that the event in the lefthand side can never happen because if <script type="math/tex">I_1 = 1</script> and <script type="math/tex">I_2 = 1</script>, then <script type="math/tex">I_3</script> must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
-
-<p>The question also asks us to discuss why the variance of <script type="math/tex">I_1 + I_2 + I_3</script> is equal to the sum of the individual variances. Often, this is only the case of the random variables are independent. But because the random variables here are pairwise independent, the covariances must be 0. Thus, the equality must hold.</p>
-
-<h2 id="problems-223---227">Problems 2.23 - 2.27</h2>
-
-<p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
-
-<blockquote>
-  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each of which is <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponentially distributed</a> with rate parameter <script type="math/tex">\lambda > 0</script>. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
-</blockquote>
-
-<p>This set of questions is concerned with the mean and variance of the sample median, <script type="math/tex">X_{(m + 1)}</script>, where <script type="math/tex">X_{(i)}</script> denotes the <script type="math/tex">i</script>th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, note that the mean and variance of the minimum value <script type="math/tex">X_{(1)}</script> are <script type="math/tex">1/(n\lambda)</script> and <script type="math/tex">1/(n\lambda)^2</script>, respectively. From the <a href="http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions">memoryless property</a> of the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a>, the mean value of the time until the next protein degrades is independent of the previous. However, there are now <script type="math/tex">n - 1</script> proteins remaining. Thus, the mean and variance of <script type="math/tex">X_{(2)}</script> are <script type="math/tex">1/(n\lambda) + 1/((n-1)\lambda)</script> and <script type="math/tex">1/(n\lambda)^2 + 1/((n-1)\lambda)^2</script>, respectively. Continuining in this manner, we have</p>
-
-<script type="math/tex; mode=display">
-E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
-</script>
-
-<p>and</p>
-
-<script type="math/tex; mode=display">
-Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
-</script>
-
-<p>Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have</p>
-
-<script type="math/tex; mode=display">
-\sum_{k=1}^n \approx \log n + \gamma,
-</script>
-
-<p>where <script type="math/tex">\gamma</script> is <a href="http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant">Euler’s constant</a>. Then, we can write the expected sample median as</p>
-
-<script type="math/tex; mode=display">% &lt;![CDATA[
-
-\begin{aligned}
-E[X_{(m + 1)}] &= \frac{1}{\lambda} \sum_{k=m+1}^{2m+1} \frac{1}{k}\\
-&= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
-&\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\\
-&= \frac{1}{\lambda} \log \left(2 + \frac{1}{m} \right).
-\end{aligned}
- %]]&gt;</script>
-
-<p>Hence, as <script type="math/tex">n \rightarrow \infty</script>, this approximation goes to <script type="math/tex"> \frac{\log 2}{\lambda}</script>, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to <script type="math/tex">F_X(x) = 1/2</script>, where <script type="math/tex">F_X</script> denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable <script type="math/tex">X</script>.</p>
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Textbook - Statistical Methods in Bioinformatics]]></title>

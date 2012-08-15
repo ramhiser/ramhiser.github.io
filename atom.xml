@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-14T22:01:58-07:00</updated>
+  <updated>2012-08-14T22:02:54-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -22,7 +22,7 @@
 
 <h2 id="problem-220">Problem 2.20</h2>
 <blockquote>
-  <p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and the genes that are transmitted to each of the three children are independent. Let $I<em>1 = 1$ if children 1 and 2 had the same gene transmitted, and $I</em>1 = 0$ otherwise. Similarly, let $I<em>2 = 1$ if children 1 and 3 had the same gene transmitted, $I</em>2 = 0$ otherwhise, and let $I<em>3 = 1$ if children 2 and 3 had the same gene transmitted, $I</em>3 = 0$ otherwise.</p>
+  <p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and the genes that are transmitted to each of the three children are independent. Let <script type="math/tex">I_1 = 1</script> if children 1 and 2 had the same gene transmitted, and <script type="math/tex">I_1 = 0</script> otherwise. Similarly, let <script type="math/tex">I_2 = 1</script> if children 1 and 3 had the same gene transmitted, <script type="math/tex">I_2 = 0</script> otherwhise, and let <script type="math/tex">I_3 = 1</script> if children 2 and 3 had the same gene transmitted, <script type="math/tex">I_3 = 0</script> otherwise.</p>
 </blockquote>
 
 <h2 id="problems-223---227">Problems 2.23 - 2.27</h2>

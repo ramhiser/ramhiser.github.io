@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Solutions | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/solutions/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-14T22:02:54-07:00</updated>
+  <updated>2012-08-14T22:16:53-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -22,10 +22,23 @@
 
 <h2 id="problem-220">Problem 2.20</h2>
 <blockquote>
-  <p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and the genes that are transmitted to each of the three children are independent. Let <script type="math/tex">I_1 = 1</script> if children 1 and 2 had the same gene transmitted, and <script type="math/tex">I_1 = 0</script> otherwise. Similarly, let <script type="math/tex">I_2 = 1</script> if children 1 and 3 had the same gene transmitted, <script type="math/tex">I_2 = 0</script> otherwhise, and let <script type="math/tex">I_3 = 1</script> if children 2 and 3 had the same gene transmitted, <script type="math/tex">I_3 = 0</script> otherwise.</p>
+  <p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and <strong>the genes that are transmitted to each of the three children are independent</strong>. Let <script type="math/tex">I_1 = 1</script> if children 1 and 2 had the same gene transmitted, and <script type="math/tex">I_1 = 0</script> otherwise. Similarly, let <script type="math/tex">I_2 = 1</script> if children 1 and 3 had the same gene transmitted, <script type="math/tex">I_2 = 0</script> otherwhise, and let <script type="math/tex">I_3 = 1</script> if children 2 and 3 had the same gene transmitted, <script type="math/tex">I_3 = 0</script> otherwise.</p>
 </blockquote>
 
+<p>The question first asks us to how that the three random variables are pairwise independent but not independent. The pairwise independence comes directly from the bolded phrase in the problem statement. Now, to show that the three random variables are not independent, denote by <script type="math/tex">p_j</script> the probability that <script type="math/tex">I_j = 1</script>, <script type="math/tex">j = 1, 2, 3</script>. If we had independence, then the following statement would be true:</p>
+
+<script type="math/tex; mode=display">
+P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
+</script>
+
+<p>However, notice that the event on the lefthand side can never happen because if <script type="math/tex">I_1 = 1</script> and <script type="math/tex">I_2 = 1</script>, then <script type="math/tex">I_3</script> must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
+
+<p>The question also asks us to discuss why the variance of <script type="math/tex">I_1 + I_2 + I_3</script> is equal to the sum of the individual variances. Often, this is only the case of the random variables are independent. But because the random variables here are pairwise independent, the covariances must be 0. Thus, the equality must hold.</p>
+
 <h2 id="problems-223---227">Problems 2.23 - 2.27</h2>
+
+<p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
+
 ]]></content>
   </entry>
   

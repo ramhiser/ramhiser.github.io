@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bioinformatics | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/bioinformatics/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-14T22:16:53-07:00</updated>
+  <updated>2012-08-14T22:23:43-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -31,13 +31,17 @@
 P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
 </script>
 
-<p>However, notice that the event on the lefthand side can never happen because if <script type="math/tex">I_1 = 1</script> and <script type="math/tex">I_2 = 1</script>, then <script type="math/tex">I_3</script> must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
+<p>However, notice that the event in the lefthand side can never happen because if <script type="math/tex">I_1 = 1</script> and <script type="math/tex">I_2 = 1</script>, then <script type="math/tex">I_3</script> must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
 
 <p>The question also asks us to discuss why the variance of <script type="math/tex">I_1 + I_2 + I_3</script> is equal to the sum of the individual variances. Often, this is only the case of the random variables are independent. But because the random variables here are pairwise independent, the covariances must be 0. Thus, the equality must hold.</p>
 
 <h2 id="problems-223---227">Problems 2.23 - 2.27</h2>
 
 <p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
+
+<blockquote>
+  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each having the exponential distribution. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
+</blockquote>
 
 ]]></content>
   </entry>

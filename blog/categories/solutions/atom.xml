@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Solutions | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/solutions/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-08-15T07:57:00-07:00</updated>
+  <updated>2012-08-15T08:01:20-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -49,7 +49,7 @@ P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
 E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
 </script>
 
-<p>and</p>
+<p>and (yes, please?)</p>
 
 <script type="math/tex; mode=display">
 Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.

@@ -136,10 +136,10 @@ P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
 <p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
 
 <blockquote>
-  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each having the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a> with rate parameter <script type="math/tex">\lambda > 0</script>. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
+  <p>For <script type="math/tex">i = 1, \ldots, n</script>, let <script type="math/tex">X_i</script> be the <script type="math/tex">i</script>th lifetime of certain cellular proteins until degradation. We assume that <script type="math/tex">X_1, \ldots, X_n</script> are iid random variables, each of which is <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponentially distributed</a> with rate parameter <script type="math/tex">\lambda > 0</script>. Furthermore, let <script type="math/tex">n = 2m + 1</script> be an odd integer.</p>
 </blockquote>
 
-<p>This set of questions is concerned with the mean and variance of the sample median, <script type="math/tex">X_{(m + 1)}</script>, where <script type="math/tex">X_{(i)}</script> denotes the <script type="math/tex">i</script>th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, note that the mean and variance of the minimum value <script type="math/tex">X_{(1)}</script> are <script type="math/tex">1/(n\lambda)</script> and <script type="math/tex">1/(n\lambda)^2</script>, respectively. From the <a href="http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions">memoryless property</a> of the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a>, the mean value of the time until the next protein degrades is independent of the previous. However, there are now <script type="math/tex">n - 1</script> proteins remaining. Thus, the mean and variance of <script type="math/tex">X_{(2)}</script> are <script type="math/tex">1/(n\lambda) + 1/((n-1)\lambda)</script> and <script type="math/tex">1/((n-1)\lambda)^2</script>, respectively. Continuining in this manner, we have</p>
+<p>This set of questions is concerned with the mean and variance of the sample median, <script type="math/tex">X_{(m + 1)}</script>, where <script type="math/tex">X_{(i)}</script> denotes the <script type="math/tex">i</script>th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, note that the mean and variance of the minimum value <script type="math/tex">X_{(1)}</script> are <script type="math/tex">1/(n\lambda)</script> and <script type="math/tex">1/(n\lambda)^2</script>, respectively. From the <a href="http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions">memoryless property</a> of the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a>, the mean value of the time until the next protein degrades is independent of the previous. However, there are now <script type="math/tex">n - 1</script> proteins remaining. Thus, the mean and variance of <script type="math/tex">X_{(2)}</script> are <script type="math/tex">1/(n\lambda) + 1/((n-1)\lambda)</script> and <script type="math/tex">1/(n\lambda)^2 + 1/((n-1)\lambda)^2</script>, respectively. Continuining in this manner, we have</p>
 
 <script type="math/tex; mode=display">
 E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
@@ -150,6 +150,26 @@ E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \f
 <script type="math/tex; mode=display">
 Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
 </script>
+
+<p>Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have</p>
+
+<script type="math/tex; mode=display">
+\sum_{k=1}^n \approx \log n + \gamma,
+</script>
+
+<p>where <script type="math/tex">\gamma</script> is <a href="http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant">Euler’s constant</a>.</p>
+
+<p>Then, we can write the expected sample median as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+E[X_{(m + 1)}] &= \frac{1}{\lambda} \sum_{k=m+1}^{2m+1} \frac{1}{k}\\
+&= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
+&\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma)\\
+&= \frac{1}{\lambda} \log \left(2 + \frac{1}{m}).
+ %]]></script>
+
+<p>Hence, as <script type="math/tex">n \rightarrow \infty</script>, the <script type="math/tex">E[X_{(m + 1)}] \rightarrow \frac{\log 2}{\lambda}</script>, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to <script type="math/tex">F_X(x) = 1/2</script>, where <script type="math/tex">F_X</script> denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable <script type="math/tex">X</script>.</p>
 </div>
   
   

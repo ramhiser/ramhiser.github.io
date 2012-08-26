@@ -39,10 +39,12 @@ $$
 Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
 $$
 
+### Approximation of $$E[X_{(m + 1)}]$$
+
 Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have
 
 $$
-\sum_{k=1}^n \approx \log n + \gamma,
+\sum_{k=1}^n \frac{1}{k} \approx \log n + \gamma,
 $$
 
 where $$\gamma$$ is [Euler's constant](http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant). Then, we can write the expected sample median as
@@ -58,3 +60,38 @@ $$
 
 Hence, as $$n \rightarrow \infty$$, this approximation goes to $$ \frac{\log 2}{\lambda}$$, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to $$F_X(x) = 1/2$$, where $$F_X$$ denotes the [cumulative distribution function](http://en.wikipedia.org/wiki/Cumulative_distribution_function) of the random variable $$X$$.
 
+### Improved Approximation of $$E[X_{(m + 1)}]$$
+
+It turns out that we can improve this approximation with the following two results:
+
+$$
+\begin{aligned}
+\sum_{k=1}^n \frac{1}{k} &= \log n + \frac{1}{2n} + o\left(\frac{1}{n}\right),\\
+\log \left(\frac{2m + 1}{m}\right) &= \log 2 + \frac{1}{2m} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$
+
+Following the derivation of our above approximation, we have that
+
+$$
+\begin{aligned}
+E[X_{(m + 1)}] &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
+&= \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\\
+&= \frac{1}{\lambda} \left[ \log \left( \frac{2m + 1}{m} \right) + \frac{1}{2(2m+1)} - \frac{1}{2m} + o\left(\frac{1}{m}\right)  \right]\\
+&= \frac{\log 2}{\lambda} + \frac{1}{2\lambda (2m + 1)} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$
+
+### Approximation of $$Var[X_{(m + 1)}]$$
+
+We can also approximate $$Var[X_{(m + 1)}]$$ using the approximation
+
+$$
+\frac{1}{a^2} + \frac{1}{(a+1)^2} + \ldots + \frac{1}{b^2} \approx \frac{1}{a - 1/2} - \frac{1}{b + 1/2}.
+$$
+
+With $$a = m+1$$ and $$b = 2m + 1$$, we have
+
+$$
+Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
+$$

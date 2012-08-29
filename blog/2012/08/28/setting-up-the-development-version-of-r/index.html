@@ -1,24 +1,119 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: R | John Ramey]]></title>
-  <link href="http://ramhiser.com/blog/categories/r/atom.xml" rel="self"/>
-  <link href="http://ramhiser.com/"/>
-  <updated>2012-08-28T21:05:16-07:00</updated>
-  <id>http://ramhiser.com/</id>
-  <author>
-    <name><![CDATA[John Ramey]]></name>
-    <email><![CDATA[johnramey@gmail.com]]></email>
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Setting Up the Development Version of R - John Ramey</title>
+  <meta name="author" content="John Ramey">
 
   
-  <entry>
-    <title type="html"><![CDATA[Setting Up the Development Version of R]]></title>
-    <link href="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/"/>
-    <updated>2012-08-28T20:42:00-07:00</updated>
-    <id>http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r</id>
-    <content type="html"><![CDATA[<p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
+  <meta name="description" content="My coworkers at Fred Hutchinson regularly use
+the development version of R (i.e., R-devel) and have urged me to do the same.
+This post details how I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="John Ramey" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-33406921-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">John Ramey</a></h1>
+  
+    <h2>Statistics, Machine Learning, and R.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ramhiser.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="http://twitter.com/ramhiser">@ramhiser</a></li>
+  <li><a href="/about/">About</a></li>
+  <li><a href="https://github.com/ramey/vitae/raw/master/cv-John_Ramey.pdf">CV</a></li>
+  <li><a href="/projects/">Projects</a></li>
+  <li><a href="/research/">Research</a></li>
+  <li><a href="/blogroll/">Blogroll</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Setting Up the Development Version of R</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-28T20:42:00-07:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
 the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
 This post details how I have set up the development version of R on our Linux server,
 which I use remotely because it is much faster than my Mac.</p>
@@ -27,39 +122,49 @@ which I use remotely because it is much faster than my Mac.</p>
 installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
 if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
 
-<p><code>bash
-svn co https://svn.r-project.org/R/trunk ~/local/R-devel
-cd ~/local/R-devel
-./tools/rsync-recommended
-./configure --prefix=/home/jramey/local/
-make
-make install
-</code></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+</span><span class="line"><span class="nb">cd</span> ~/local/R-devel
+</span><span class="line">./tools/rsync-recommended
+</span><span class="line">./configure --prefix<span class="o">=</span>/home/jramey/local/
+</span><span class="line">make
+</span><span class="line">make install
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The second command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
 
 <p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
 
-<p>``` bash
-PATH=~/local/bin:$PATH
-export PATH</p>
-
-<h1 id="never-save-or-restore-when-running-r">Never save or restore when running R</h1>
-<p>alias R=’R –no-save –no-restore-data –quiet’
-```</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+</span><span class="line"><span class="nb">export </span>PATH
+</span><span class="line">
+</span><span class="line"><span class="c"># Never save or restore when running R</span>
+</span><span class="line"><span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
 
 <p>Next, I install the R packages that I use the most.</p>
 
-<p><code>r
-install.packages(c('devtools', 'ProjectTemplate', 'knitr', 'ggplot2', 'reshape2',
-                   'plyr', 'Rcpp', 'mvtnorm', 'caret'), dep = TRUE)
-</code></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">install.packages<span class="p">(</span>c<span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
+</span><span class="line">                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
 
-<p><div><script src='https://gist.github.com/1378639.js?file=.bash_profile'></script>
+<div><script src="https://gist.github.com/1378639.js?file=.bash_profile"></script>
 <noscript><pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head prefix=&quot;og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#&quot;&gt;
@@ -722,196 +827,204 @@ I think you should use an
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre></noscript></div>
-</p>
 
 <p>Finally, my <a href="http://rglab.org">coworkers</a> focus on <a href="http://en.wikipedia.org/wiki/Flow_cytometry">flow cytometry</a> data, and our group
 maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
 them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
 
-<p><code>r
-source("http://bioconductor.org/biocLite.R")
-biocLite("flowWorkspace")
-</code></p>
-]]></content>
-  </entry>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">source<span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+</span><span class="line">biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[Pseudo-Random vs. Random Numbers in R]]></title>
-    <link href="http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r/"/>
-    <updated>2011-11-25T03:08:00-08:00</updated>
-    <id>http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r</id>
-    <content type="html"><![CDATA[<p>Earlier, I found <a href="http://www.boallen.com/random-numbers.html">an interesting post from Bo Allen</a> on <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudo-random</a> vs <a href="http://en.wikipedia.org/wiki/Random_number">random numbers</a>, where the author uses a simple bitmap (<a href="http://en.wikipedia.org/wiki/Heat_map">heat map</a>) to show that the <strong>rand</strong> function in <a href="http://www.php.net/">PHP</a> has a systematic pattern and compares these to <strong>truly random</strong> numbers obtained from <a href="http://www.random.org/">random.org</a>. The post’s results suggest that pseudo-randomness in <a href="http://www.php.net/">PHP</a> is faulty and, in general, should not be underestimated in practice. Of course, the findings should not be too surprising, as there is a large body of literature on the subtleties, philosophies, and implications of the <strong>pseudo</strong> aspect of the most common approaches to random number generation. However, it is silly that <a href="http://www.php.net/">PHP</a>’s <a href="http://en.wikipedia.org/wiki/Random_number_generation">random number generator (RNG)</a> displays such an obvious pattern nowadays because there are several decent, well-studied pseudo-RNG algorithms available as well as numerous tests for randomness.  For a good introduction to <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a>, I recommend <a href="http://www.johndcook.com/blog/2010/12/06/how-to-test-a-random-number-generator-2/">John D. Cook’s discussion on testing a random number generator</a>.</p>
 
-<p>Now, I would never use <a href="http://www.php.net/">PHP</a> for any (serious) statistical analysis, partly due to my fondness for <a href="http://www.r-project.org/">R</a>, nor do I doubt the practicality of the <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> in <a href="http://www.r-project.org/">R</a>. But I was curious to see what would happen. So, created equivalent plots in <a href="http://www.r-project.org/">R</a> to see if a <strong>rand</strong> equivalent would exhibit a systematic pattern like in <a href="http://www.php.net/">PHP</a>, even if less severe. Also, for comparison, I chose to use <a href="http://cran.r-project.org/web/packages/random/index.html">the <strong>random</strong> package</a>, from <a href="http://dirk.eddelbuettel.com/">Dirk Eddelbuettel</a>, to draw <strong>truly random</strong> numbers from <a href="http://www.random.org/">random.org</a>. Until today, I had only heard of <a href="http://cran.r-project.org/web/packages/random/index.html">the <strong>random</strong> package</a> but had never used it.</p>
+<span class="byline author vcard">Posted by <span class="fn">John Ramey</span></span>
 
-<p>I have provided the function <strong>rand_bit_matrix</strong>, which requires the number of rows and columns to display in the plotted bitmap. To create the bitmaps, I used <a href="http://cran.r-project.org/web/packages/pixmap/index.html">the <strong>pixmap</strong> package</a> rather than <a href="http://had.co.nz/ggplot2/">the much-loved <strong>ggplot2</strong> package</a>, simply because of how easy it was for me to create the plots. (If you are concerned that I have lost the faith, please note that I am aware of the awesomeness of <a href="http://had.co.nz/ggplot2/"><strong>ggplot2</strong></a> and <a href="http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/">its ability</a> <a href="http://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/">to create heat maps</a>.)</p>
+      
 
-<p>It is important to note that there were two challenges that I encountered when using drawing <strong>truly random numbers</strong>.</p>
 
-<ol>
-  <li>Only 10,000 numbers can be drawn at once from <a href="http://www.random.org/">random.org</a>. (This is denoted as <strong>max_n_random.org</strong> in the function below.)</li>
-  <li>There is a daily limit to the number of times the <a href="http://www.random.org/">random.org</a> service will provide numbers.</li>
-</ol>
 
-<p>To overcome the first challenge, I split the total number of bits into separate calls, if necessary. This approach, however, increases our number of requests, and after too many requests, you will see the error: <strong>random.org suggests to wait until tomorrow</strong>. Currently, I do not know the exact number of allowed requests or if the amount of requested random numbers is a factor, but looking back, I would guess about 20ish large requests is too much.</p>
 
-<p>Below, I have plotted 500 x 500 bitmaps based on the <em>random</em> bits from both of <a href="http://www.r-project.org/">R</a> and <a href="http://www.random.org/">random.org</a>. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the <a href="http://www.php.net/">PHP</a> code. I am unsure if the <a href="http://www.php.net/">PHP</a> folks formally tested their <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms for <strong>randomness</strong>, but even if they did, the code in both <a href="http://www.r-project.org/">R</a> and <a href="http://www.php.net/">PHP</a> is straightforward and provides a quick eyeball test. Armed with similar plots alone, the <a href="http://www.php.net/">PHP</a> devs could have sought for better <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms — perhaps, borrowed those from <a href="http://www.r-project.org/">R</a>.</p>
 
-<p>``` r
-library(“plyr”)
-library(“pixmap”)
-library(“random”)</p>
 
-<p>rand_bit_matrix &lt;- function(num_rows = 500, num_cols = 500, max_n_random.org = 10000, 
-    seed = NULL) {
-    # I have copied the following function directly from help(‘integer’).
-    is.wholenumber &lt;- function(x, tol = .Machine$double.eps^0.5) {
-        abs(x - round(x)) &lt; tol
-    }</p>
 
-<pre><code># The number of bits to draw at 'random'.
-n &lt;- num_rows * num_cols
-if (n &lt;= 0 || !is.wholenumber(n)) {
-    stop("The number of bits 'n' should be a natural number.")
-}
 
-if (!is.null(seed)) {
-    set.seed(seed)
-}
-
-# Create a matrix of pseudo-random bits.
-bits_R &lt;- replicate(n = num_cols, sample(c(0, 1), size = num_rows, replace = TRUE))
-
-# Because random.org will only return a maximum of 10,000 numbers at a
-# time, we break this up into several calls.
-seq_n_random.org &lt;- rep.int(x = max_n_random.org, times = n%/%max_n_random.org)
-if (n%%max_n_random.org &gt; 0) {
-    seq_n_random.org &lt;- c(seq_n_random.org, n%%max_n_random.org)
-}
-bits_random.org &lt;- lapply(seq_n_random.org, function(n) {
-    try_default(randomNumbers(n = n, min = 0, max = 1, col = 1), NA)
-})
-
-bits_random.org &lt;- matrix(unlist(bits_random.org), nrow = num_rows, ncol = num_cols)
-
-list(R = bits_R, random.org = bits_random.org) }
-</code></pre>
-
-<p>bit_mats &lt;- rand_bit_matrix(num_rows = 500, num_cols = 500, seed = 42)</p>
-
-<p>with(bit_mats, plot(pixmapGrey(data = R, nrow = nrow(R), ncol = ncol(R)), main = “R”))
-```</p>
-
-<p><img src="http://i.imgur.com/hZd2N.png" alt="plot of chunk code" /> </p>
-
-<p><code>r
-with(bit_mats, plot(pixmapGrey(data = random.org, nrow = nrow(random.org), 
-    ncol = ncol(random.org)), main = "random.org"))
-</code></p>
-
-<p><img src="http://i.imgur.com/E59lB.png" alt="plot of chunk code" /> </p>
-
-]]></content>
-  </entry>
   
-  <entry>
-    <title type="html"><![CDATA[Conway's Game of Life in R with ggplot2 and animation]]></title>
-    <link href="http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/"/>
-    <updated>2011-06-05T19:04:00-07:00</updated>
-    <id>http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation</id>
-    <content type="html"><![CDATA[<p>In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.</p>
 
-<p>The basic idea is to start with a grid of cells, where each cell is either a zero (dead) or a one (alive). We are interested in watching the population behavior over time to see if the population dies off, has some sort of equilibrium, etc. <a href="http://en.wikipedia.org/wiki/John_Horton_Conway">John Conway</a> studied many possible ways to examine population behaviors and ultimately decided on the following rules, which we apply to each cell for the current tick (or generation).</p>
 
-<ol>
-  <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
-  <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
-  <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
-  <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction</li>
-</ol>
+<time datetime="2012-08-28T20:42:00-07:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+      
 
-<p>Although there are <a href="http://www.statisticsblog.com/2010/05/game-of-life-in-r/">other versions</a> of this in R, I decided to give it a shot myself. I am not going to provide a walkthrough of the code as I may normally do, but the code should be simple enough to understand for one proficient in R. It may have been unnecessary to implement this with the foreach package, but I wanted to get some more familiarity with foreach, so I did.</p>
-
-<p>The set of grids is stored as a list, where each element is a matrix of zeros and ones. Each matrix is then converted to an image with ggplot2, and the sequence of images is exported as a MP4 video with the <a href="http://cran.r-project.org/web/packages/animation/index.html">animation package</a>.</p>
-
-<p>Let me know if you improve on my code any. I’m always interested in learning how to do things better.</p>
-
-<p>``` r
-library(‘foreach’)
-library(‘ggplot2’)
-library(‘animation’)
-library(‘reshape2’)</p>
-
-<h1 id="determines-how-many-neighboring-cells-around-the-jkth-cell-have-living-organisms">Determines how many neighboring cells around the (j,k)th cell have living organisms.</h1>
-<p># The conditionals are used to check if we are at a boundary of the grid.
-how_many_neighbors &lt;- function(grid, j, k) {
-  size &lt;- nrow(grid)
-  count &lt;- 0
-  if(j &gt; 1) {
-    count &lt;- count + grid[j-1, k]
-    if (k &gt; 1) count &lt;- count + grid[j-1, k-1]
-    if (k &lt; size) count &lt;- count + grid[j-1, k+1]
-  }
-  if(j &lt; size) {
-    count &lt;- count + grid[j+1,k]
-    if (k &gt; 1) count &lt;- count + grid[j+1, k-1]
-    if (k &lt; size) count &lt;- count + grid[j+1, k+1]
-  }
-  if(k &gt; 1) count &lt;- count + grid[j, k-1]
-  if(k &lt; size) count &lt;- count + grid[j, k+1]
-  count
-}</p>
-
-<h1 id="creates-a-list-of-matrices-each-of-which-is-an-iteration-of-the-game-of-life">Creates a list of matrices, each of which is an iteration of the Game of Life.</h1>
-<p># Arguments
-# size: the edge length of the square
-# prob: a vector (of length 2) that generates cells with probability of death and life, respectively
-# returns a list of grids (matrices)
-game_of_life &lt;- function(size = 10, num_reps = 50, prob = c(0.5, 0.5)) {
-  grid &lt;- list()
-  grid[[1]] &lt;- replicate(size, sample(c(0,1), size, replace = TRUE, prob = prob))
-  dev_null &lt;- foreach(i = seq_len(num_reps) + 1) %do% {
-    grid[[i]] &lt;- grid[[i-1]]
-    foreach(j = seq_len(size)) %:%
-      foreach(k = seq_len(size)) %do% {</p>
-
-<pre><code>    # Apply game rules.
-    num_neighbors &lt;- how_many_neighbors(grid[[i]], j, k)
-    alive &lt;- grid[[i]][j,k] == 1
-    if(alive &amp;&amp; num_neighbors &lt;= 1) grid[[i]][j,k] &lt;- 0
-    if(alive &amp;&amp; num_neighbors &gt;= 4) grid[[i]][j,k] &lt;- 0
-    if(!alive &amp;&amp; num_neighbors == 3) grid[[i]][j,k] &lt;- 1
-  }   }   grid }
-</code></pre>
-
-<h1 id="converts-the-current-grid-matrix-to-a-ggplot2-image">Converts the current grid (matrix) to a ggplot2 image</h1>
-<p>grid_to_ggplot &lt;- function(grid) {
-  # Permutes the matrix so that melt labels this correctly.
-  grid &lt;- grid[seq.int(nrow(grid), 1), ]
-  grid &lt;- melt(grid)
-  grid$value &lt;- factor(ifelse(grid$value, “Alive”, “Dead”))
-  p &lt;- ggplot(grid, aes(x=Var1, y=Var2, z = value, color = value))
-  p &lt;- p + geom_tile(aes(fill = value))
-  p  + scale_fill_manual(values = c(“Dead” = “white”, “Alive” = “black”))
-}
-```</p>
-
-<p>As an example, I have created a 50-by-50 grid with a 10% chance that its initial values will be alive. The simulation has 500 iterations. You may add more, but this takes long enough already. Note
-that the default frame rate, which is controlled by <strong>interval</strong>, is 1 second. I set it to 0.05
-based to give a decent video.</p>
-
-<p><code>r
-set.seed(42)
-game_grids &lt;- game_of_life(size = 50, num_reps = 500, prob = c(0.1, 0.9))
-grid_ggplot &lt;- lapply(game_grids, grid_to_ggplot)
-saveVideo(lapply(grid_ggplot, print), video.name = "animation.mp4", clean = TRUE, interval = 0.05)
-</code></p>
-
-<p>I uploaded the resulting video to YouTube for your viewing pleasure.</p>
-
-<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/TkH9qwHLwxk"></iframe></div></p>
-
-]]></content>
-  </entry>
+<span class="categories">
   
-</feed>
+    <a class='category' href='/blog/categories/r/'>R</a>, <a class='category' href='/blog/categories/workflow/'>workflow</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/" data-via="ramhiser" data-counturl="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/" title="Previous Post: Chapter 2 Solutions - Statistical Methods in Bioinformatics">&laquo; Chapter 2 Solutions - Statistical Methods in Bioinformatics</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/28/setting-up-the-development-version-of-r/">Setting Up the Development Version of R</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/">Chapter 2 Solutions - Statistical Methods in Bioinformatics</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics/">Textbook - Statistical Methods in Bioinformatics</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/11/now-that-we-live-in-seattle/">Now That We Live in Seattle</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/04/and-now-i-blog-again/">And Now I Blog Again</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ramhiser", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ramhiser" class="twitter-follow-button" data-show-count="false">Follow @ramhiser</a>
+  
+</section>
+
+
+
+<section>
+  <h1>My Pinboard</h1>
+  <ul id="pinboard_linkroll">Fetching linkroll...</ul>
+  <p><a href="http://pinboard.in/u:ramhiser">My Pinboard Bookmarks &raquo;</a></p>
+</section>
+<script type="text/javascript">
+  var linkroll = 'pinboard_linkroll'; //id target for pinboard list
+  var pinboard_user = "ramhiser"; //id target for pinboard list
+  var pinboard_count = 3; //id target for pinboard list
+  (function(){
+    var pinboardInit = document.createElement('script');
+    pinboardInit.type = 'text/javascript';
+    pinboardInit.async = true;
+    pinboardInit.src = '/javascripts/pinboard.js';
+    document.getElementsByTagName('head')[0].appendChild(pinboardInit);
+  })();
+</script>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - John Ramey -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'johnramey';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/';
+        var disqus_url = 'http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

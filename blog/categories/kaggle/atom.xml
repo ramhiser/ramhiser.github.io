@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Python, | John Ramey]]></title>
-  <link href="http://ramhiser.com/blog/categories/python-/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Kaggle | John Ramey]]></title>
+  <link href="http://ramhiser.com/blog/categories/kaggle/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-11-23T11:08:31-08:00</updated>
+  <updated>2012-11-23T11:10:52-08:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>

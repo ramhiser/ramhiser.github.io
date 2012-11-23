@@ -9,4 +9,4 @@ I am a postdoctoral research fellow in statistical genetics at the [Fred Hutchin
 
 My research interests are primarily in statistics with an emphasis on bioinformatics applications in the areas of statistical pattern recognition, machine learning, modern multivariate analysis, computational statistics, and Bayesian methods. I write a lot of R code and work regularly with big data and high-performance computing.
 
-<img src="/images/johnramey.jpg" alt="John Ramey in Guanajuato, Mexico"</img>
+<img src="/images/johnramey.jpg" alt="John Ramey in Guanajuato, Mexico"/>

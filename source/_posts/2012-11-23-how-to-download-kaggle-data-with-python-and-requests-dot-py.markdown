@@ -3,7 +3,7 @@ layout: post
 title: "How to Download Kaggle Data with Python and requests.py"
 date: 2012-11-23 10:08
 comments: true
-categories: Kaggle, Python, requests.py
+categories: [Kaggle, Python, requests.py]
 ---
 
 Recently I started playing with [Kaggle](http://kaggle.com). I quickly became frustrated that in order to download their data I had to use their website. I prefer instead the option to download the data programmatically. After some Googling, [the best recommendation I found](http://www.kaggle.com/c/ClaimPredictionChallenge/forums/t/772/downloading-the-data-from-kaggle-to-remote-linux-instance) was to use [lynx](http://en.wikipedia.org/wiki/Lynx_(web_browser)). [My friend Anthony](http://twitter.com/amcclosky) recommended that alternatively I should write a Python script.

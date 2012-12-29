@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Python | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-11-23T11:10:52-08:00</updated>
+  <updated>2012-12-29T14:44:32-06:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[How to Download Kaggle Data with Python and requests.py]]></title>
     <link href="http://ramhiser.com/blog/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py/"/>
-    <updated>2012-11-23T10:08:00-08:00</updated>
+    <updated>2012-11-23T10:08:00-06:00</updated>
     <id>http://ramhiser.com/blog/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py</id>
     <content type="html"><![CDATA[<p>Recently I started playing with <a href="http://kaggle.com">Kaggle</a>. I quickly became frustrated that in order to download their data I had to use their website. I prefer instead the option to download the data programmatically. After some Googling, <a href="http://www.kaggle.com/c/ClaimPredictionChallenge/forums/t/772/downloading-the-data-from-kaggle-to-remote-linux-instance">the best recommendation I found</a> was to use <a href="http://en.wikipedia.org/wiki/Lynx_(web_browser)">lynx</a>. <a href="http://twitter.com/amcclosky">My friend Anthony</a> recommended that alternatively I should write a Python script.</p>
 

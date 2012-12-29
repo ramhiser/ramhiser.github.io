@@ -2,94 +2,94 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://ramhiser.com/blog/2011/05/24/getting-started-with-some-baseball-data/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/
         </loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/
         </loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address/
         </loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2012/01/07/when-i-was-29-dot-dot-dot/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2012/01/09/goals-for-2012/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2012/08/04/and-now-i-blog-again/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2012/08/11/now-that-we-live-in-seattle/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics/
         </loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/
         </loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/</loc>
-        <lastmod>2012-08-28T21:13:38-07:00</lastmod>
+        <lastmod>2012-08-28T23:13:38-05:00</lastmod>
     </url>
     <url>
         <loc>
             http://ramhiser.com/blog/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py/
         </loc>
-        <lastmod>2012-11-23T11:10:43-08:00</lastmod>
+        <lastmod>2012-11-23T13:10:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/404.html</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/about/</loc>
-        <lastmod>2012-08-25T18:22:55-07:00</lastmod>
+        <lastmod>2012-08-25T20:22:55-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blog/archives/</loc>
-        <lastmod>2012-11-23T11:10:43-08:00</lastmod>
+        <lastmod>2012-11-23T13:10:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/blogroll/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/</loc>
-        <lastmod>2012-11-23T11:10:43-08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://ramhiser.com/projects/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-11-23T13:10:43-06:00</lastmod>
     </url>
     <url>
         <loc>http://ramhiser.com/research/</loc>
-        <lastmod>2012-08-25T18:04:24-07:00</lastmod>
+        <lastmod>2012-08-25T20:04:24-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ramhiser.com/software/</loc>
+        <lastmod>2012-12-29T14:41:20-06:00</lastmod>
     </url>
 </urlset>

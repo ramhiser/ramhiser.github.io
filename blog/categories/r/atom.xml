@@ -4,7 +4,7 @@
   <title><![CDATA[Category: R | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/r/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-11-23T11:10:52-08:00</updated>
+  <updated>2012-12-29T14:44:32-06:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Setting Up the Development Version of R]]></title>
     <link href="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/"/>
-    <updated>2012-08-28T20:42:00-07:00</updated>
+    <updated>2012-08-28T20:42:00-05:00</updated>
     <id>http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r</id>
     <content type="html"><![CDATA[<p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
 the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
@@ -738,7 +738,7 @@ biocLite("flowWorkspace")
   <entry>
     <title type="html"><![CDATA[Pseudo-Random vs. Random Numbers in R]]></title>
     <link href="http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r/"/>
-    <updated>2011-11-25T03:08:00-08:00</updated>
+    <updated>2011-11-25T03:08:00-06:00</updated>
     <id>http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r</id>
     <content type="html"><![CDATA[<p>Earlier, I found <a href="http://www.boallen.com/random-numbers.html">an interesting post from Bo Allen</a> on <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudo-random</a> vs <a href="http://en.wikipedia.org/wiki/Random_number">random numbers</a>, where the author uses a simple bitmap (<a href="http://en.wikipedia.org/wiki/Heat_map">heat map</a>) to show that the <strong>rand</strong> function in <a href="http://www.php.net/">PHP</a> has a systematic pattern and compares these to <strong>truly random</strong> numbers obtained from <a href="http://www.random.org/">random.org</a>. The post’s results suggest that pseudo-randomness in <a href="http://www.php.net/">PHP</a> is faulty and, in general, should not be underestimated in practice. Of course, the findings should not be too surprising, as there is a large body of literature on the subtleties, philosophies, and implications of the <strong>pseudo</strong> aspect of the most common approaches to random number generation. However, it is silly that <a href="http://www.php.net/">PHP</a>’s <a href="http://en.wikipedia.org/wiki/Random_number_generation">random number generator (RNG)</a> displays such an obvious pattern nowadays because there are several decent, well-studied pseudo-RNG algorithms available as well as numerous tests for randomness.  For a good introduction to <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a>, I recommend <a href="http://www.johndcook.com/blog/2010/12/06/how-to-test-a-random-number-generator-2/">John D. Cook’s discussion on testing a random number generator</a>.</p>
 
@@ -817,7 +817,7 @@ with(bit_mats, plot(pixmapGrey(data = random.org, nrow = nrow(random.org),
   <entry>
     <title type="html"><![CDATA[Conway's Game of Life in R with ggplot2 and animation]]></title>
     <link href="http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/"/>
-    <updated>2011-06-05T19:04:00-07:00</updated>
+    <updated>2011-06-05T19:04:00-05:00</updated>
     <id>http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation</id>
     <content type="html"><![CDATA[<p>In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.</p>
 

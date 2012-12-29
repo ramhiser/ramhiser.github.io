@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Machine Learning | John Ramey]]></title>
-  <link href="http://ramhiser.com/blog/categories/machine-learning/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Microarray | John Ramey]]></title>
+  <link href="http://ramhiser.com/blog/categories/microarray/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
   <updated>2012-12-29T15:37:23-06:00</updated>
   <id>http://ramhiser.com/</id>
@@ -29,24 +29,6 @@
 <p>The biggest drawback at the moment is the file size of the R package because I store an RData file for each data set. I am investigating alternative approaches to download the data dynamically and am open to suggestions. Also note that the data descriptions are incomplete, so assistance is appreciated.</p>
 
 <p>Feel free to use any of the data sets. As a disclaimer, you should ensure that the data are processed correctly before analyzing and incorporating the results into your own work.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Listing of Statistics and Machine Learning Conferences]]></title>
-    <link href="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/"/>
-    <updated>2011-06-12T17:20:00-05:00</updated>
-    <id>http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences</id>
-    <content type="html"><![CDATA[<p>Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
-meaningful other than the conferences of which I’m already aware (such as JSM, ICML, some IEEE conferences). Today, I found <a href="http://www.wikicfp.com/cfp/">WikiCFP</a>, which is a <strong>A Wiki for Calls for
-Papers</strong>. This seems to be what I needed. In particular, the following are very useful to me:</p>
-
-<ul>
-  <li><a href="http://www.wikicfp.com/cfp/call?conference=machine%20learning">Machine Learning on WikiCFP</a></li>
-  <li><a href="http://www.wikicfp.com/cfp/call?conference=statistics">Statistics on WikiCFP</a></li>
-</ul>
-
-<p>It seems limited for statistics though, as JSM is not even listed.</p>
 ]]></content>
   </entry>
   

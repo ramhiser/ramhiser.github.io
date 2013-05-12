@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Solutions | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/solutions/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-12-29T15:37:23-06:00</updated>
+  <updated>2013-05-11T17:43:02-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Chapter 2 Solutions - Statistical Methods in Bioinformatics]]></title>
     <link href="http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/"/>
-    <updated>2012-08-14T20:42:00-05:00</updated>
+    <updated>2012-08-14T20:42:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics</id>
     <content type="html"><![CDATA[<p>As I have mentioned previously, I have begun reading <a href="http://amzn.to/PiXCiU">Statistical Methods in Bioinformatics by Ewens and Grant</a> and working selected problems for each chapter. In this post, I will give my solution to two problems. The first problem is pretty straightforward.</p>
 
@@ -120,7 +120,7 @@ Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
   <entry>
     <title type="html"><![CDATA[Textbook - Statistical Methods in Bioinformatics]]></title>
     <link href="http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics/"/>
-    <updated>2012-08-14T20:17:00-05:00</updated>
+    <updated>2012-08-14T20:17:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics</id>
     <content type="html"><![CDATA[<p>As part of my effort to acquaint myself more with biology, bioinformatics, and statistical genetics, I am trying to find as many resources as I can that provide a solid foundation. For instance, I am wading through <a href="http://amzn.to/Mx5jCm">Molecular Biology of the Cell</a> at a pace of about 10-15 pages per day – this takes nearly an hour every day.</p>
 

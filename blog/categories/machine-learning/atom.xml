@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Machine Learning | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-12-29T15:37:23-06:00</updated>
+  <updated>2013-05-11T17:43:02-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[High-Dimensional Microarray Data Sets in R for Machine Learning]]></title>
     <link href="http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/"/>
-    <updated>2012-12-29T14:48:00-06:00</updated>
+    <updated>2012-12-29T14:48:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning</id>
     <content type="html"><![CDATA[<p>Much of my research in machine learning is aimed at small-sample, high-dimensional bioinformatics data sets. For instance, here is <a href="http://www.tandfonline.com/doi/full/10.1080/00949655.2011.625946">a paper of mine on the topic</a>.</p>
 
@@ -35,7 +35,7 @@
   <entry>
     <title type="html"><![CDATA[Listing of Statistics and Machine Learning Conferences]]></title>
     <link href="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/"/>
-    <updated>2011-06-12T17:20:00-05:00</updated>
+    <updated>2011-06-12T17:20:00-07:00</updated>
     <id>http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences</id>
     <content type="html"><![CDATA[<p>Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
 meaningful other than the conferences of which I’m already aware (such as JSM, ICML, some IEEE conferences). Today, I found <a href="http://www.wikicfp.com/cfp/">WikiCFP</a>, which is a <strong>A Wiki for Calls for

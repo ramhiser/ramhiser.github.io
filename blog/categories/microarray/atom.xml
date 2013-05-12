@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Microarray | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/microarray/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-12-29T15:37:23-06:00</updated>
+  <updated>2013-05-11T17:43:02-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[High-Dimensional Microarray Data Sets in R for Machine Learning]]></title>
     <link href="http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/"/>
-    <updated>2012-12-29T14:48:00-06:00</updated>
+    <updated>2012-12-29T14:48:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning</id>
     <content type="html"><![CDATA[<p>Much of my research in machine learning is aimed at small-sample, high-dimensional bioinformatics data sets. For instance, here is <a href="http://www.tandfonline.com/doi/full/10.1080/00949655.2011.625946">a paper of mine on the topic</a>.</p>
 

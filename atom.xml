@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2012-12-29T15:37:23-06:00</updated>
+  <updated>2013-05-11T17:43:02-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[High-Dimensional Microarray Data Sets in R for Machine Learning]]></title>
     <link href="http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/"/>
-    <updated>2012-12-29T14:48:00-06:00</updated>
+    <updated>2012-12-29T14:48:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning</id>
     <content type="html"><![CDATA[<p>Much of my research in machine learning is aimed at small-sample, high-dimensional bioinformatics data sets. For instance, here is <a href="http://www.tandfonline.com/doi/full/10.1080/00949655.2011.625946">a paper of mine on the topic</a>.</p>
 
@@ -35,7 +35,7 @@
   <entry>
     <title type="html"><![CDATA[How to Download Kaggle Data with Python and requests.py]]></title>
     <link href="http://ramhiser.com/blog/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py/"/>
-    <updated>2012-11-23T10:08:00-06:00</updated>
+    <updated>2012-11-23T10:08:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py</id>
     <content type="html"><![CDATA[<p>Recently I started playing with <a href="http://kaggle.com">Kaggle</a>. I quickly became frustrated that in order to download their data I had to use their website. I prefer instead the option to download the data programmatically. After some Googling, <a href="http://www.kaggle.com/c/ClaimPredictionChallenge/forums/t/772/downloading-the-data-from-kaggle-to-remote-linux-instance">the best recommendation I found</a> was to use <a href="http://en.wikipedia.org/wiki/Lynx_(web_browser)">lynx</a>. <a href="http://twitter.com/amcclosky">My friend Anthony</a> recommended that alternatively I should write a Python script.</p>
 
@@ -84,7 +84,7 @@ f.close()
   <entry>
     <title type="html"><![CDATA[Setting Up the Development Version of R]]></title>
     <link href="http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r/"/>
-    <updated>2012-08-28T20:42:00-05:00</updated>
+    <updated>2012-08-28T20:42:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/28/setting-up-the-development-version-of-r</id>
     <content type="html"><![CDATA[<p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
 the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
@@ -816,7 +816,7 @@ them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/b
   <entry>
     <title type="html"><![CDATA[Chapter 2 Solutions - Statistical Methods in Bioinformatics]]></title>
     <link href="http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/"/>
-    <updated>2012-08-14T20:42:00-05:00</updated>
+    <updated>2012-08-14T20:42:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics</id>
     <content type="html"><![CDATA[<p>As I have mentioned previously, I have begun reading <a href="http://amzn.to/PiXCiU">Statistical Methods in Bioinformatics by Ewens and Grant</a> and working selected problems for each chapter. In this post, I will give my solution to two problems. The first problem is pretty straightforward.</p>
 
@@ -920,7 +920,7 @@ Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
   <entry>
     <title type="html"><![CDATA[Textbook - Statistical Methods in Bioinformatics]]></title>
     <link href="http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics/"/>
-    <updated>2012-08-14T20:17:00-05:00</updated>
+    <updated>2012-08-14T20:17:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/14/textbook-statistical-methods-in-bioinformatics</id>
     <content type="html"><![CDATA[<p>As part of my effort to acquaint myself more with biology, bioinformatics, and statistical genetics, I am trying to find as many resources as I can that provide a solid foundation. For instance, I am wading through <a href="http://amzn.to/Mx5jCm">Molecular Biology of the Cell</a> at a pace of about 10-15 pages per day – this takes nearly an hour every day.</p>
 
@@ -935,7 +935,7 @@ Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
   <entry>
     <title type="html"><![CDATA[Now That We Live in Seattle]]></title>
     <link href="http://ramhiser.com/blog/2012/08/11/now-that-we-live-in-seattle/"/>
-    <updated>2012-08-11T10:29:00-05:00</updated>
+    <updated>2012-08-11T10:29:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/11/now-that-we-live-in-seattle</id>
     <content type="html"><![CDATA[<p>It has been just a few weeks since <a href="http://ramhiserfamily.wordpress.com/">my wife, my son, and I</a> moved to Seattle so that I could begin my postdoc at <a href="http://www.fhcrc.org/en.html">The Hutch</a>. Now that we have been here a short time and are settled, we intend to start exploring Seattle, doing typical touristy things as well as non-touristy activities that only Seattlites would do. My wife purchased a detailed guide to Seattle that lists numerous activities, restaurants, scenery, etc. that would take months (years?) to complete. I prefer word of mouth though, so I asked some coworkers for recommendations. Here’s what they gave me:</p>
 
@@ -969,7 +969,7 @@ Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
   <entry>
     <title type="html"><![CDATA[And Now I Blog Again]]></title>
     <link href="http://ramhiser.com/blog/2012/08/04/and-now-i-blog-again/"/>
-    <updated>2012-08-04T10:19:00-05:00</updated>
+    <updated>2012-08-04T10:19:00-07:00</updated>
     <id>http://ramhiser.com/blog/2012/08/04/and-now-i-blog-again</id>
     <content type="html"><![CDATA[<p>One of my <a href="http://ramhiser.com/blog/2012/01/09/goals-for-2012/">goals for 2012</a> has been to blog more. Much more. When I first set this goal, I had great aspirations of posting frequently. However, I
 had a Ph.D. to complete, and quite frankly, it demanded much higher priority. Now that I have submitted my dissertation and completed my Ph.D. requirements, I have several half-finished posts that will
@@ -981,7 +981,7 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
   <entry>
     <title type="html"><![CDATA[Goals for 2012]]></title>
     <link href="http://ramhiser.com/blog/2012/01/09/goals-for-2012/"/>
-    <updated>2012-01-09T08:18:00-06:00</updated>
+    <updated>2012-01-09T08:18:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/01/09/goals-for-2012</id>
     <content type="html"><![CDATA[<p>I have never been one to set New Year’s resolutions. Personally, they instill a dangerous personal freedom that often yield naive, subconscious mentalities, such as I can do anything I want until December 31, and I will change abruptly the next day. However, my Ph.D. adviser has shown me the importance of setting goals in all things that I wish to accomplish as well as envisioning the finale to an arduous journey like a small child (read “John Ramey”) that pictures the waning warmth of fresh chocolate chip cookies smeared on his face. My adviser has always encouraged short-term and long-term goals but never required them. As I recently found out, my employer does. In addition, these goals are reviewed at the end of the fiscal year so that employees are realistic and held accountable.</p>
 
@@ -1031,7 +1031,7 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
   <entry>
     <title type="html"><![CDATA[When I was 29...]]></title>
     <link href="http://ramhiser.com/blog/2012/01/07/when-i-was-29-dot-dot-dot/"/>
-    <updated>2012-01-07T22:03:00-06:00</updated>
+    <updated>2012-01-07T22:03:00-08:00</updated>
     <id>http://ramhiser.com/blog/2012/01/07/when-i-was-29-dot-dot-dot</id>
     <content type="html"><![CDATA[<p>Today was my 29th birthday, and I kept things simple: I ate with my wife and my newborn son at a local eatery. Later, my wife cooked steaks for dinner. For the most part, I took the day off in that I did not work on my dissertation. But I did spent much of the day tinkering with my <a href="http://octopress.org/">Octopress</a> installation – more about that later.</p>
 
@@ -1042,7 +1042,7 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
   <entry>
     <title type="html"><![CDATA[Steve Jobs' 2005 Stanford Commencement Address]]></title>
     <link href="http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address/"/>
-    <updated>2011-12-04T13:57:00-06:00</updated>
+    <updated>2011-12-04T13:57:00-08:00</updated>
     <id>http://ramhiser.com/blog/2011/12/04/steve-jobs-2005-stanford-commencement-address</id>
     <content type="html"><![CDATA[<p>Given that there are almost 13 million views of Steve Jobs’ commencement address, I am certain that I missed this video when it went viral. I am glad that I did not see it until now because I may not have appreciated his words of wisdom. And although there are numerous quotes that I could list, I think my favorites are closely related to a few words of wisdom that my grandmother told me when I was younger.</p>
 
@@ -1057,7 +1057,7 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
   <entry>
     <title type="html"><![CDATA[Pseudo-Random vs. Random Numbers in R]]></title>
     <link href="http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r/"/>
-    <updated>2011-11-25T03:08:00-06:00</updated>
+    <updated>2011-11-25T03:08:00-08:00</updated>
     <id>http://ramhiser.com/blog/2011/11/25/pseudo-random-vs-random-numbers-in-r</id>
     <content type="html"><![CDATA[<p>Earlier, I found <a href="http://www.boallen.com/random-numbers.html">an interesting post from Bo Allen</a> on <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudo-random</a> vs <a href="http://en.wikipedia.org/wiki/Random_number">random numbers</a>, where the author uses a simple bitmap (<a href="http://en.wikipedia.org/wiki/Heat_map">heat map</a>) to show that the <strong>rand</strong> function in <a href="http://www.php.net/">PHP</a> has a systematic pattern and compares these to <strong>truly random</strong> numbers obtained from <a href="http://www.random.org/">random.org</a>. The post’s results suggest that pseudo-randomness in <a href="http://www.php.net/">PHP</a> is faulty and, in general, should not be underestimated in practice. Of course, the findings should not be too surprising, as there is a large body of literature on the subtleties, philosophies, and implications of the <strong>pseudo</strong> aspect of the most common approaches to random number generation. However, it is silly that <a href="http://www.php.net/">PHP</a>’s <a href="http://en.wikipedia.org/wiki/Random_number_generation">random number generator (RNG)</a> displays such an obvious pattern nowadays because there are several decent, well-studied pseudo-RNG algorithms available as well as numerous tests for randomness.  For a good introduction to <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a>, I recommend <a href="http://www.johndcook.com/blog/2010/12/06/how-to-test-a-random-number-generator-2/">John D. Cook’s discussion on testing a random number generator</a>.</p>
 
@@ -1178,7 +1178,7 @@ appear soon. Also, since I have made the switch to <a href="http://octopress.org
   <entry>
     <title type="html"><![CDATA[Listing of Statistics and Machine Learning Conferences]]></title>
     <link href="http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences/"/>
-    <updated>2011-06-12T17:20:00-05:00</updated>
+    <updated>2011-06-12T17:20:00-07:00</updated>
     <id>http://ramhiser.com/blog/2011/06/12/listing-of-statistics-and-machine-learning-conferences</id>
     <content type="html"><![CDATA[<p>Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
 meaningful other than the conferences of which I’m already aware (such as JSM, ICML, some IEEE conferences). Today, I found <a href="http://www.wikicfp.com/cfp/">WikiCFP</a>, which is a <strong>A Wiki for Calls for
@@ -1196,7 +1196,7 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
   <entry>
     <title type="html"><![CDATA[Conway's Game of Life in R with ggplot2 and animation]]></title>
     <link href="http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/"/>
-    <updated>2011-06-05T19:04:00-05:00</updated>
+    <updated>2011-06-05T19:04:00-07:00</updated>
     <id>http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation</id>
     <content type="html"><![CDATA[<p>In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.</p>
 
@@ -1359,7 +1359,7 @@ based to give a decent video.</p>
   <entry>
     <title type="html"><![CDATA[Getting Started with Some Baseball Data]]></title>
     <link href="http://ramhiser.com/blog/2011/05/24/getting-started-with-some-baseball-data/"/>
-    <updated>2011-05-24T21:34:00-05:00</updated>
+    <updated>2011-05-24T21:34:00-07:00</updated>
     <id>http://ramhiser.com/blog/2011/05/24/getting-started-with-some-baseball-data</id>
     <content type="html"><![CDATA[<p>With all of the discussions (hype?) regarding applied statistics, machine learning, and data science, I have been looking for a go-to source of data unrelated to my day-to-day work. I loved baseball as
 a kid. I love baseball now. I love baseball stats. Why not do a grown-up version of what I used to do when I spent hours staring at and memorizing baseball stats on the back of a few pieces of cardboard

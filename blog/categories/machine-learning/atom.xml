@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Machine Learning | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/machine-learning/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-07-02T10:16:56-07:00</updated>
+  <updated>2013-07-02T10:22:05-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -63,7 +63,7 @@ confusing or poorly defined. Note that I did not include the additional topics
 on reduced-rank discrimination and shrinkage.</p>
 
 <p>To see how well the mixture discriminant analysis (MDA) model worked, I
-constructed a toy example consisting of 3 bivariate classes each having 3
+constructed a simple toy example consisting of 3 bivariate classes each having 3
 subclasses. The subclasses were placed so that within a class, no subclass is
 adjacent. The result is that no class is Gaussian. I was interested in seeing
 if the MDA classifier could identify the subclasses and also comparing its
@@ -74,7 +74,12 @@ and <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda pack
 the MDA classifier. From the scatterplots and decision boundaries given below,
 the LDA and QDA classifiers yielded puzzling decision boundaries as expected.
 Contrarily, we can see that the MDA classifier does a good job of identifying
-the subclasses.</p>
+the subclasses. It is important to note that all subclasses in this example have
+the same covariance matrix, which caters to the assumption employed in the MDA
+classifier. It would be interesting to see how sensitive the classifier is to
+deviations from this assumption. Moreover, perhaps a more important investigation
+would be to determine how well the MDA classifier performs as the feature
+dimension increases relative to the sample size.</p>
 
 <p><img src="http://i.imgur.com/LIQPL0u.png" alt="LDA Decision Boundaries" /></p>
 

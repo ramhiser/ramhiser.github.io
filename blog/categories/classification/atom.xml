@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: machine-learning | John Ramey]]></title>
-  <link href="http://ramhiser.com/blog/categories/machine-learning/atom.xml" rel="self"/>
+  <title><![CDATA[Category: classification | John Ramey]]></title>
+  <link href="http://ramhiser.com/blog/categories/classification/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
   <updated>2013-07-02T10:08:50-07:00</updated>
   <id>http://ramhiser.com/</id>

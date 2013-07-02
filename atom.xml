@@ -4,7 +4,7 @@
   <title><![CDATA[John Ramey]]></title>
   <link href="http://ramhiser.com/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-07-01T22:59:16-07:00</updated>
+  <updated>2013-07-02T10:08:50-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -12,6 +12,178 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A Brief Look at Mixture Discriminant Analysis]]></title>
+    <link href="http://ramhiser.com/blog/2013/07/02/a-brief-look-at-mixture-discriminant-analysis/"/>
+    <updated>2013-07-02T10:01:00-07:00</updated>
+    <id>http://ramhiser.com/blog/2013/07/02/a-brief-look-at-mixture-discriminant-analysis</id>
+    <content type="html"><![CDATA[<p>Lately, I have been working with finite mixture models for my postdoctoral work
+on data-driven automated <a href="http://en.wikipedia.org/wiki/Gate_%28cytometry%29">gating</a>.
+Given that I had barely scratched the surface with mixture models in the
+classroom, I am becoming increasingly comfortable with them. With this in mind,
+I wanted to explore their application to classification because there are times
+when a single class is clearly made up of multiple subclasses that are not
+necessarily adjacent.</p>
+
+<p>As far as I am aware, there are two main approaches (there are lots and lots of
+variants!) to applying finite mixture models to classfication:</p>
+
+<ol>
+  <li>
+    <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">mclust</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani’s Discriminant Analysis by Gaussian Mixtures</a></p>
+  </li>
+</ol>
+
+<p>Although the methods are similar, I opted for exploring the latter method. Here
+is the general idea. There are $K$ classes, and each class is assumed to be a
+Gaussian mixuture of subclasses. Hence, the model formulation is generative, and
+the posterior probability of class membership is used to classify an unlabeled
+observation. Each subclass is assumed to have its own mean vector, but all
+subclasses share the same covariance matrix for model parsimony. The model
+parameters are estimated via <a href="http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">the EM algorithm</a>.</p>
+
+<p>Because the details of the likelihood in the paper are brief, I realized I was a
+bit confused with how to write the likelihood in order to determine how much
+each observation contributes to estimating the common covariance matrix in the
+M-step of the EM algorithm. Had each subclass had its own covariance matrix, the
+likelihood would simply be the product of the individual class likelihoods and
+would have been straightforward. The source of my confusion was how to write
+the complete data likelihood when the classes share parameters.</p>
+
+<p>I decided to write up a document that explicitly defined the likelihood and
+provided the details of the EM algorithm used to estimate the model parameters.
+<a href="http://ramhiser.com/research/mixture-discriminant-analysis.html">The document is available here</a>
+along with <a href="https://github.com/ramey/tech-reports/tree/master/mixture-discrim-analysis">the LaTeX and R code</a>.
+If you are inclined to read the document, please let me know if any notation is
+confusing or poorly defined.</p>
+
+<p>To see how well the mixture discriminant analysis (MDA) model worked, I
+constructed a toy example consisting of 3 bivariate classes each having 3
+subclasses. The subclasses were placed so that within a class, no subclass is
+adjacent. The result is that no class is Gaussian. I was interested in seeing
+if the MDA classifier could identify the subclasses and also comparing its
+decision boundaries with those of <a href="http://en.wikipedia.org/wiki/Linear_discriminant_analysis">linear discriminant analysis (LDA)</a>
+and <a href="http://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis">quadratic discriminant analysis (QDA)</a>.
+I used the implementation of the LDA and QDA classifiers in <a href="http://cran.r-project.org/web/packages/MASS/index.html">the MASS package</a>
+and <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda package</a> for
+the MDA classifier. From the scatterplots and decision boundaries given below,
+the LDA and QDA classifiers yielded puzzling decision boundaries as expected.
+Contrarily, we can see that the MDA classifier does a good job of identifying
+the subclasses.</p>
+
+<p><img src="http://i.imgur.com/LIQPL0u.png" alt="LDA Decision Boundaries" /></p>
+
+<p><img src="http://i.imgur.com/GeyXCsf.png" alt="QDA Decision Boundaries" /></p>
+
+<p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries" /></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Comparison of LDA, QDA, and MDA</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>MASS<span class="p">)</span>
+</span><span class="line">library<span class="p">(</span>mvtnorm<span class="p">)</span>
+</span><span class="line">library<span class="p">(</span>mda<span class="p">)</span>
+</span><span class="line">library<span class="p">(</span>ggplot2<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">set.seed<span class="p">(</span><span class="m">42</span><span class="p">)</span>
+</span><span class="line">n <span class="o">&lt;-</span> <span class="m">500</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Randomly sample data</span>
+</span><span class="line">x11 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+</span><span class="line">x12 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span><span class="line">x13 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line">x21 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span><span class="line">x22 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span><span class="line">x23 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line">x31 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line">x32 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+</span><span class="line">x33 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line">x <span class="o">&lt;-</span> rbind<span class="p">(</span>x11<span class="p">,</span> x12<span class="p">,</span> x13<span class="p">,</span> x21<span class="p">,</span> x22<span class="p">,</span> x23<span class="p">,</span> x31<span class="p">,</span> x32<span class="p">,</span> x33<span class="p">)</span>
+</span><span class="line">train_data <span class="o">&lt;-</span> data.frame<span class="p">(</span>x<span class="p">,</span> y <span class="o">=</span> gl<span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span> <span class="o">*</span> n<span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Trains classifiers</span>
+</span><span class="line">lda_out <span class="o">&lt;-</span> lda<span class="p">(</span>y ~ <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+</span><span class="line">qda_out <span class="o">&lt;-</span> qda<span class="p">(</span>y ~ <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+</span><span class="line">mda_out <span class="o">&lt;-</span> mda<span class="p">(</span>y ~ <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Generates test data that will be used to generate the decision boundaries via</span>
+</span><span class="line"><span class="c1"># contours</span>
+</span><span class="line">contour_data <span class="o">&lt;-</span> expand.grid<span class="p">(</span>X1 <span class="o">=</span> seq<span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">),</span>
+</span><span class="line">                            X2 <span class="o">=</span> seq<span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Classifies the test data</span>
+</span><span class="line">lda_predict <span class="o">&lt;-</span> data.frame<span class="p">(</span>contour_data<span class="p">,</span>
+</span><span class="line">                          y <span class="o">=</span> as.numeric<span class="p">(</span>predict<span class="p">(</span>lda_out<span class="p">,</span> contour_data<span class="p">)$</span>class<span class="p">))</span>
+</span><span class="line">qda_predict <span class="o">&lt;-</span> data.frame<span class="p">(</span>contour_data<span class="p">,</span>
+</span><span class="line">                          y <span class="o">=</span> as.numeric<span class="p">(</span>predict<span class="p">(</span>qda_out<span class="p">,</span> contour_data<span class="p">)$</span>class<span class="p">))</span>
+</span><span class="line">mda_predict <span class="o">&lt;-</span> data.frame<span class="p">(</span>contour_data<span class="p">,</span>
+</span><span class="line">                          y <span class="o">=</span> as.numeric<span class="p">(</span>predict<span class="p">(</span>mda_out<span class="p">,</span> contour_data<span class="p">)))</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Generates plots</span>
+</span><span class="line">p <span class="o">&lt;-</span> ggplot<span class="p">(</span>train_data<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> color <span class="o">=</span> y<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span>
+</span><span class="line">p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> lda_predict<span class="p">)</span>
+</span><span class="line">  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;LDA Decision Boundaries&quot;</span><span class="p">)</span>
+</span><span class="line">p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> qda_predict<span class="p">)</span>
+</span><span class="line">  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;QDA Decision Boundaries&quot;</span><span class="p">)</span>
+</span><span class="line">p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> mda_predict<span class="p">)</span>
+</span><span class="line">  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[High-Dimensional Microarray Data Sets in R for Machine Learning]]></title>

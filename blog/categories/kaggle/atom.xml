@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kaggle | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/kaggle/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-07-01T22:13:14-07:00</updated>
+  <updated>2013-07-01T22:17:59-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -32,32 +32,7 @@
 
 <p>Here’s the code:</p>
 
-<p><div><script src='https://gist.github.com/4121260.js?file='></script>
-<noscript><pre><code>import requests
-
-# The direct link to the Kaggle data set
-data_url = 'http://www.kaggle.com/c/digit-recognizer/download/train.csv'
-
-# The local path where the data set is saved.
-local_filename = &quot;train.csv&quot;
-
-# Kaggle Username and Password
-kaggle_info = {'UserName': &quot;my_username&quot;, 'Password': &quot;my_password&quot;}
-
-# Attempts to download the CSV file. Gets rejected because we are not logged in.
-r = requests.get(data_url)
-
-# Login to Kaggle and retrieve the data.
-r = requests.post(r.url, data = kaggle_info, prefetch = False)
-
-# Writes the data to a local file one chunk at a time.
-f = open(local_filename, 'w')
-for chunk in r.iter_content(chunk_size = 512 * 1024): # Reads 512KB at a time into memory
-    if chunk: # filter out keep-alive new chunks
-        f.write(chunk)
-f.close()
-</code></pre></noscript></div>
-</p>
+<p>{% gist 4121260 %}</p>
 
 <p>Simply change <code>my_username</code> and <code>my_password</code> to your Kaggle login info. Feel free to optimize the chunk size to your liking.</p>
 ]]></content>

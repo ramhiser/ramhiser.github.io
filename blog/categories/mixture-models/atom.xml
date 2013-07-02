@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: mixture-models | John Ramey]]></title>
+  <title><![CDATA[Category: Mixture Models | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/mixture-models/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-07-02T10:08:50-07:00</updated>
+  <updated>2013-07-02T10:12:47-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -34,16 +34,16 @@ variants!) to applying finite mixture models to classfication:</p>
     <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">mclust</a></p>
   </li>
   <li>
-    <p><a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani’s Discriminant Analysis by Gaussian Mixtures</a></p>
+    <p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a></p>
   </li>
 </ol>
 
 <p>Although the methods are similar, I opted for exploring the latter method. Here
-is the general idea. There are $K$ classes, and each class is assumed to be a
-Gaussian mixuture of subclasses. Hence, the model formulation is generative, and
-the posterior probability of class membership is used to classify an unlabeled
-observation. Each subclass is assumed to have its own mean vector, but all
-subclasses share the same covariance matrix for model parsimony. The model
+is the general idea. There are <script type="math/tex">K \ge 2</script> classes, and each class is assumed to
+be a Gaussian mixuture of subclasses. Hence, the model formulation is generative,
+and the posterior probability of class membership is used to classify an
+unlabeled observation. Each subclass is assumed to have its own mean vector, but
+all subclasses share the same covariance matrix for model parsimony. The model
 parameters are estimated via <a href="http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">the EM algorithm</a>.</p>
 
 <p>Because the details of the likelihood in the paper are brief, I realized I was a

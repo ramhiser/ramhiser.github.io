@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Classification | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/classification/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-07-02T10:22:05-07:00</updated>
+  <updated>2013-07-02T10:23:52-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -31,10 +31,10 @@ variants!) to applying finite mixture models to classfication:</p>
 
 <ol>
   <li>
-    <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">mclust</a></p>
+    <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">the mclust R package</a></p>
   </li>
   <li>
-    <p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a></p>
+    <p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a> via <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda R package</a></p>
   </li>
 </ol>
 
@@ -69,9 +69,8 @@ adjacent. The result is that no class is Gaussian. I was interested in seeing
 if the MDA classifier could identify the subclasses and also comparing its
 decision boundaries with those of <a href="http://en.wikipedia.org/wiki/Linear_discriminant_analysis">linear discriminant analysis (LDA)</a>
 and <a href="http://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis">quadratic discriminant analysis (QDA)</a>.
-I used the implementation of the LDA and QDA classifiers in <a href="http://cran.r-project.org/web/packages/MASS/index.html">the MASS package</a>
-and <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda package</a> for
-the MDA classifier. From the scatterplots and decision boundaries given below,
+I used the implementation of the LDA and QDA classifiers in <a href="http://cran.r-project.org/web/packages/MASS/index.html">the MASS package</a>.
+From the scatterplots and decision boundaries given below,
 the LDA and QDA classifiers yielded puzzling decision boundaries as expected.
 Contrarily, we can see that the MDA classifier does a good job of identifying
 the subclasses. It is important to note that all subclasses in this example have

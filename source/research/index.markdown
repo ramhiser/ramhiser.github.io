@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Research Statement"
+title: "Publications and Technical Reports"
 sharing: false
 footer: true
 ---

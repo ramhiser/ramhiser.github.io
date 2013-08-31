@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bradley-Terry | John Ramey]]></title>
   <link href="http://ramhiser.com/blog/categories/bradley-terry/atom.xml" rel="self"/>
   <link href="http://ramhiser.com/"/>
-  <updated>2013-08-31T10:58:39-07:00</updated>
+  <updated>2013-08-31T11:02:03-07:00</updated>
   <id>http://ramhiser.com/</id>
   <author>
     <name><![CDATA[John Ramey]]></name>
@@ -133,7 +133,7 @@ look at the results for each league.</p>
 <p>The BT model provides a natural way of ranking teams based on the team-ability
 estimates. Let’s first look at the estimates.</p>
 
-<p><img src="http://i.imgur.com/7MNN5ta.png" alt="plot of chunk AL_team_abilities_barplot" /> </p>
+<p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot" /> </p>
 
 <p><code>
 ## |     | ability | s.e.  |
@@ -155,14 +155,15 @@ estimates. Let’s first look at the estimates.</p>
 ## | WSH | -0.013  | 0.265 |
 </code></p>
 
-<p>The plot and the table give two representations of the same information. (Please
-excuse the crude tabular output. I’m not a fan of how <a href="http://octopress.org/">Octopress</a> renders
-tables. Suggestions?) In both cases we can see that the team abilities are
-standardized so that Baltimore has an ability of 0. We also see that Tampa Bay
-is considered the top AL team with Boston being a <strong>close</strong> second. Notice
-though that the standard errors here are large enough that we might question the
-rankings by team ability. For now, we will ignore the standard errors, but this
-uncertainty should be taken into account for predicting future games.</p>
+<p>(Please excuse the crude tabular output. I’m not a fan of how <a href="http://octopress.org/">Octopress</a> renders tables. Suggestions?)</p>
+
+<p>The plot and the table give two representations of the same information.  In
+both cases we can see that the team abilities are standardized so that Baltimore
+has an ability of 0. We also see that Tampa Bay is considered the top AL team
+with Boston being a <strong>close</strong> second. Notice though that the standard errors
+here are large enough that we might question the rankings by team ability. For
+now, we will ignore the standard errors, but this uncertainty should be taken
+into account for predicting future games.</p>
 
 <p>The Astros stand out as the worse team in the AL. Although the graph seems to
 indicate that Houston is by far worse than any other AL team, the ability is not
@@ -174,21 +175,21 @@ will beat another.</p>
 probability of beating another AL team is less than 50%. The best team, Tampa
 Bay, has more than a 50% chance of beating any other AL team.</p>
 
-<p><img src="http://i.imgur.com/iwtHIUg.png" alt="plot of chunk AL_matchup_heatmaps" /> </p>
+<p><img src="http://i.imgur.com/9IfSUag.png" alt="plot of chunk AL_matchup_heatmaps" /> </p>
 
 <p>While the heatmap is useful for comparing any two teams at a glance, bar graphs
 provide a more precise representation of who will win. Here are the
 probabilities that the best and worst teams in the AL will beat any other AL
 team. A horizontal red threshold is drawn at 50%.</p>
 
-<p><img src="http://i.imgur.com/tIzfwNX.png" alt="plot of chunk AL_probs_top_team" /> </p>
+<p><img src="http://i.imgur.com/WAD1Cc3.png" alt="plot of chunk AL_probs_top_team" /> </p>
 
-<p><img src="http://i.imgur.com/qGJ5EkR.png" alt="plot of chunk AL_probs_bottom_team" /> </p>
+<p><img src="http://i.imgur.com/JRUd5Bj.png" alt="plot of chunk AL_probs_bottom_team" /> </p>
 
 <p>An important thing to notice here is that Tampa Bay is not unbeatable, according
 to the BT model, the Astros have a shot at winning against any other AL team.</p>
 
-<p><img src="http://i.imgur.com/UXRxjkL.png" alt="plot of chunk AL_probs_middle_team" /> </p>
+<p><img src="http://i.imgur.com/q3CB6tp.png" alt="plot of chunk AL_probs_middle_team" /> </p>
 
 <p>I have also found that a useful gauge is to look at the probability that an
 average team will beat any other team. For instance, Cleveland is ranked in the
@@ -201,7 +202,7 @@ Astros.</p>
 
 <p>Here, we repeat the same analysis for the National League.</p>
 
-<p><img src="http://i.imgur.com/LyZbLqr.png" alt="plot of chunk NL_team_abilities_barplot" /> </p>
+<p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot" /> </p>
 
 <p><code>
 ## |     | ability | s.e.  |
@@ -234,7 +235,7 @@ when the standard error is taken into account.</p>
 
 <p>As before, let’s look at the matchup probabilities.</p>
 
-<p><img src="http://i.imgur.com/pEi5ple.png" alt="plot of chunk NL_matchup_heatmaps" /> </p>
+<p><img src="http://i.imgur.com/aVpVIDK.png" alt="plot of chunk NL_matchup_heatmaps" /> </p>
 
 <p>From the heatmap we can see that the Braves have at least a 72% chance of
 beating the Marlins, according to the BT model. All other winning probabilities
@@ -244,44 +245,23 @@ winning.</p>
 <p>Again, we plot the probabilities for the best and the worst teams along with an
 average team.</p>
 
-<p><img src="http://i.imgur.com/kyRhbrj.png" alt="plot of chunk NL_probs_top_team" /> </p>
+<p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team" /> </p>
 
 <p><code>r
 ATL_probs &lt;- subset(NL_probs, Team == "ATL" &amp; Opponent != "ATL")
 prob_ATL_SF &lt;- subset(ATL_probs, Opponent == "SF")$Probability
 series_probs &lt;- data.frame(Wins = 0:3, Probability = dbinom(0:3, 3, prob_ATL_SF))
-ascii(series_probs, include.rownames = FALSE, digits = 3)
+print(ascii(series_probs, include.rownames = FALSE, digits = 3), type = "org")
 </code></p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>h</td>
-      <td>Wins  h</td>
-      <td>Probability</td>
-    </tr>
-    <tr>
-      <td>0.000</td>
-      <td>0.048</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>1.000</td>
-      <td>0.252</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>2.000</td>
-      <td>0.442</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>3.000</td>
-      <td>0.258</td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
+<p><code>
+## | Wins  | Probability |
+## |-------+-------------|
+## | 0.000 | 0.048       |
+## | 1.000 | 0.252       |
+## | 2.000 | 0.442       |
+## | 3.000 | 0.258       |
+</code></p>
 
 <p>I find it very interesting that the probability Atlanta beats any other NL team
 is usually around 2/3. This makes sense in a lot of ways. For instance, if
@@ -289,7 +269,7 @@ Atlanta has a three-game series with the Giants, odds are good that Atlanta will
 win 2 of the 3 games. Moreover, as we can see in the table above, there is less
 than a 5% chance that the Giants will sweep Atlanta.</p>
 
-<p><img src="http://i.imgur.com/NoPr6Uy.png" alt="plot of chunk NL_probs_bottom_team" /> </p>
+<p><img src="http://i.imgur.com/E24KZ1Z.png" alt="plot of chunk NL_probs_bottom_team" /> </p>
 
 <p>The BT model indicates that the Miami Marlins are the worst team in the National
 League. Despite their poor performance this season, except for the Braves and
@@ -297,7 +277,7 @@ the Cardinals, the Marlins have a legitimate chance to beat other NL teams. This
 is especially the case against the other bottom NL teams, such as the Cubs and
 the Mets.</p>
 
-<p><img src="http://i.imgur.com/b4I7ubz.png" alt="plot of chunk NL_probs_middle_team" /> </p>
+<p><img src="http://i.imgur.com/ikAMFQS.png" alt="plot of chunk NL_probs_middle_team" /> </p>
 
 <h2 id="whats-next">What’s Next?</h2>
 

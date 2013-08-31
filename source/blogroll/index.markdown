@@ -14,4 +14,4 @@ This is a short list of blogs and writers that I enjoy.
 * [John D. Cook](http://www.johndcook.com/blog/)
 * [John Myles White](http://www.johnmyleswhite.com/)
 * [R Bloggers](http://www.r-bloggers.com/)
-
+* [Yihui Xie](http://yihui.name/)

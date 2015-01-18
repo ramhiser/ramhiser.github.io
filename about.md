@@ -20,10 +20,9 @@ National Laboratory](http://www.pnnl.gov/). Also, I have a Ph.D. in
 University](http://www.baylor.edu/), where my Ph.D. adviser was [Dr. Dean
 Young](http://www.baylor.edu/Statistics/index.php?id=77525).
 
-My research interests are primarily in statistics with an emphasis on
-bioinformatics applications in the areas of statistical pattern recognition,
-machine learning, modern multivariate analysis, computational statistics, and
-Bayesian methods. I write a lot of R code and work regularly with big data and
-high-performance computing.
+My research interests are primarily in statistics in the areas of statistical
+pattern recognition, machine learning, modern multivariate analysis,
+computational statistics, and Bayesian methods. I write a lot of R and Python
+code and work regularly with large data sets and high-performance computing.
 
 <img src="/images/johnramey.jpg" alt="John Ramey"/>

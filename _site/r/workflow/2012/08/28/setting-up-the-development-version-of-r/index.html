@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Setting Up the Development Version of R &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
+        
+      
+    
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll/">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software/">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Setting Up the Development Version of R</h1>
+  <span class="post-date">28 Aug 2012</span>
+  <p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
+the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
+This post details how I have set up the development version of R on our Linux server,
+which I use remotely because it is much faster than my Mac.</p>
+
+<p>First, I downloaded the <code>R-devel</code> source into <code>~/local/</code>, which is short for <code>/home/jramey/local/</code> via Subversion, configured my
+installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
+if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+<span class="nb">cd</span> ~/local/R-devel
+./tools/rsync-recommended
+./configure --prefix<span class="o">=</span>/home/jramey/local/
+make
+make install
+</code></pre></div>
+<p>The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
+
+<p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+<span class="nb">export </span>PATH
+
+<span class="c"># Never save or restore when running R</span>
+<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span>
+</code></pre></div>
+<p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
+
+<p>Next, I install the R packages that I use the most.</p>
+<div class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</code></pre></div>
+<p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
+
+<script src="https://gist.github.com/1378639.js?file=.bash_profile"> </script>
+
+<p>Finally, my <a href="http://rglab.org">coworkers</a> focus on <a href="http://en.wikipedia.org/wiki/Flow_cytometry">flow cytometry</a> data, and our group
+maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
+them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//r/python/baseball/rankings/bradley-terry/statistics/2013/08/31/mlb-rankings-using-the-bradley-terry-model/">
+            MLB Rankings Using the Bradley-Terry Model
+            <small>31 Aug 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//r/statistics/machine%20learning/classification/mixture%20models/2013/07/02/a-brief-look-at-mixture-discriminant-analysis/">
+            A Brief Look at Mixture Discriminant Analysis
+            <small>02 Jul 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//r/machine%20learning/statistics/bioinformatics/microarray/data/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/">
+            High-Dimensional Microarray Data Sets in R for Machine Learning
+            <small>29 Dec 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

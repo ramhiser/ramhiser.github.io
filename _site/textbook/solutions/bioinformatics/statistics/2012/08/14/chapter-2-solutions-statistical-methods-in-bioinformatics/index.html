@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Chapter 2 Solutions - Statistical Methods in Bioinformatics &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
+        
+      
+    
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll/">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software/">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Chapter 2 Solutions - Statistical Methods in Bioinformatics</h1>
+  <span class="post-date">14 Aug 2012</span>
+  <p>As I have mentioned previously, I have begun reading <a href="http://amzn.to/PiXCiU">Statistical Methods in Bioinformatics by Ewens and Grant</a> and working selected problems for each chapter. In this post, I will give my solution to two problems. The first problem is pretty straightforward.</p>
+
+<h2>Problem 2.20</h2>
+
+<blockquote>
+<p>Suppose that a parent of genetic type <em>Mm</em> has three children. Then the parent transmits the <em>M</em> gene to each child with probability 1/2, and <strong>the genes that are transmitted to each of the three children are independent</strong>. Let $$I<em>1 = 1$$ if children 1 and 2 had the same gene transmitted, and $$I</em>1 = 0$$ otherwise. Similarly, let $$I<em>2 = 1$$ if children 1 and 3 had the same gene transmitted, $$I</em>2 = 0$$ otherwhise, and let $$I<em>3 = 1$$ if children 2 and 3 had the same gene transmitted, $$I</em>3 = 0$$ otherwise.</p>
+</blockquote>
+
+<p>The question first asks us to how that the three random variables are pairwise independent but not independent. The pairwise independence comes directly from the bolded phrase in the problem statement. Now, to show that the three random variables are not independent, denote by $$p<em>j$$ the probability that $$I</em>j = 1$$, $$j = 1, 2, 3$$. If we had independence, then the following statement would be true:</p>
+
+<p>$$
+P(I<em>1 = 1, I</em>2 = 1, I<em>3 = 0) = p</em>1 p<em>2 (1 - p</em>3).
+$$</p>
+
+<p>However, notice that the event in the lefthand side can never happen because if $$I<em>1 = 1$$ and $$I</em>2 = 1$$, then $$I_3$$ must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
+
+<p>The question also asks us to discuss why the variance of $$I<em>1 + I</em>2 + I_3$$ is equal to the sum of the individual variances. Often, this is only the case of the random variables are independent. But because the random variables here are pairwise independent, the covariances must be 0. Thus, the equality must hold.</p>
+
+<h2>Problems 2.23 - 2.27</h2>
+
+<p>While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.</p>
+
+<blockquote>
+<p>For $$i = 1, \ldots, n$$, let $$X<em>i$$ be the $$i$$th lifetime of certain cellular proteins until degradation. We assume that $$X</em>1, \ldots, X_n$$ are iid random variables, each of which is <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponentially distributed</a> with rate parameter $$\lambda &gt; 0$$. Furthermore, let $$n = 2m + 1$$ be an odd integer.</p>
+</blockquote>
+
+<p>This set of questions is concerned with the mean and variance of the sample median, $$X<em>{(m + 1)}$$, where $$X</em>{(i)}$$ denotes the $$i$$th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, note that the mean and variance of the minimum value $$X<em>{(1)}$$ are $$1/(n\lambda)$$ and $$1/(n\lambda)^2$$, respectively. From the <a href="http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions">memoryless property</a> of the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a>, the mean value of the time until the next protein degrades is independent of the previous. However, there are now $$n - 1$$ proteins remaining. Thus, the mean and variance of $$X</em>{(2)}$$ are $$1/(n\lambda) + 1/((n-1)\lambda)$$ and $$1/(n\lambda)^2 + 1/((n-1)\lambda)^2$$, respectively. Continuining in this manner, we have</p>
+
+<p>$$
+E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
+$$</p>
+
+<p>and</p>
+
+<p>$$
+Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
+$$</p>
+
+<h3>Approximation of $$E[X_{(m + 1)}]$$</h3>
+
+<p>Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have</p>
+
+<p>$$
+\sum_{k=1}^n \frac{1}{k} \approx \log n + \gamma,
+$$</p>
+
+<p>where $$\gamma$$ is <a href="http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant">Euler&#39;s constant</a>. Then, we can write the expected sample median as</p>
+
+<p>$$
+\begin{aligned}
+E[X<em>{(m + 1)}] &amp;= \frac{1}{\lambda} \sum</em>{k=m+1}^{2m+1} \frac{1}{k}\
+&amp;= \frac{1}{\lambda} \left(\sum<em>{k=1}^{2m+1} \frac{1}{k} - \sum</em>{k=1}^{m} \frac{1}{k} \right)\
+&amp;\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\
+&amp;= \frac{1}{\lambda} \log \left(2 + \frac{1}{m} \right).
+\end{aligned}
+$$</p>
+
+<p>Hence, as $$n \rightarrow \infty$$, this approximation goes to $$ \frac{\log 2}{\lambda}$$, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to $$F<em>X(x) = 1/2$$, where $$F</em>X$$ denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable $$X$$.</p>
+
+<h3>Improved Approximation of $$E[X_{(m + 1)}]$$</h3>
+
+<p>It turns out that we can improve this approximation with the following two results:</p>
+
+<p>$$
+\begin{aligned}
+\sum_{k=1}^n \frac{1}{k} &amp;= \log n + \frac{1}{2n} + o\left(\frac{1}{n}\right),\
+\log \left(\frac{2m + 1}{m}\right) &amp;= \log 2 + \frac{1}{2m} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$</p>
+
+<p>Following the derivation of our above approximation, we have that</p>
+
+<p>$$
+\begin{aligned}
+E[X<em>{(m + 1)}] &amp;= \frac{1}{\lambda} \left(\sum</em>{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\
+&amp;= \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\
+&amp;= \frac{1}{\lambda} \left[ \log \left( \frac{2m + 1}{m} \right) + \frac{1}{2(2m+1)} - \frac{1}{2m} + o\left(\frac{1}{m}\right)  \right]\
+&amp;= \frac{\log 2}{\lambda} + \frac{1}{2\lambda (2m + 1)} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$</p>
+
+<h3>Approximation of $$Var[X_{(m + 1)}]$$</h3>
+
+<p>We can also approximate $$Var[X_{(m + 1)}]$$ using the approximation</p>
+
+<p>$$
+\frac{1}{a^2} + \frac{1}{(a+1)^2} + \ldots + \frac{1}{b^2} \approx \frac{1}{a - 1/2} - \frac{1}{b + 1/2}.
+$$</p>
+
+<p>With $$a = m+1$$ and $$b = 2m + 1$$, we have</p>
+
+<p>$$
+Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
+$$</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//r/python/baseball/rankings/bradley-terry/statistics/2013/08/31/mlb-rankings-using-the-bradley-terry-model/">
+            MLB Rankings Using the Bradley-Terry Model
+            <small>31 Aug 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//r/statistics/machine%20learning/classification/mixture%20models/2013/07/02/a-brief-look-at-mixture-discriminant-analysis/">
+            A Brief Look at Mixture Discriminant Analysis
+            <small>02 Jul 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//r/machine%20learning/statistics/bioinformatics/microarray/data/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/">
+            High-Dimensional Microarray Data Sets in R for Machine Learning
+            <small>29 Dec 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      MLB Rankings Using the Bradley-Terry Model &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
+        
+      
+    
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll/">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software/">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">MLB Rankings Using the Bradley-Terry Model</h1>
+  <span class="post-date">31 Aug 2013</span>
+  <p>Today, I take my first shots at ranking Major League Baseball (MLB) teams. I see
+my efforts at prediction and ranking an ongoing process so that my models
+improve, the data I incorporate are more meaningful, and ultimately my
+predictions are largely accurate. For the first attempt, let&#39;s rank MLB teams
+using the <a href="http://en.wikipedia.org/wiki/Pairwise_comparison#Probabilistic_models">Bradley-Terry (BT) model</a>.</p>
+
+<p>Before we discuss the rankings, we need some data. Let&#39;s scrape <a href="http://espn.go.com/mlb/standings/grid/_/year/2013">ESPN&#39;s MLB Standings Grid</a> for a
+win-loss matchups of any two MLB teams for the current season. Perhaps to
+simplify the tables and to reduce the sparsity resulting from <a href="http://en.wikipedia.org/wiki/Interleague_play">interleague play</a>, ESPN provides only the
+matchup records within a single league -- American or National. Accompanying the
+matchups, the data include a team&#39;s overall record versus the other league, but
+we will ignore this for now. The implication is that we can rank teams only
+within the same league.</p>
+
+<h2>Scraping ESPN with a Python Script</h2>
+
+<p>In the following Python script, the <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup library</a> is used to scrape ESPN&#39;s
+site for a given year. The script identifies each team in the American League
+table, their opponents, and their records against each opponent. The results are
+outputted in a CSV file to analyze in R. The code is for the American League
+only, but it is straightforward to modify the code to gather the National League
+data. Below, I use only the data for 2013 and ignore the previous seasons. In a
+future post though, I will incorporate these data.</p>
+
+<p>Here&#39;s the Python code. Feel free to fork it.</p>
+
+<script src="https://gist.github.com/6331163.js"> </script>
+
+<h2>Bradley-Terry Model</h2>
+
+<p>The <a href="http://en.wikipedia.org/wiki/Pairwise_comparison#Probabilistic_models">BT model</a> is
+a simple approach to modeling pairwise competitions, such as sporting events,
+that do not result in ties and is well-suited to the ESPN data above where we
+know only the win-loss records between any two teams. (If curious, <a href="http://www.jstor.org/discover/10.2307/2283595">ties can be handled with modifications</a>.)</p>
+
+<p>Suppose that teams $$i$$ and $$j$$ play each other, and we wish to know the
+probability $$p_{ij}$$ that team $$i$$ will beat team $$j$$. Then, with the BT
+model we define</p>
+
+<p>$$
+\text{logit}(p<em>{ij}) = \lambda</em>i - \lambda_j,
+$$</p>
+
+<p>where $$\lambda<em>i$$ and $$\lambda</em>j$$ denote the abilities of teams $$i$$ and
+$$j$$, respectively. Besides calculating the probability of one team beating
+another, the team abilities provide a natural mechanism for ranking teams. That
+is, if $$\lambda<em>i &gt; \lambda</em>j$$, we say that team $$i$$ is ranked superior to
+team $$j$$, providing an ordering on the teams within a league.</p>
+
+<p>Perhaps naively, we assume that all games are independent. This assumption makes
+it straightforward to write the likelihood, which is essentially the product of
+Bernoulli likelihoods representing each team matchup. To estimate the team
+abilities, we use the <a href="http://cran.r-project.org/web/packages/BradleyTerry2/index.html">BradleyTerry2 R package</a>. The
+<a href="http://cran.r-project.org/web/packages/BradleyTerry2/vignettes/BradleyTerry.pdf">package vignette</a>
+provides an excellent overview of the Bradley-Terry model as well as various
+approaches to incorporating covariates (e.g., home-field advantage) and random
+effects, some of which I will consider in the future. One thing to note is that
+the ability of the first team appearing in the results data frame is used as a
+reference and is set to 0.</p>
+
+<p>I have placed all of the R code used for the analysis below within
+<strong>bradley-terry.r</strong> in <a href="https://github.com/ramey/baseball-rankings">this GitHub repository</a>. Note that I use the
+<a href="http://projecttemplate.net/">ProjectTemplate</a> <a href="http://cran.r-project.org/web/packages/ProjectTemplate/index.html">package</a> to
+organize the analysis and to minimize boiler-plate code.</p>
+
+<p>After scraping the matchup records from ESPN, the following R code prettifies
+the data and then fits the BT model to both data sets.</p>
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># Cleans the American League (AL) and National League (NL) data scraped from</span>
+<span class="c1"># ESPN&#39;s MLB Grid</span>
+AL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>AL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;AL&quot;</span><span class="p">)</span>
+NL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>NL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;NL&quot;</span><span class="p">)</span>
+
+<span class="c1"># Fits the Bradley-Terry models for both leagues</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
+AL_model <span class="o">&lt;-</span> BTm<span class="p">(</span><span class="kp">cbind</span><span class="p">(</span>Wins<span class="p">,</span> Losses<span class="p">),</span> Team<span class="p">,</span> Opponent<span class="p">,</span> <span class="o">~</span>team_<span class="p">,</span> id <span class="o">=</span> <span class="s">&quot;team_&quot;</span><span class="p">,</span> data <span class="o">=</span> AL_cleaned<span class="o">$</span>standings<span class="p">)</span>
+NL_model <span class="o">&lt;-</span> BTm<span class="p">(</span><span class="kp">cbind</span><span class="p">(</span>Wins<span class="p">,</span> Losses<span class="p">),</span> Team<span class="p">,</span> Opponent<span class="p">,</span> <span class="o">~</span>team_<span class="p">,</span> id <span class="o">=</span> <span class="s">&quot;team_&quot;</span><span class="p">,</span> data <span class="o">=</span> NL_cleaned<span class="o">$</span>standings<span class="p">)</span>
+
+<span class="c1"># Extracts team abilities for each league</span>
+AL_abilities <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>BTabilities<span class="p">(</span>AL_model<span class="p">))</span><span class="o">$</span>ability
+<span class="kp">names</span><span class="p">(</span>AL_abilities<span class="p">)</span> <span class="o">&lt;-</span> AL_cleaned<span class="o">$</span>teams
+
+NL_abilities <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>BTabilities<span class="p">(</span>NL_model<span class="p">))</span><span class="o">$</span>ability
+<span class="kp">names</span><span class="p">(</span>NL_abilities<span class="p">)</span> <span class="o">&lt;-</span> NL_cleaned<span class="o">$</span>teams
+</code></pre></div>
+<p>Next, we create a heatmap of probabilities winning for each matchup by first
+creating a grid of the probabilities. Given that the inverse logit of 0 is 0.5,
+the probability that team beats itself is estimated as 0.5. To avoid this
+confusing situation, we set these probabilities to 0. The point is that these
+events can never happen unless you play for Houston or have A-Rod on your team.</p>
+<div class="highlight"><pre><code class="language-r" data-lang="r">AL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>AL_abilities<span class="p">,</span> AL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
+<span class="kp">diag</span><span class="p">(</span>AL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="m">0</span>
+AL_probs <span class="o">&lt;-</span> melt<span class="p">(</span>AL_probs<span class="p">)</span>
+
+NL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>NL_abilities<span class="p">,</span> NL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
+<span class="kp">diag</span><span class="p">(</span>NL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="m">0</span>
+NL_probs <span class="o">&lt;-</span> melt<span class="p">(</span>NL_probs<span class="p">)</span>
+
+<span class="kp">colnames</span><span class="p">(</span>AL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="kp">colnames</span><span class="p">(</span>NL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Team&quot;</span><span class="p">,</span> <span class="s">&quot;Opponent&quot;</span><span class="p">,</span> <span class="s">&quot;Probability&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Now that the rankings and matchup probabilities have been computed, let&#39;s take a
+look at the results for each league.</p>
+
+<h2>American League Results</h2>
+
+<p>The BT model provides a natural way of ranking teams based on the team-ability
+estimates. Let&#39;s first look at the estimates.</p>
+
+<p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot"> </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">## |     | ability | s.e.  |
+## |-----+---------+-------|
+## | ARI | 0.000   | 0.000 |
+## | ATL | 0.461   | 0.267 |
+## | CHC | -0.419  | 0.264 |
+## | CIN | 0.267   | 0.261 |
+## | COL | 0.015   | 0.250 |
+## | LAD | 0.324   | 0.255 |
+## | MIA | -0.495  | 0.265 |
+## | MIL | -0.126  | 0.260 |
+## | NYM | -0.236  | 0.262 |
+## | PHI | -0.089  | 0.261 |
+## | PIT | 0.268   | 0.262 |
+## | SD  | -0.176  | 0.251 |
+## | SF  | -0.100  | 0.251 |
+## | STL | 0.389   | 0.262 |
+## | WSH | -0.013  | 0.265 |
+</code></pre></div>
+<p>(Please excuse the crude tabular output. I&#39;m not a fan of how <a href="http://octopress.org/">Octopress</a> renders tables. Suggestions?)</p>
+
+<p>The plot and the table give two representations of the same information.  In
+both cases we can see that the team abilities are standardized so that Baltimore
+has an ability of 0. We also see that Tampa Bay is considered the top AL team
+with Boston being a <strong>close</strong> second. Notice though that the standard errors
+here are large enough that we might question the rankings by team ability. For
+now, we will ignore the standard errors, but this uncertainty should be taken
+into account for predicting future games.</p>
+
+<p>The Astros stand out as the worse team in the AL. Although the graph seems to
+indicate that Houston is by far worse than any other AL team, the ability is not
+straightforward to interpret. Rather, using the inverse logit function, we can
+compare more directly any two teams by calculating the probability that one team
+will beat another.</p>
+
+<p>A quick way to compare any two teams is with a heatmap. Notice how Houston&#39;s
+probability of beating another AL team is less than 50%. The best team, Tampa
+Bay, has more than a 50% chance of beating any other AL team.</p>
+
+<p><img src="http://i.imgur.com/9IfSUag.png" alt="plot of chunk AL_matchup_heatmaps"> </p>
+
+<p>While the heatmap is useful for comparing any two teams at a glance, bar graphs
+provide a more precise representation of who will win. Here are the
+probabilities that the best and worst teams in the AL will beat any other AL
+team. A horizontal red threshold is drawn at 50%.</p>
+
+<p><img src="http://i.imgur.com/WAD1Cc3.png" alt="plot of chunk AL_probs_top_team"> </p>
+
+<p><img src="http://i.imgur.com/JRUd5Bj.png" alt="plot of chunk AL_probs_bottom_team"> </p>
+
+<p>An important thing to notice here is that Tampa Bay is not unbeatable, according
+to the BT model, the Astros have a shot at winning against any other AL team.</p>
+
+<p><img src="http://i.imgur.com/q3CB6tp.png" alt="plot of chunk AL_probs_middle_team"> </p>
+
+<p>I have also found that a useful gauge is to look at the probability that an
+average team will beat any other team. For instance, Cleveland is ranked in the
+middle according to the BT model. Notice that half of the teams have greater
+than 50% chance to beat them, while the Indians have more than 50% chance of
+beating the remaining teams. The Indians have a very good chance of beating the
+Astros.</p>
+
+<h2>National League Results</h2>
+
+<p>Here, we repeat the same analysis for the National League.</p>
+
+<p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot"> </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">## |     | ability | s.e.  |
+## |-----+---------+-------|
+## | ARI | 0.000   | 0.000 |
+## | ATL | 0.461   | 0.267 |
+## | CHC | -0.419  | 0.264 |
+## | CIN | 0.267   | 0.261 |
+## | COL | 0.015   | 0.250 |
+## | LAD | 0.324   | 0.255 |
+## | MIA | -0.495  | 0.265 |
+## | MIL | -0.126  | 0.260 |
+## | NYM | -0.236  | 0.262 |
+## | PHI | -0.089  | 0.261 |
+## | PIT | 0.268   | 0.262 |
+## | SD  | -0.176  | 0.251 |
+## | SF  | -0.100  | 0.251 |
+## | STL | 0.389   | 0.262 |
+## | WSH | -0.013  | 0.265 |
+</code></pre></div>
+<p>For the National League, Arizona is the reference team having an ability of
+0. The Braves are ranked as the top team, and the Marlins are the worst team.
+At first glance, the differences in National League team abilities between two
+consecutively ranked teams are less extreme than the American League. However,
+it is unwise to interpret the abilities in this way. As with the American
+League, we largely ignore the standard errors, although it is interesting to
+note that the top and bottom NL team abilities have more separation between them
+when the standard error is taken into account.</p>
+
+<p>As before, let&#39;s look at the matchup probabilities.</p>
+
+<p><img src="http://i.imgur.com/aVpVIDK.png" alt="plot of chunk NL_matchup_heatmaps"> </p>
+
+<p>From the heatmap we can see that the Braves have at least a 72% chance of
+beating the Marlins, according to the BT model. All other winning probabilities
+are less than 72%, giving teams like the Marlins, Cubs, and Mets a shot at
+winning.</p>
+
+<p>Again, we plot the probabilities for the best and the worst teams along with an
+average team.</p>
+
+<p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team"> </p>
+<div class="highlight"><pre><code class="language-r" data-lang="r">ATL_probs <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>NL_probs<span class="p">,</span> Team <span class="o">==</span> <span class="s">&quot;ATL&quot;</span> <span class="o">&amp;</span> Opponent <span class="o">!=</span> <span class="s">&quot;ATL&quot;</span><span class="p">)</span>
+prob_ATL_SF <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>ATL_probs<span class="p">,</span> Opponent <span class="o">==</span> <span class="s">&quot;SF&quot;</span><span class="p">)</span><span class="o">$</span>Probability
+series_probs <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>Wins <span class="o">=</span> <span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> Probability <span class="o">=</span> dbinom<span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> prob_ATL_SF<span class="p">))</span>
+<span class="kp">print</span><span class="p">(</span>ascii<span class="p">(</span>series_probs<span class="p">,</span> include.rownames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> digits <span class="o">=</span> <span class="m">3</span><span class="p">),</span> type <span class="o">=</span> <span class="s">&quot;org&quot;</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">## | Wins  | Probability |
+## |-------+-------------|
+## | 0.000 | 0.048       |
+## | 1.000 | 0.252       |
+## | 2.000 | 0.442       |
+## | 3.000 | 0.258       |
+</code></pre></div>
+<p>I find it very interesting that the probability Atlanta beats any other NL team
+is usually around 2/3. This makes sense in a lot of ways. For instance, if
+Atlanta has a three-game series with the Giants, odds are good that Atlanta will
+win 2 of the 3 games. Moreover, as we can see in the table above, there is less
+than a 5% chance that the Giants will sweep Atlanta.</p>
+
+<p><img src="http://i.imgur.com/E24KZ1Z.png" alt="plot of chunk NL_probs_bottom_team"> </p>
+
+<p>The BT model indicates that the Miami Marlins are the worst team in the National
+League. Despite their poor performance this season, except for the Braves and
+the Cardinals, the Marlins have a legitimate chance to beat other NL teams. This
+is especially the case against the other bottom NL teams, such as the Cubs and
+the Mets.</p>
+
+<p><img src="http://i.imgur.com/ikAMFQS.png" alt="plot of chunk NL_probs_middle_team"> </p>
+
+<h2>What&#39;s Next?</h2>
+
+<p>The above post ranked the teams within the American and National leagues
+separately for the current season, but similar data are also available on ESPN
+going back to 2002. With this in mind, obvious extensions are:</p>
+
+<ul>
+<li><p>Rank the leagues together after scraping the <a href="http://en.wikipedia.org/wiki/Interleague_play">interleague play</a> matchups.</p></li>
+<li><p>Examine how ranks change over time.</p></li>
+<li><p>Include previous matchup records as prior information for later seasons.</p></li>
+<li><p>Predict future games. Standard errors should not be ignored here.</p></li>
+<li><p>Add covariates (e.g., home-field advantage) to the BT model.</p></li>
+</ul>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//r/statistics/machine%20learning/classification/mixture%20models/2013/07/02/a-brief-look-at-mixture-discriminant-analysis/">
+            A Brief Look at Mixture Discriminant Analysis
+            <small>02 Jul 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//r/machine%20learning/statistics/bioinformatics/microarray/data/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/">
+            High-Dimensional Microarray Data Sets in R for Machine Learning
+            <small>29 Dec 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//kaggle/python/requests.py/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py/">
+            How to Download Kaggle Data with Python and requests.py
+            <small>23 Nov 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

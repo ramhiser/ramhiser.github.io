@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Software &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
+        
+      
+    
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll/">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item active" href="/software/">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="page">
+  <h1 class="page-title">Software</h1>
+  <ul>
+<li><p><a href="https://github.com/ramhiser/itertools2">itertools2</a> - This R package is a
+port of <a href="https://docs.python.org/2/library/itertools.html">Python&#39;s excellent itertools
+module</a> to R for efficient
+looping and is a replacement for the existing <a href="https://r-forge.r-project.org/projects/itertools/">itertools R
+package</a>.</p></li>
+<li><p><a href="https://github.com/ramhiser/noncensus">noncensus</a> - This R package provides a
+collection of various regional information determined by the U.S. Census
+Bureau along with demographic data.</p></li>
+<li><p><a href="https://github.com/ramhiser/sparsediscrim">sparsediscrim</a> - An R package that
+is a collection of sparse and regularized classification models intended for
+small-sample, high-dimensional data sets. The models include the well-known
+<a href="http://www.jstor.org/pss/2289860">Regularized Discriminant Analysis</a>
+classifier and generalizations of the <a href="http://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes
+classifier</a>.</p></li>
+<li><p><a href="https://github.com/ramhiser/activelearning">activelearning</a> - An R package
+that implements active learning, a machine learning paradigm for optimally
+choosing unlabeled observations in a training data set to query for their true
+labels.</p></li>
+<li><p><a href="https://github.com/ramhiser/datamicroarray">datamicroarray</a> - An R package
+that provides a collection of scripts to download, process, and load
+small-sample, high-dimensional microarray data sets to assess machine learning
+algorithms and models. For each data set, we include a small set of scripts
+that automatically download, clean, and save the data set. Additionally, we
+include thorough descriptions and additional information about each microarray
+data set in the <a href="https://github.com/ramhiser/datamicroarray/wiki">package&#39;s
+wiki</a>. The majority of the
+microarary data sets included in the package are cancer-related.</p></li>
+<li><p><a href="https://github.com/ramhiser/sortinghat">sortinghat</a> - An R package that
+provides a variety of error-rate estimation methods for supervised
+classification. To assess classification performance, I have provided several
+widely known estimators, including random split / Monte-Carlo
+cross-validation, cross-validation, bootstrap, .632, .632+, apparent, and
+bolstering/smoothed error rates.</p></li>
+</ul>
+
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

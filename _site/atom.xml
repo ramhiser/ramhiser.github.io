@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>John Ramey</title>
+ <link href="http://ramhiser.com/atom.xml" rel="self"/>
+ <link href="http://ramhiser.com/"/>
+ <updated>2015-01-18T00:18:22-06:00</updated>
+ <id>http://ramhiser.com</id>
+ <author>
+   <name>John Ramey</name>
+   <email>johnramey@gmail.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>MLB Rankings Using the Bradley-Terry Model</title>
+   <link href="http://ramhiser.com/r/python/baseball/rankings/bradley-terry/statistics/2013/08/31/mlb-rankings-using-the-bradley-terry-model/"/>
+   <updated>2013-08-31T07:35:00-05:00</updated>
+   <id>http://ramhiser.com/r/python/baseball/rankings/bradley-terry/statistics/2013/08/31/mlb-rankings-using-the-bradley-terry-model</id>
+   <content type="html">&lt;p&gt;Today, I take my first shots at ranking Major League Baseball (MLB) teams. I see
+my efforts at prediction and ranking an ongoing process so that my models
+improve, the data I incorporate are more meaningful, and ultimately my
+predictions are largely accurate. For the first attempt, let&amp;#39;s rank MLB teams
+using the &lt;a href=&quot;http://en.wikipedia.org/wiki/Pairwise_comparison#Probabilistic_models&quot;&gt;Bradley-Terry (BT) model&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before we discuss the rankings, we need some data. Let&amp;#39;s scrape &lt;a href=&quot;http://espn.go.com/mlb/standings/grid/_/year/2013&quot;&gt;ESPN&amp;#39;s MLB Standings Grid&lt;/a&gt; for a
+win-loss matchups of any two MLB teams for the current season. Perhaps to
+simplify the tables and to reduce the sparsity resulting from &lt;a href=&quot;http://en.wikipedia.org/wiki/Interleague_play&quot;&gt;interleague play&lt;/a&gt;, ESPN provides only the
+matchup records within a single league -- American or National. Accompanying the
+matchups, the data include a team&amp;#39;s overall record versus the other league, but
+we will ignore this for now. The implication is that we can rank teams only
+within the same league.&lt;/p&gt;
+
+&lt;h2&gt;Scraping ESPN with a Python Script&lt;/h2&gt;
+
+&lt;p&gt;In the following Python script, the &lt;a href=&quot;http://www.crummy.com/software/BeautifulSoup/&quot;&gt;BeautifulSoup library&lt;/a&gt; is used to scrape ESPN&amp;#39;s
+site for a given year. The script identifies each team in the American League
+table, their opponents, and their records against each opponent. The results are
+outputted in a CSV file to analyze in R. The code is for the American League
+only, but it is straightforward to modify the code to gather the National League
+data. Below, I use only the data for 2013 and ignore the previous seasons. In a
+future post though, I will incorporate these data.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;#39;s the Python code. Feel free to fork it.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/6331163.js&quot;&gt; &lt;/script&gt;
+
+&lt;h2&gt;Bradley-Terry Model&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;http://en.wikipedia.org/wiki/Pairwise_comparison#Probabilistic_models&quot;&gt;BT model&lt;/a&gt; is
+a simple approach to modeling pairwise competitions, such as sporting events,
+that do not result in ties and is well-suited to the ESPN data above where we
+know only the win-loss records between any two teams. (If curious, &lt;a href=&quot;http://www.jstor.org/discover/10.2307/2283595&quot;&gt;ties can be handled with modifications&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;Suppose that teams $$i$$ and $$j$$ play each other, and we wish to know the
+probability $$p_{ij}$$ that team $$i$$ will beat team $$j$$. Then, with the BT
+model we define&lt;/p&gt;
+
+&lt;p&gt;$$
+\text{logit}(p&lt;em&gt;{ij}) = \lambda&lt;/em&gt;i - \lambda_j,
+$$&lt;/p&gt;
+
+&lt;p&gt;where $$\lambda&lt;em&gt;i$$ and $$\lambda&lt;/em&gt;j$$ denote the abilities of teams $$i$$ and
+$$j$$, respectively. Besides calculating the probability of one team beating
+another, the team abilities provide a natural mechanism for ranking teams. That
+is, if $$\lambda&lt;em&gt;i &amp;gt; \lambda&lt;/em&gt;j$$, we say that team $$i$$ is ranked superior to
+team $$j$$, providing an ordering on the teams within a league.&lt;/p&gt;
+
+&lt;p&gt;Perhaps naively, we assume that all games are independent. This assumption makes
+it straightforward to write the likelihood, which is essentially the product of
+Bernoulli likelihoods representing each team matchup. To estimate the team
+abilities, we use the &lt;a href=&quot;http://cran.r-project.org/web/packages/BradleyTerry2/index.html&quot;&gt;BradleyTerry2 R package&lt;/a&gt;. The
+&lt;a href=&quot;http://cran.r-project.org/web/packages/BradleyTerry2/vignettes/BradleyTerry.pdf&quot;&gt;package vignette&lt;/a&gt;
+provides an excellent overview of the Bradley-Terry model as well as various
+approaches to incorporating covariates (e.g., home-field advantage) and random
+effects, some of which I will consider in the future. One thing to note is that
+the ability of the first team appearing in the results data frame is used as a
+reference and is set to 0.&lt;/p&gt;
+
+&lt;p&gt;I have placed all of the R code used for the analysis below within
+&lt;strong&gt;bradley-terry.r&lt;/strong&gt; in &lt;a href=&quot;https://github.com/ramey/baseball-rankings&quot;&gt;this GitHub repository&lt;/a&gt;. Note that I use the
+&lt;a href=&quot;http://projecttemplate.net/&quot;&gt;ProjectTemplate&lt;/a&gt; &lt;a href=&quot;http://cran.r-project.org/web/packages/ProjectTemplate/index.html&quot;&gt;package&lt;/a&gt; to
+organize the analysis and to minimize boiler-plate code.&lt;/p&gt;
+
+&lt;p&gt;After scraping the matchup records from ESPN, the following R code prettifies
+the data and then fits the BT model to both data sets.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Cleans the American League (AL) and National League (NL) data scraped from&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ESPN&amp;#39;s MLB Grid&lt;/span&gt;
+AL_cleaned &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; clean_ESPN_grid_data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL.standings&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; league &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;AL&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+NL_cleaned &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; clean_ESPN_grid_data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL.standings&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; league &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;NL&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Fits the Bradley-Terry models for both leagues&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+AL_model &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; BTm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;cbind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Wins&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Losses&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; Team&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Opponent&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;team_&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; id &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;team_&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; AL_cleaned&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;standings&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+NL_model &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; BTm&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;cbind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Wins&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Losses&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; Team&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Opponent&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;team_&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; id &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;team_&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; NL_cleaned&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;standings&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Extracts team abilities for each league&lt;/span&gt;
+AL_abilities &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;BTabilities&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_model&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ability
+&lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_abilities&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; AL_cleaned&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;teams
+
+NL_abilities &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;BTabilities&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_model&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ability
+&lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_abilities&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; NL_cleaned&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;teams
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, we create a heatmap of probabilities winning for each matchup by first
+creating a grid of the probabilities. Given that the inverse logit of 0 is 0.5,
+the probability that team beats itself is estimated as 0.5. To avoid this
+confusing situation, we set these probabilities to 0. The point is that these
+events can never happen unless you play for Houston or have A-Rod on your team.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;AL_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;outer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_abilities&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; AL_abilities&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob_BT&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+AL_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; melt&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+NL_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;outer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_abilities&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; NL_abilities&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob_BT&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+NL_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; melt&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;AL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_probs&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Team&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Opponent&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Probability&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now that the rankings and matchup probabilities have been computed, let&amp;#39;s take a
+look at the results for each league.&lt;/p&gt;
+
+&lt;h2&gt;American League Results&lt;/h2&gt;
+
+&lt;p&gt;The BT model provides a natural way of ranking teams based on the team-ability
+estimates. Let&amp;#39;s first look at the estimates.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/XgwLvtS.png&quot; alt=&quot;plot of chunk AL_team_abilities_barplot&quot;&gt; &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## |     | ability | s.e.  |
+## |-----+---------+-------|
+## | ARI | 0.000   | 0.000 |
+## | ATL | 0.461   | 0.267 |
+## | CHC | -0.419  | 0.264 |
+## | CIN | 0.267   | 0.261 |
+## | COL | 0.015   | 0.250 |
+## | LAD | 0.324   | 0.255 |
+## | MIA | -0.495  | 0.265 |
+## | MIL | -0.126  | 0.260 |
+## | NYM | -0.236  | 0.262 |
+## | PHI | -0.089  | 0.261 |
+## | PIT | 0.268   | 0.262 |
+## | SD  | -0.176  | 0.251 |
+## | SF  | -0.100  | 0.251 |
+## | STL | 0.389   | 0.262 |
+## | WSH | -0.013  | 0.265 |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(Please excuse the crude tabular output. I&amp;#39;m not a fan of how &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; renders tables. Suggestions?)&lt;/p&gt;
+
+&lt;p&gt;The plot and the table give two representations of the same information.  In
+both cases we can see that the team abilities are standardized so that Baltimore
+has an ability of 0. We also see that Tampa Bay is considered the top AL team
+with Boston being a &lt;strong&gt;close&lt;/strong&gt; second. Notice though that the standard errors
+here are large enough that we might question the rankings by team ability. For
+now, we will ignore the standard errors, but this uncertainty should be taken
+into account for predicting future games.&lt;/p&gt;
+
+&lt;p&gt;The Astros stand out as the worse team in the AL. Although the graph seems to
+indicate that Houston is by far worse than any other AL team, the ability is not
+straightforward to interpret. Rather, using the inverse logit function, we can
+compare more directly any two teams by calculating the probability that one team
+will beat another.&lt;/p&gt;
+
+&lt;p&gt;A quick way to compare any two teams is with a heatmap. Notice how Houston&amp;#39;s
+probability of beating another AL team is less than 50%. The best team, Tampa
+Bay, has more than a 50% chance of beating any other AL team.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/9IfSUag.png&quot; alt=&quot;plot of chunk AL_matchup_heatmaps&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;While the heatmap is useful for comparing any two teams at a glance, bar graphs
+provide a more precise representation of who will win. Here are the
+probabilities that the best and worst teams in the AL will beat any other AL
+team. A horizontal red threshold is drawn at 50%.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/WAD1Cc3.png&quot; alt=&quot;plot of chunk AL_probs_top_team&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/JRUd5Bj.png&quot; alt=&quot;plot of chunk AL_probs_bottom_team&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;An important thing to notice here is that Tampa Bay is not unbeatable, according
+to the BT model, the Astros have a shot at winning against any other AL team.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/q3CB6tp.png&quot; alt=&quot;plot of chunk AL_probs_middle_team&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;I have also found that a useful gauge is to look at the probability that an
+average team will beat any other team. For instance, Cleveland is ranked in the
+middle according to the BT model. Notice that half of the teams have greater
+than 50% chance to beat them, while the Indians have more than 50% chance of
+beating the remaining teams. The Indians have a very good chance of beating the
+Astros.&lt;/p&gt;
+
+&lt;h2&gt;National League Results&lt;/h2&gt;
+
+&lt;p&gt;Here, we repeat the same analysis for the National League.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/5BQt4xM.png&quot; alt=&quot;plot of chunk NL_team_abilities_barplot&quot;&gt; &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## |     | ability | s.e.  |
+## |-----+---------+-------|
+## | ARI | 0.000   | 0.000 |
+## | ATL | 0.461   | 0.267 |
+## | CHC | -0.419  | 0.264 |
+## | CIN | 0.267   | 0.261 |
+## | COL | 0.015   | 0.250 |
+## | LAD | 0.324   | 0.255 |
+## | MIA | -0.495  | 0.265 |
+## | MIL | -0.126  | 0.260 |
+## | NYM | -0.236  | 0.262 |
+## | PHI | -0.089  | 0.261 |
+## | PIT | 0.268   | 0.262 |
+## | SD  | -0.176  | 0.251 |
+## | SF  | -0.100  | 0.251 |
+## | STL | 0.389   | 0.262 |
+## | WSH | -0.013  | 0.265 |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For the National League, Arizona is the reference team having an ability of
+0. The Braves are ranked as the top team, and the Marlins are the worst team.
+At first glance, the differences in National League team abilities between two
+consecutively ranked teams are less extreme than the American League. However,
+it is unwise to interpret the abilities in this way. As with the American
+League, we largely ignore the standard errors, although it is interesting to
+note that the top and bottom NL team abilities have more separation between them
+when the standard error is taken into account.&lt;/p&gt;
+
+&lt;p&gt;As before, let&amp;#39;s look at the matchup probabilities.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/aVpVIDK.png&quot; alt=&quot;plot of chunk NL_matchup_heatmaps&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;From the heatmap we can see that the Braves have at least a 72% chance of
+beating the Marlins, according to the BT model. All other winning probabilities
+are less than 72%, giving teams like the Marlins, Cubs, and Mets a shot at
+winning.&lt;/p&gt;
+
+&lt;p&gt;Again, we plot the probabilities for the best and the worst teams along with an
+average team.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/sZXVmFL.png&quot; alt=&quot;plot of chunk NL_probs_top_team&quot;&gt; &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;ATL_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;subset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;NL_probs&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Team &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ATL&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; Opponent &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ATL&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+prob_ATL_SF &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;subset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ATL_probs&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Opponent &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;SF&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;Probability
+series_probs &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Wins &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; Probability &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; dbinom&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob_ATL_SF&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ascii&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;series_probs&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; include.rownames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; digits &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; type &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;org&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## | Wins  | Probability |
+## |-------+-------------|
+## | 0.000 | 0.048       |
+## | 1.000 | 0.252       |
+## | 2.000 | 0.442       |
+## | 3.000 | 0.258       |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I find it very interesting that the probability Atlanta beats any other NL team
+is usually around 2/3. This makes sense in a lot of ways. For instance, if
+Atlanta has a three-game series with the Giants, odds are good that Atlanta will
+win 2 of the 3 games. Moreover, as we can see in the table above, there is less
+than a 5% chance that the Giants will sweep Atlanta.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/E24KZ1Z.png&quot; alt=&quot;plot of chunk NL_probs_bottom_team&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;The BT model indicates that the Miami Marlins are the worst team in the National
+League. Despite their poor performance this season, except for the Braves and
+the Cardinals, the Marlins have a legitimate chance to beat other NL teams. This
+is especially the case against the other bottom NL teams, such as the Cubs and
+the Mets.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/ikAMFQS.png&quot; alt=&quot;plot of chunk NL_probs_middle_team&quot;&gt; &lt;/p&gt;
+
+&lt;h2&gt;What&amp;#39;s Next?&lt;/h2&gt;
+
+&lt;p&gt;The above post ranked the teams within the American and National leagues
+separately for the current season, but similar data are also available on ESPN
+going back to 2002. With this in mind, obvious extensions are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Rank the leagues together after scraping the &lt;a href=&quot;http://en.wikipedia.org/wiki/Interleague_play&quot;&gt;interleague play&lt;/a&gt; matchups.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Examine how ranks change over time.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Include previous matchup records as prior information for later seasons.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Predict future games. Standard errors should not be ignored here.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add covariates (e.g., home-field advantage) to the BT model.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Brief Look at Mixture Discriminant Analysis</title>
+   <link href="http://ramhiser.com/r/statistics/machine%20learning/classification/mixture%20models/2013/07/02/a-brief-look-at-mixture-discriminant-analysis/"/>
+   <updated>2013-07-02T10:01:00-05:00</updated>
+   <id>http://ramhiser.com/r/statistics/machine%20learning/classification/mixture%20models/2013/07/02/a-brief-look-at-mixture-discriminant-analysis</id>
+   <content type="html">&lt;p&gt;Lately, I have been working with finite mixture models for my postdoctoral work
+on data-driven automated &lt;a href=&quot;http://en.wikipedia.org/wiki/Gate_%28cytometry%29&quot;&gt;gating&lt;/a&gt;.
+Given that I had barely scratched the surface with mixture models in the
+classroom, I am becoming increasingly comfortable with them. With this in mind,
+I wanted to explore their application to classification because there are times
+when a single class is clearly made up of multiple subclasses that are not
+necessarily adjacent.&lt;/p&gt;
+
+&lt;p&gt;As far as I am aware, there are two main approaches (there are lots and lots of
+variants!) to applying finite mixture models to classfication:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf&quot;&gt;Fraley and Raftery approach&lt;/a&gt; via &lt;a href=&quot;http://cran.r-project.org/web/packages/mclust/index.html&quot;&gt;the mclust R package&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;http://www.jstor.org/stable/2346171&quot;&gt;Hastie and Tibshirani approach&lt;/a&gt; via &lt;a href=&quot;http://cran.r-project.org/web/packages/mda/index.html&quot;&gt;the mda R package&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Although the methods are similar, I opted for exploring the latter method. Here
+is the general idea. There are $$K \ge 2$$ classes, and each class is assumed to
+be a Gaussian mixuture of subclasses. Hence, the model formulation is generative,
+and the posterior probability of class membership is used to classify an
+unlabeled observation. Each subclass is assumed to have its own mean vector, but
+all subclasses share the same covariance matrix for model parsimony. The model
+parameters are estimated via &lt;a href=&quot;http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm&quot;&gt;the EM algorithm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Because the details of the likelihood in the paper are brief, I realized I was a
+bit confused with how to write the likelihood in order to determine how much
+each observation contributes to estimating the common covariance matrix in the
+M-step of the EM algorithm. Had each subclass had its own covariance matrix, the
+likelihood would simply be the product of the individual class likelihoods and
+would have been straightforward. The source of my confusion was how to write
+the complete data likelihood when the classes share parameters.&lt;/p&gt;
+
+&lt;p&gt;I decided to write up a document that explicitly defined the likelihood and
+provided the details of the EM algorithm used to estimate the model parameters.
+&lt;a href=&quot;http://ramhiser.com/research/mixture-discriminant-analysis.html&quot;&gt;The document is available here&lt;/a&gt;
+along with &lt;a href=&quot;https://github.com/ramey/tech-reports/tree/master/mixture-discrim-analysis&quot;&gt;the LaTeX and R code&lt;/a&gt;.
+If you are inclined to read the document, please let me know if any notation is
+confusing or poorly defined. Note that I did not include the additional topics
+on reduced-rank discrimination and shrinkage.&lt;/p&gt;
+
+&lt;p&gt;To see how well the mixture discriminant analysis (MDA) model worked, I
+constructed a simple toy example consisting of 3 bivariate classes each having 3
+subclasses. The subclasses were placed so that within a class, no subclass is
+adjacent. The result is that no class is Gaussian. I was interested in seeing
+if the MDA classifier could identify the subclasses and also comparing its
+decision boundaries with those of &lt;a href=&quot;http://en.wikipedia.org/wiki/Linear_discriminant_analysis&quot;&gt;linear discriminant analysis (LDA)&lt;/a&gt;
+and &lt;a href=&quot;http://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis&quot;&gt;quadratic discriminant analysis (QDA)&lt;/a&gt;.
+I used the implementation of the LDA and QDA classifiers in &lt;a href=&quot;http://cran.r-project.org/web/packages/MASS/index.html&quot;&gt;the MASS package&lt;/a&gt;.
+From the scatterplots and decision boundaries given below,
+the LDA and QDA classifiers yielded puzzling decision boundaries as expected.
+Contrarily, we can see that the MDA classifier does a good job of identifying
+the subclasses. It is important to note that all subclasses in this example have
+the same covariance matrix, which caters to the assumption employed in the MDA
+classifier. It would be interesting to see how sensitive the classifier is to
+deviations from this assumption. Moreover, perhaps a more important investigation
+would be to determine how well the MDA classifier performs as the feature
+dimension increases relative to the sample size.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/LIQPL0u.png&quot; alt=&quot;LDA Decision Boundaries&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/GeyXCsf.png&quot; alt=&quot;QDA Decision Boundaries&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/lw0iBxe.png&quot; alt=&quot;MDA Decision Boundaries&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;``` r Comparison of LDA, QDA, and MDA
+library(MASS)
+library(mvtnorm)
+library(mda)
+library(ggplot2)&lt;/p&gt;
+
+&lt;p&gt;set.seed(42)
+n &amp;lt;- 500&lt;/p&gt;
+
+&lt;h1&gt;Randomly sample data&lt;/h1&gt;
+
+&lt;p&gt;x11 &amp;lt;- rmvnorm(n = n, mean = c(-4, -4))
+x12 &amp;lt;- rmvnorm(n = n, mean = c(0, 4))
+x13 &amp;lt;- rmvnorm(n = n, mean = c(4, -4))&lt;/p&gt;
+
+&lt;p&gt;x21 &amp;lt;- rmvnorm(n = n, mean = c(-4, 4))
+x22 &amp;lt;- rmvnorm(n = n, mean = c(4, 4))
+x23 &amp;lt;- rmvnorm(n = n, mean = c(0, 0))&lt;/p&gt;
+
+&lt;p&gt;x31 &amp;lt;- rmvnorm(n = n, mean = c(-4, 0))
+x32 &amp;lt;- rmvnorm(n = n, mean = c(0, -4))
+x33 &amp;lt;- rmvnorm(n = n, mean = c(4, 0))&lt;/p&gt;
+
+&lt;p&gt;x &amp;lt;- rbind(x11, x12, x13, x21, x22, x23, x31, x32, x33)
+train_data &amp;lt;- data.frame(x, y = gl(3, 3 * n))&lt;/p&gt;
+
+&lt;h1&gt;Trains classifiers&lt;/h1&gt;
+
+&lt;p&gt;lda&lt;em&gt;out &amp;lt;- lda(y ~ ., data = train&lt;/em&gt;data)
+qda&lt;em&gt;out &amp;lt;- qda(y ~ ., data = train&lt;/em&gt;data)
+mda&lt;em&gt;out &amp;lt;- mda(y ~ ., data = train&lt;/em&gt;data)&lt;/p&gt;
+
+&lt;h1&gt;Generates test data that will be used to generate the decision boundaries via&lt;/h1&gt;
+
+&lt;h1&gt;contours&lt;/h1&gt;
+
+&lt;p&gt;contour_data &amp;lt;- expand.grid(X1 = seq(-8, 8, length = 300),
+                            X2 = seq(-8, 8, length = 300))&lt;/p&gt;
+
+&lt;h1&gt;Classifies the test data&lt;/h1&gt;
+
+&lt;p&gt;lda&lt;em&gt;predict &amp;lt;- data.frame(contour&lt;/em&gt;data,
+                          y = as.numeric(predict(lda&lt;em&gt;out, contour&lt;/em&gt;data)$class))
+qda&lt;em&gt;predict &amp;lt;- data.frame(contour&lt;/em&gt;data,
+                          y = as.numeric(predict(qda&lt;em&gt;out, contour&lt;/em&gt;data)$class))
+mda&lt;em&gt;predict &amp;lt;- data.frame(contour&lt;/em&gt;data,
+                          y = as.numeric(predict(mda&lt;em&gt;out, contour&lt;/em&gt;data)))&lt;/p&gt;
+
+&lt;h1&gt;Generates plots&lt;/h1&gt;
+
+&lt;p&gt;p &amp;lt;- ggplot(train&lt;em&gt;data, aes(x = X1, y = X2, color = y)) + geom&lt;/em&gt;point()
+p + stat&lt;em&gt;contour(aes(x = X1, y = X2, z = y), data = lda&lt;/em&gt;predict)
+  + ggtitle(&amp;quot;LDA Decision Boundaries&amp;quot;)
+p + stat&lt;em&gt;contour(aes(x = X1, y = X2, z = y), data = qda&lt;/em&gt;predict)
+  + ggtitle(&amp;quot;QDA Decision Boundaries&amp;quot;)
+p + stat&lt;em&gt;contour(aes(x = X1, y = X2, z = y), data = mda&lt;/em&gt;predict)
+  + ggtitle(&amp;quot;MDA Decision Boundaries&amp;quot;)
+```&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>High-Dimensional Microarray Data Sets in R for Machine Learning</title>
+   <link href="http://ramhiser.com/r/machine%20learning/statistics/bioinformatics/microarray/data/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning/"/>
+   <updated>2012-12-29T14:48:00-06:00</updated>
+   <id>http://ramhiser.com/r/machine%20learning/statistics/bioinformatics/microarray/data/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning</id>
+   <content type="html">&lt;p&gt;Much of my research in machine learning is aimed at small-sample, high-dimensional bioinformatics data sets. For instance, here is &lt;a href=&quot;http://www.tandfonline.com/doi/full/10.1080/00949655.2011.625946&quot;&gt;a paper of mine on the topic&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A large number of papers proposing new machine-learning methods that target high-dimensional data use the same two data sets and consider few others. These data sets are the 1) &lt;a href=&quot;https://github.com/ramey/datamicroarray/wiki/Alon-%281999%29&quot;&gt;Alon colon cancer data set&lt;/a&gt;, and the 2) &lt;a href=&quot;https://github.com/ramey/datamicroarray/wiki/Golub-%281999%29&quot;&gt;Golub leukemia data set&lt;/a&gt;. Both of the corresponding papers were published in 1999, which indicates that the methods are not keeping up with the data-collection techology. Furthermore, the Golub data set is not useful as a benchmark data set because it is well-separated so that most methods have nearly perfect classification.&lt;/p&gt;
+
+&lt;p&gt;My goal has been to find several alternative data sets and provide them in a convenient location so that I could load and analyze them easily and then incorporate the results into my papers. Initially, I aimed to identify a few more data sets, but after I got going on this effort, I found a lot more. What started as a small project turned into something that has saved me a lot of time. I have created the &lt;a href=&quot;https://github.com/ramey/datamicroarray&quot;&gt;datamicroarray package available from my GitHub account&lt;/a&gt;. For each data set included in the package, I have provided a script to download, clean, and save the data set as a named list. See the &lt;a href=&quot;https://github.com/ramey/datamicroarray/blob/master/README.md&quot;&gt;README file&lt;/a&gt; for more details about how the data are stored.&lt;/p&gt;
+
+&lt;p&gt;Currently, the package consists of 20 small-sample, high-dimensional data sets to assess machine learning algorithms and models. I have also included a &lt;a href=&quot;https://github.com/ramey/datamicroarray/wiki&quot;&gt;wiki on the package&amp;#39;s GitHub repository&lt;/a&gt; that describes each data set and provides additional information, including a link to the original papers.&lt;/p&gt;
+
+&lt;p&gt;The biggest drawback at the moment is the file size of the R package because I store an RData file for each data set. I am investigating alternative approaches to download the data dynamically and am open to suggestions. Also note that the data descriptions are incomplete, so assistance is appreciated.&lt;/p&gt;
+
+&lt;p&gt;Feel free to use any of the data sets. As a disclaimer, you should ensure that the data are processed correctly before analyzing and incorporating the results into your own work.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How to Download Kaggle Data with Python and requests.py</title>
+   <link href="http://ramhiser.com/kaggle/python/requests.py/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py/"/>
+   <updated>2012-11-23T10:08:00-06:00</updated>
+   <id>http://ramhiser.com/kaggle/python/requests.py/2012/11/23/how-to-download-kaggle-data-with-python-and-requests-dot-py</id>
+   <content type="html">&lt;p&gt;Recently I started playing with &lt;a href=&quot;http://kaggle.com&quot;&gt;Kaggle&lt;/a&gt;. I quickly became frustrated that in order to download their data I had to use their website. I prefer instead the option to download the data programmatically. After some Googling, &lt;a href=&quot;http://www.kaggle.com/c/ClaimPredictionChallenge/forums/t/772/downloading-the-data-from-kaggle-to-remote-linux-instance&quot;&gt;the best recommendation I found&lt;/a&gt; was to use &lt;a href=&quot;http://en.wikipedia.org/wiki/Lynx_(web_browser)&quot;&gt;lynx&lt;/a&gt;. &lt;a href=&quot;http://twitter.com/amcclosky&quot;&gt;My friend Anthony&lt;/a&gt; recommended that alternatively I should write a Python script.&lt;/p&gt;
+
+&lt;p&gt;Although Python is not my primary language, I was intrigued by how simple it was to write the script using &lt;a href=&quot;http://docs.python-requests.org/&quot;&gt;requests.py&lt;/a&gt;. In this example, I download the training data set from &lt;a href=&quot;http://www.kaggle.com/c/digit-recognizer/data&quot;&gt;Kaggle&amp;#39;s Digit Recognizer competition&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The idea is simple:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Attempt to download a file from Kaggle but get blocked because you are not logged in.&lt;/li&gt;
+&lt;li&gt;Login with &lt;a href=&quot;http://docs.python-requests.org/&quot;&gt;requests.py&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Download the data.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here&amp;#39;s the code:&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/4121260.js&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;Simply change &lt;code&gt;my_username&lt;/code&gt; and &lt;code&gt;my_password&lt;/code&gt; to your Kaggle login info. Feel free to optimize the chunk size to your liking.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Setting Up the Development Version of R</title>
+   <link href="http://ramhiser.com/r/workflow/2012/08/28/setting-up-the-development-version-of-r/"/>
+   <updated>2012-08-28T20:42:00-05:00</updated>
+   <id>http://ramhiser.com/r/workflow/2012/08/28/setting-up-the-development-version-of-r</id>
+   <content type="html">&lt;p&gt;My &lt;a href=&quot;http://rglab.org&quot;&gt;coworkers&lt;/a&gt; at &lt;a href=&quot;http://fhcrc.org&quot;&gt;Fred Hutchinson&lt;/a&gt; regularly use
+the development version of &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt; (i.e., &lt;code&gt;R-devel&lt;/code&gt;) and have urged me to do the same.
+This post details how I have set up the development version of R on our Linux server,
+which I use remotely because it is much faster than my Mac.&lt;/p&gt;
+
+&lt;p&gt;First, I downloaded the &lt;code&gt;R-devel&lt;/code&gt; source into &lt;code&gt;~/local/&lt;/code&gt;, which is short for &lt;code&gt;/home/jramey/local/&lt;/code&gt; via Subversion, configured my
+installation, and compiled the source. I recommend these &lt;a href=&quot;http://developer.r-project.org/SVNtips.html&quot;&gt;Subversion tips&lt;/a&gt;
+if you are building from source. Here are the commands to install &lt;code&gt;R-devel&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/local/R-devel
+./tools/rsync-recommended
+./configure --prefix&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/jramey/local/
+make
+make install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, &lt;a href=&quot;http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync&quot;&gt;go here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We have the release version (currently, it is 2.15.1) installed in &lt;code&gt;/usr/local/bin&lt;/code&gt;. But the goal here is to give priority to &lt;code&gt;R-devel&lt;/code&gt;. So, I add the following to my &lt;code&gt;~/.bashrc&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/local/bin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;PATH
+
+&lt;span class=&quot;c&quot;&gt;# Never save or restore when running R&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;R --no-save --no-restore-data --quiet&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Notice that the last line that I add to my &lt;code&gt;~/.bashrc&lt;/code&gt; file is to load &lt;code&gt;R-devel&lt;/code&gt; quietly without saving or restoring.&lt;/p&gt;
+
+&lt;p&gt;Next, I install the R packages that I use the most.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;devtools&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;ProjectTemplate&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;knitr&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;ggplot2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;reshape2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                   &lt;span class=&quot;s&quot;&gt;&amp;#39;plyr&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Rcpp&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;mvtnorm&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;caret&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; dep &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then, I update my &lt;code&gt;.Rprofile&lt;/code&gt; file, which I keep in a Github gist.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/1378639.js?file=.bash_profile&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;Finally, my &lt;a href=&quot;http://rglab.org&quot;&gt;coworkers&lt;/a&gt; focus on &lt;a href=&quot;http://en.wikipedia.org/wiki/Flow_cytometry&quot;&gt;flow cytometry&lt;/a&gt; data, and our group
+maintains several &lt;a href=&quot;http://www.bioconductor.org/&quot;&gt;Bioconductor&lt;/a&gt; packages related to this type of data. To install the majority of
+them, we simply install the &lt;a href=&quot;http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html&quot;&gt;flowWorkspace&lt;/a&gt; package in R:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://bioconductor.org/biocLite.R&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+biocLite&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;flowWorkspace&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Chapter 2 Solutions - Statistical Methods in Bioinformatics</title>
+   <link href="http://ramhiser.com/textbook/solutions/bioinformatics/statistics/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/"/>
+   <updated>2012-08-14T20:42:00-05:00</updated>
+   <id>http://ramhiser.com/textbook/solutions/bioinformatics/statistics/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics</id>
+   <content type="html">&lt;p&gt;As I have mentioned previously, I have begun reading &lt;a href=&quot;http://amzn.to/PiXCiU&quot;&gt;Statistical Methods in Bioinformatics by Ewens and Grant&lt;/a&gt; and working selected problems for each chapter. In this post, I will give my solution to two problems. The first problem is pretty straightforward.&lt;/p&gt;
+
+&lt;h2&gt;Problem 2.20&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Suppose that a parent of genetic type &lt;em&gt;Mm&lt;/em&gt; has three children. Then the parent transmits the &lt;em&gt;M&lt;/em&gt; gene to each child with probability 1/2, and &lt;strong&gt;the genes that are transmitted to each of the three children are independent&lt;/strong&gt;. Let $$I&lt;em&gt;1 = 1$$ if children 1 and 2 had the same gene transmitted, and $$I&lt;/em&gt;1 = 0$$ otherwise. Similarly, let $$I&lt;em&gt;2 = 1$$ if children 1 and 3 had the same gene transmitted, $$I&lt;/em&gt;2 = 0$$ otherwhise, and let $$I&lt;em&gt;3 = 1$$ if children 2 and 3 had the same gene transmitted, $$I&lt;/em&gt;3 = 0$$ otherwise.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The question first asks us to how that the three random variables are pairwise independent but not independent. The pairwise independence comes directly from the bolded phrase in the problem statement. Now, to show that the three random variables are not independent, denote by $$p&lt;em&gt;j$$ the probability that $$I&lt;/em&gt;j = 1$$, $$j = 1, 2, 3$$. If we had independence, then the following statement would be true:&lt;/p&gt;
+
+&lt;p&gt;$$
+P(I&lt;em&gt;1 = 1, I&lt;/em&gt;2 = 1, I&lt;em&gt;3 = 0) = p&lt;/em&gt;1 p&lt;em&gt;2 (1 - p&lt;/em&gt;3).
+$$&lt;/p&gt;
+
+&lt;p&gt;However, notice that the event in the lefthand side can never happen because if $$I&lt;em&gt;1 = 1$$ and $$I&lt;/em&gt;2 = 1$$, then $$I_3$$ must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.&lt;/p&gt;
+
+&lt;p&gt;The question also asks us to discuss why the variance of $$I&lt;em&gt;1 + I&lt;/em&gt;2 + I_3$$ is equal to the sum of the individual variances. Often, this is only the case of the random variables are independent. But because the random variables here are pairwise independent, the covariances must be 0. Thus, the equality must hold.&lt;/p&gt;
+
+&lt;h2&gt;Problems 2.23 - 2.27&lt;/h2&gt;
+
+&lt;p&gt;While I worked the above problem because of its emphasis on genetics, the following set of problems is much more fun in terms of the mathematics because of its usage of approximations.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;For $$i = 1, \ldots, n$$, let $$X&lt;em&gt;i$$ be the $$i$$th lifetime of certain cellular proteins until degradation. We assume that $$X&lt;/em&gt;1, \ldots, X_n$$ are iid random variables, each of which is &lt;a href=&quot;http://en.wikipedia.org/wiki/Exponential_distribution&quot;&gt;exponentially distributed&lt;/a&gt; with rate parameter $$\lambda &amp;gt; 0$$. Furthermore, let $$n = 2m + 1$$ be an odd integer.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This set of questions is concerned with the mean and variance of the sample median, $$X&lt;em&gt;{(m + 1)}$$, where $$X&lt;/em&gt;{(i)}$$ denotes the $$i$$th &lt;a href=&quot;http://en.wikipedia.org/wiki/Order_statistic&quot;&gt;order statistic&lt;/a&gt;. First, note that the mean and variance of the minimum value $$X&lt;em&gt;{(1)}$$ are $$1/(n\lambda)$$ and $$1/(n\lambda)^2$$, respectively. From the &lt;a href=&quot;http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions&quot;&gt;memoryless property&lt;/a&gt; of the &lt;a href=&quot;http://en.wikipedia.org/wiki/Exponential_distribution&quot;&gt;exponential distribution&lt;/a&gt;, the mean value of the time until the next protein degrades is independent of the previous. However, there are now $$n - 1$$ proteins remaining. Thus, the mean and variance of $$X&lt;/em&gt;{(2)}$$ are $$1/(n\lambda) + 1/((n-1)\lambda)$$ and $$1/(n\lambda)^2 + 1/((n-1)\lambda)^2$$, respectively. Continuining in this manner, we have&lt;/p&gt;
+
+&lt;p&gt;$$
+E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
+$$&lt;/p&gt;
+
+&lt;p&gt;and&lt;/p&gt;
+
+&lt;p&gt;$$
+Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
+$$&lt;/p&gt;
+
+&lt;h3&gt;Approximation of $$E[X_{(m + 1)}]$$&lt;/h3&gt;
+
+&lt;p&gt;Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have&lt;/p&gt;
+
+&lt;p&gt;$$
+\sum_{k=1}^n \frac{1}{k} \approx \log n + \gamma,
+$$&lt;/p&gt;
+
+&lt;p&gt;where $$\gamma$$ is &lt;a href=&quot;http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant&quot;&gt;Euler&amp;#39;s constant&lt;/a&gt;. Then, we can write the expected sample median as&lt;/p&gt;
+
+&lt;p&gt;$$
+\begin{aligned}
+E[X&lt;em&gt;{(m + 1)}] &amp;amp;= \frac{1}{\lambda} \sum&lt;/em&gt;{k=m+1}^{2m+1} \frac{1}{k}\
+&amp;amp;= \frac{1}{\lambda} \left(\sum&lt;em&gt;{k=1}^{2m+1} \frac{1}{k} - \sum&lt;/em&gt;{k=1}^{m} \frac{1}{k} \right)\
+&amp;amp;\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\
+&amp;amp;= \frac{1}{\lambda} \log \left(2 + \frac{1}{m} \right).
+\end{aligned}
+$$&lt;/p&gt;
+
+&lt;p&gt;Hence, as $$n \rightarrow \infty$$, this approximation goes to $$ \frac{\log 2}{\lambda}$$, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to $$F&lt;em&gt;X(x) = 1/2$$, where $$F&lt;/em&gt;X$$ denotes the &lt;a href=&quot;http://en.wikipedia.org/wiki/Cumulative_distribution_function&quot;&gt;cumulative distribution function&lt;/a&gt; of the random variable $$X$$.&lt;/p&gt;
+
+&lt;h3&gt;Improved Approximation of $$E[X_{(m + 1)}]$$&lt;/h3&gt;
+
+&lt;p&gt;It turns out that we can improve this approximation with the following two results:&lt;/p&gt;
+
+&lt;p&gt;$$
+\begin{aligned}
+\sum_{k=1}^n \frac{1}{k} &amp;amp;= \log n + \frac{1}{2n} + o\left(\frac{1}{n}\right),\
+\log \left(\frac{2m + 1}{m}\right) &amp;amp;= \log 2 + \frac{1}{2m} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$&lt;/p&gt;
+
+&lt;p&gt;Following the derivation of our above approximation, we have that&lt;/p&gt;
+
+&lt;p&gt;$$
+\begin{aligned}
+E[X&lt;em&gt;{(m + 1)}] &amp;amp;= \frac{1}{\lambda} \left(\sum&lt;/em&gt;{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\
+&amp;amp;= \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\
+&amp;amp;= \frac{1}{\lambda} \left[ \log \left( \frac{2m + 1}{m} \right) + \frac{1}{2(2m+1)} - \frac{1}{2m} + o\left(\frac{1}{m}\right)  \right]\
+&amp;amp;= \frac{\log 2}{\lambda} + \frac{1}{2\lambda (2m + 1)} + o\left(\frac{1}{m}\right).
+\end{aligned}
+$$&lt;/p&gt;
+
+&lt;h3&gt;Approximation of $$Var[X_{(m + 1)}]$$&lt;/h3&gt;
+
+&lt;p&gt;We can also approximate $$Var[X_{(m + 1)}]$$ using the approximation&lt;/p&gt;
+
+&lt;p&gt;$$
+\frac{1}{a^2} + \frac{1}{(a+1)^2} + \ldots + \frac{1}{b^2} \approx \frac{1}{a - 1/2} - \frac{1}{b + 1/2}.
+$$&lt;/p&gt;
+
+&lt;p&gt;With $$a = m+1$$ and $$b = 2m + 1$$, we have&lt;/p&gt;
+
+&lt;p&gt;$$
+Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
+$$&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Textbook - Statistical Methods in Bioinformatics</title>
+   <link href="http://ramhiser.com/textbook/solutions/bioinformatics/statistics/2012/08/14/textbook-statistical-methods-in-bioinformatics/"/>
+   <updated>2012-08-14T20:17:00-05:00</updated>
+   <id>http://ramhiser.com/textbook/solutions/bioinformatics/statistics/2012/08/14/textbook-statistical-methods-in-bioinformatics</id>
+   <content type="html">&lt;p&gt;As part of my effort to acquaint myself more with biology, bioinformatics, and statistical genetics, I am trying to find as many resources as I can that provide a solid foundation. For instance, I am wading through &lt;a href=&quot;http://amzn.to/Mx5jCm&quot;&gt;Molecular Biology of the Cell&lt;/a&gt; at a pace of about 10-15 pages per day -- this takes nearly an hour every day.&lt;/p&gt;
+
+&lt;p&gt;I am also going through &lt;a href=&quot;http://amzn.to/PiXCiU&quot;&gt;Statistical Methods in Bioinformatics by Ewens and Grant&lt;/a&gt; and working selected problems for each chapter. My intention is to post my solutions to these chapter exercises. Thus far, I have made it through the first three chapters, and I will begin posting my solutions soon. I am interested particularly in problems regarding statistical topics with which I have little-to-no experience and also topics where I lack intuition regarding the biological applications.&lt;/p&gt;
+
+&lt;p&gt;Here is a thumbnail of the book:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://amzn.to/PiXCiU&quot;&gt;&lt;img src=&quot;http://ecx.images-amazon.com/images/I/41UT3fUB%2BKL._BO2,204,203,200_PIsitb-sticker-arrow-click,TopRight,35,-76_AA300_SH20_OU01_.jpg&quot; alt=&quot;Statistical Methods in Bioinformatics Textbook&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Now That We Live in Seattle</title>
+   <link href="http://ramhiser.com/seattle/2012/08/11/now-that-we-live-in-seattle/"/>
+   <updated>2012-08-11T10:29:00-05:00</updated>
+   <id>http://ramhiser.com/seattle/2012/08/11/now-that-we-live-in-seattle</id>
+   <content type="html">&lt;p&gt;It has been just a few weeks since &lt;a href=&quot;http://ramhiserfamily.wordpress.com/&quot;&gt;my wife, my son, and I&lt;/a&gt; moved to Seattle so that I could begin my postdoc at &lt;a href=&quot;http://www.fhcrc.org/en.html&quot;&gt;The Hutch&lt;/a&gt;. Now that we have been here a short time and are settled, we intend to start exploring Seattle, doing typical touristy things as well as non-touristy activities that only Seattlites would do. My wife purchased a detailed guide to Seattle that lists numerous activities, restaurants, scenery, etc. that would take months (years?) to complete. I prefer word of mouth though, so I asked some coworkers for recommendations. Here&amp;#39;s what they gave me:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.spaceneedle.com/&quot;&gt;The Space Needle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.pikeplacemarket.org/&quot;&gt;Pike Place Market&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://ridetheslut.com/&quot;&gt;Ride The Slut&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.chandlerscrabhouse.com/&quot;&gt;Chandler&amp;#39;s Crabhouse&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.seattleartmuseum.org/&quot;&gt;Seattle Art Museum&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.seattle.gov/parks/environment/discovery.htm&quot;&gt;Discovery Park&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Walk around the &lt;a href=&quot;http://www.myballard.com/&quot;&gt;Ballard neighborhood&lt;/a&gt; -- in particular, the Northwest Market.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://depts.washington.edu/uwbg/gardens/wpa.shtml&quot;&gt;The Arboretum&lt;/a&gt; near &lt;a href=&quot;http://www.washington.edu/&quot;&gt;UW&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Take a ferry to &lt;a href=&quot;http://en.wikipedia.org/wiki/Bainbridge_Island,_Washington&quot;&gt;Bainbridge Island&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The new &lt;a href=&quot;http://seattlegreatwheel.com/&quot;&gt;ferris wheel&lt;/a&gt; in downtown Seattle&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.3pubs.com/Latona.html&quot;&gt;Latona Pub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My coworkers recommended parking at &lt;a href=&quot;http://www.fhcrc.org/en.html&quot;&gt;The Hutch&lt;/a&gt; and riding &lt;a href=&quot;http://ridetheslut.com/&quot;&gt;The Slut&lt;/a&gt; to &lt;a href=&quot;http://www.westlakecenter.com/&quot;&gt;Westlake Center&lt;/a&gt; and then walking to &lt;a href=&quot;http://www.pikeplacemarket.org/&quot;&gt;Pike Place&lt;/a&gt; -- avoids traffic. Also, they recommended thta we combine &lt;a href=&quot;http://www.seattle.gov/parks/environment/discovery.htm&quot;&gt;Discovery Park&lt;/a&gt; and Ballard into one day. They said the view of Seattle from the ferry when returning from &lt;a href=&quot;http://en.wikipedia.org/wiki/Bainbridge_Island,_Washington&quot;&gt;Bainbridge Island&lt;/a&gt; is breathtaking.&lt;/p&gt;
+
+&lt;p&gt;My wife and I like to hike, so I also asked my coworkers for recommendations. Overwhelmingly, they said these two places:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wta.org/go-hiking/hikes/snow-lake-1/&quot;&gt;Snow Lake&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wta.org/go-hiking/seasonal-hikes/hikes-of-the-week/middle-fork-snoqualmie-river&quot;&gt;Middle Fork&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Any other recommendations? In particular, are there any restaurants that you&amp;#39;d recommend?&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>And Now I Blog Again</title>
+   <link href="http://ramhiser.com/misc/2012/08/04/and-now-i-blog-again/"/>
+   <updated>2012-08-04T10:19:00-05:00</updated>
+   <id>http://ramhiser.com/misc/2012/08/04/and-now-i-blog-again</id>
+   <content type="html">&lt;p&gt;One of my &lt;a href=&quot;http://ramhiser.com/blog/2012/01/09/goals-for-2012/&quot;&gt;goals for 2012&lt;/a&gt; has been to blog more. Much more. When I first set this goal, I had great aspirations of posting frequently. However, I
+had a Ph.D. to complete, and quite frankly, it demanded much higher priority. Now that I have submitted my dissertation and completed my Ph.D. requirements, I have several half-finished posts that will
+appear soon. Also, since I have made the switch to &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt;, I will be relocating selected posts from my previous Wordpress blog.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Goals for 2012</title>
+   <link href="http://ramhiser.com/thoughts/goals/2012/01/09/goals-for-2012/"/>
+   <updated>2012-01-09T08:18:00-06:00</updated>
+   <id>http://ramhiser.com/thoughts/goals/2012/01/09/goals-for-2012</id>
+   <content type="html">&lt;p&gt;I have never been one to set New Year&amp;#39;s resolutions. Personally, they instill a dangerous personal freedom that often yield naive, subconscious mentalities, such as I can do anything I want until December 31, and I will change abruptly the next day. However, my Ph.D. adviser has shown me the importance of setting goals in all things that I wish to accomplish as well as envisioning the finale to an arduous journey like a small child (read &amp;quot;John Ramey&amp;quot;) that pictures the waning warmth of fresh chocolate chip cookies smeared on his face. My adviser has always encouraged short-term and long-term goals but never required them. As I recently found out, my employer does. In addition, these goals are reviewed at the end of the fiscal year so that employees are realistic and held accountable.&lt;/p&gt;
+
+&lt;p&gt;Now that I must list these formally at work, I have decided to post a number of career and personal goals here in order to hold myself accountable at the end of 2012 with the implicit assumption that &lt;a href=&quot;http://en.wikipedia.org/wiki/2012_phenomenon&quot;&gt;the world does not end&lt;/a&gt;. So, one year from now, if we are still here (&lt;strong&gt;chuckle&lt;/strong&gt;), I will review my goal-completion success.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Read to my son (almost) nightly.&lt;/li&gt;
+&lt;li&gt;Hear my son laugh (almost) nightly.&lt;/li&gt;
+&lt;li&gt;Take my wife out for a date night each week.&lt;/li&gt;
+&lt;li&gt;Treat my wife to a significant outing each month.&lt;/li&gt;
+&lt;li&gt;Finish dissertation.&lt;/li&gt;
+&lt;li&gt;Successfully defend dissertation.&lt;/li&gt;
+&lt;li&gt;Submit 4-6 articles for publication.&lt;/li&gt;
+&lt;li&gt;Submit at least 3 R packages to &lt;a href=&quot;http://cran.r-project.org/&quot;&gt;CRAN&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Attend at least three conferences.&lt;/li&gt;
+&lt;li&gt;Make at least two conference presentations.&lt;/li&gt;
+&lt;li&gt;Find/maintain employment.&lt;/li&gt;
+&lt;li&gt;Construct detailed plan and outline for my textbook.&lt;/li&gt;
+&lt;li&gt;Take a real vacation.&lt;/li&gt;
+&lt;li&gt;Run a half marathon. (I will consider this a success if I have signed up for an early 2013 race.)&lt;/li&gt;
+&lt;li&gt;Transition my personal website from Wordpress to Octopress.&lt;/li&gt;
+&lt;li&gt;Blog more.&lt;/li&gt;
+&lt;li&gt;Check Tweets and email twice daily at a scheduled time.&lt;/li&gt;
+&lt;li&gt;Spend time with my extended family.&lt;/li&gt;
+&lt;li&gt;Read the literature at a scheduled time.&lt;/li&gt;
+&lt;li&gt;Finish reading Izenman&amp;#39;s Multivariate text.&lt;/li&gt;
+&lt;li&gt;Read Lehmann&amp;#39;s &lt;a href=&quot;http://www.amazon.com/Reminiscences-Statistician-Company-Kept-ebook/dp/B0016Q4P26/ref=wl_it_dp_o_npd?ie=UTF8&amp;amp;coliid=I3T6NZ0PE0490O&amp;amp;colid=2LV0B8J7GGR69&quot;&gt;Reminiscences of a Statistician: The Company I Kept&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Read Ewens and Grant&amp;#39;s bioinformatics text.&lt;/li&gt;
+&lt;li&gt;Read Bishop&amp;#39;s PRML text.&lt;/li&gt;
+&lt;li&gt;Read Gaussian Processes for Machine Learning.&lt;/li&gt;
+&lt;li&gt;Read Barber&amp;#39;s &lt;a href=&quot;http://web4.cs.ucl.ac.uk/staff/D.Barber/pmwiki/pmwiki.php?n=Main.Textbook&quot;&gt;Bayesian Reasoning and Machine Learning&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Read a significant portion of Devroye et al.&amp;#39;s Probabilistic Theory of Pattern Recognition text.&lt;/li&gt;
+&lt;li&gt;Reread Robert&amp;#39;s The Bayesian Choice.&lt;/li&gt;
+&lt;li&gt;Read Jaynes&amp;#39; Probability Theory text.&lt;/li&gt;
+&lt;li&gt;Read Berger&amp;#39;s Decision Theory text.&lt;/li&gt;
+&lt;li&gt;Watch Boyd&amp;#39;s Convex Optimization lectures.&lt;/li&gt;
+&lt;li&gt;Read the Boyd Convex Optimization text.&lt;/li&gt;
+&lt;li&gt;Finish reading Reamde.&lt;/li&gt;
+&lt;li&gt;Read Rothfuss&amp;#39; The Name of the Wind.&lt;/li&gt;
+&lt;li&gt;Become more proficient at debugging in R.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As I have assuredly not remembered the goals that I have verbally set, this list may change over the next few days.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>When I was 29...</title>
+   <link href="http://ramhiser.com/thoughts/2012/01/07/when-i-was-29-dot-dot-dot/"/>
+   <updated>2012-01-07T22:03:00-06:00</updated>
+   <id>http://ramhiser.com/thoughts/2012/01/07/when-i-was-29-dot-dot-dot</id>
+   <content type="html">&lt;p&gt;Today was my 29th birthday, and I kept things simple: I ate with my wife and my newborn son at a local eatery. Later, my wife cooked steaks for dinner. For the most part, I took the day off in that I did not work on my dissertation. But I did spent much of the day tinkering with my &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; installation -- more about that later.&lt;/p&gt;
+
+&lt;p&gt;The best part of the day was hearing my son laugh again and again. Yes, there were some messy diapers, but those are easily forgotten when my son gets the giggles.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Steve Jobs' 2005 Stanford Commencement Address</title>
+   <link href="http://ramhiser.com/motivation/2011/12/04/steve-jobs-2005-stanford-commencement-address/"/>
+   <updated>2011-12-04T13:57:00-06:00</updated>
+   <id>http://ramhiser.com/motivation/2011/12/04/steve-jobs-2005-stanford-commencement-address</id>
+   <content type="html">&lt;p&gt;Given that there are almost 13 million views of Steve Jobs’ commencement address, I am certain that I missed this video when it went viral. I am glad that I did not see it until now because I may not have appreciated his words of wisdom. And although there are numerous quotes that I could list, I think my favorites are closely related to a few words of wisdom that my grandmother told me when I was younger.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Don&amp;#39;t settle.&lt;/p&gt;
+
+&lt;p&gt;Stay hungry. Stay foolish.&lt;/p&gt;
+
+&lt;p&gt;You’ve got to find what you love, and that is as true for work as is for your lovers. Your work is gonna fill a large part of your life, and the only way to truly be satisfied is to do what you believe is great work, and the only way to do great work is to love what you do.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It’s good to be reminded of things like this once in a while.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;420&quot; src=&quot;http://www.youtube.com/embed/UF8uR6Z6KLc?color=white&amp;theme=light&quot;&gt;&lt;/iframe&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Pseudo-Random vs. Random Numbers in R</title>
+   <link href="http://ramhiser.com/r/2011/11/25/pseudo-random-vs-random-numbers-in-r/"/>
+   <updated>2011-11-25T03:08:00-06:00</updated>
+   <id>http://ramhiser.com/r/2011/11/25/pseudo-random-vs-random-numbers-in-r</id>
+   <content type="html">&lt;p&gt;Earlier, I found &lt;a href=&quot;http://www.boallen.com/random-numbers.html&quot;&gt;an interesting post from Bo Allen&lt;/a&gt; on &lt;a href=&quot;http://en.wikipedia.org/wiki/Pseudorandom_number_generator&quot;&gt;pseudo-random&lt;/a&gt; vs &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number&quot;&gt;random numbers&lt;/a&gt;, where the author uses a simple bitmap (&lt;a href=&quot;http://en.wikipedia.org/wiki/Heat_map&quot;&gt;heat map&lt;/a&gt;) to show that the &lt;strong&gt;rand&lt;/strong&gt; function in &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; has a systematic pattern and compares these to &lt;strong&gt;truly random&lt;/strong&gt; numbers obtained from &lt;a href=&quot;http://www.random.org/&quot;&gt;random.org&lt;/a&gt;. The post&amp;#39;s results suggest that pseudo-randomness in &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; is faulty and, in general, should not be underestimated in practice. Of course, the findings should not be too surprising, as there is a large body of literature on the subtleties, philosophies, and implications of the &lt;strong&gt;pseudo&lt;/strong&gt; aspect of the most common approaches to random number generation. However, it is silly that &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt;&amp;#39;s &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number_generation&quot;&gt;random number generator (RNG)&lt;/a&gt; displays such an obvious pattern nowadays because there are several decent, well-studied pseudo-RNG algorithms available as well as numerous tests for randomness.  For a good introduction to &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number_generation&quot;&gt;RNG&lt;/a&gt;, I recommend &lt;a href=&quot;http://www.johndcook.com/blog/2010/12/06/how-to-test-a-random-number-generator-2/&quot;&gt;John D. Cook&amp;#39;s discussion on testing a random number generator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, I would never use &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; for any (serious) statistical analysis, partly due to my fondness for &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt;, nor do I doubt the practicality of the &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number_generation&quot;&gt;RNG&lt;/a&gt; in &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt;. But I was curious to see what would happen. So, created equivalent plots in &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt; to see if a &lt;strong&gt;rand&lt;/strong&gt; equivalent would exhibit a systematic pattern like in &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt;, even if less severe. Also, for comparison, I chose to use &lt;a href=&quot;http://cran.r-project.org/web/packages/random/index.html&quot;&gt;the &lt;strong&gt;random&lt;/strong&gt; package&lt;/a&gt;, from &lt;a href=&quot;http://dirk.eddelbuettel.com/&quot;&gt;Dirk Eddelbuettel&lt;/a&gt;, to draw &lt;strong&gt;truly random&lt;/strong&gt; numbers from &lt;a href=&quot;http://www.random.org/&quot;&gt;random.org&lt;/a&gt;. Until today, I had only heard of &lt;a href=&quot;http://cran.r-project.org/web/packages/random/index.html&quot;&gt;the &lt;strong&gt;random&lt;/strong&gt; package&lt;/a&gt; but had never used it.&lt;/p&gt;
+
+&lt;p&gt;I have provided the function &lt;strong&gt;rand&lt;em&gt;bit&lt;/em&gt;matrix&lt;/strong&gt;, which requires the number of rows and columns to display in the plotted bitmap. To create the bitmaps, I used &lt;a href=&quot;http://cran.r-project.org/web/packages/pixmap/index.html&quot;&gt;the &lt;strong&gt;pixmap&lt;/strong&gt; package&lt;/a&gt; rather than &lt;a href=&quot;http://had.co.nz/ggplot2/&quot;&gt;the much-loved &lt;strong&gt;ggplot2&lt;/strong&gt; package&lt;/a&gt;, simply because of how easy it was for me to create the plots. (If you are concerned that I have lost the faith, please note that I am aware of the awesomeness of &lt;a href=&quot;http://had.co.nz/ggplot2/&quot;&gt;&lt;strong&gt;ggplot2&lt;/strong&gt;&lt;/a&gt; and &lt;a href=&quot;http://ramhiser.com/blog/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/&quot;&gt;its ability&lt;/a&gt; &lt;a href=&quot;http://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/&quot;&gt;to create heat maps&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;It is important to note that there were two challenges that I encountered when using drawing &lt;strong&gt;truly random numbers&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Only 10,000 numbers can be drawn at once from &lt;a href=&quot;http://www.random.org/&quot;&gt;random.org&lt;/a&gt;. (This is denoted as &lt;strong&gt;max&lt;em&gt;n&lt;/em&gt;random.org&lt;/strong&gt; in the function below.)&lt;/li&gt;
+&lt;li&gt;There is a daily limit to the number of times the &lt;a href=&quot;http://www.random.org/&quot;&gt;random.org&lt;/a&gt; service will provide numbers.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To overcome the first challenge, I split the total number of bits into separate calls, if necessary. This approach, however, increases our number of requests, and after too many requests, you will see the error: &lt;strong&gt;random.org suggests to wait until tomorrow&lt;/strong&gt;. Currently, I do not know the exact number of allowed requests or if the amount of requested random numbers is a factor, but looking back, I would guess about 20ish large requests is too much.&lt;/p&gt;
+
+&lt;p&gt;Below, I have plotted 500 x 500 bitmaps based on the &lt;em&gt;random&lt;/em&gt; bits from both of &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt; and &lt;a href=&quot;http://www.random.org/&quot;&gt;random.org&lt;/a&gt;. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; code. I am unsure if the &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; folks formally tested their &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number_generation&quot;&gt;RNG&lt;/a&gt; algorithms for &lt;strong&gt;randomness&lt;/strong&gt;, but even if they did, the code in both &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt; and &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; is straightforward and provides a quick eyeball test. Armed with similar plots alone, the &lt;a href=&quot;http://www.php.net/&quot;&gt;PHP&lt;/a&gt; devs could have sought for better &lt;a href=&quot;http://en.wikipedia.org/wiki/Random_number_generation&quot;&gt;RNG&lt;/a&gt; algorithms — perhaps, borrowed those from &lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;plyr&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pixmap&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;random&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+rand_bit_matrix &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;num_rows &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; num_cols &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; max_n_random.org &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+    seed &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# I have copied the following function directly from help(&amp;#39;integer&amp;#39;).&lt;/span&gt;
+    is.wholenumber &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; tol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;Machine&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;double.eps&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; tol
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# The number of bits to draw at &amp;#39;random&amp;#39;.&lt;/span&gt;
+    n &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; num_rows &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; num_cols
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;is.wholenumber&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kp&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;The number of bits &amp;#39;n&amp;#39; should be a natural number.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;is.null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seed&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kp&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seed&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Create a matrix of pseudo-random bits.&lt;/span&gt;
+    bits_R &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;replicate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num_cols&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; size &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num_rows&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; replace &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Because random.org will only return a maximum of 10,000 numbers at a&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# time, we break this up into several calls.&lt;/span&gt;
+    seq_n_random.org &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep.int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; max_n_random.org&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; times &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; n&lt;span class=&quot;o&quot;&gt;%/%&lt;/span&gt;max_n_random.org&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n&lt;span class=&quot;o&quot;&gt;%%&lt;/span&gt;max_n_random.org &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        seq_n_random.org &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seq_n_random.org&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; n&lt;span class=&quot;o&quot;&gt;%%&lt;/span&gt;max_n_random.org&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    bits_random.org &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seq_n_random.org&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        try_default&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;randomNumbers&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;n &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; min &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; max &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; col &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;NA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+    bits_random.org &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;unlist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bits_random.org&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; nrow &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num_rows&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; ncol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num_cols&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;R &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; bits_R&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; random.org &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; bits_random.org&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+bit_mats &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rand_bit_matrix&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;num_rows &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; num_cols &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; seed &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bit_mats&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pixmapGrey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; R&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; nrow &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;R&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; ncol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ncol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;R&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; main &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;R&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/hZd2N.png&quot; alt=&quot;plot of chunk code&quot;&gt; &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;bit_mats&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pixmapGrey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; random.org&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; nrow &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;random.org&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; 
+    ncol &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ncol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;random.org&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; main &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;random.org&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/E59lB.png&quot; alt=&quot;plot of chunk code&quot;&gt; &lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Listing of Statistics and Machine Learning Conferences</title>
+   <link href="http://ramhiser.com/statistics/statistical%20learning/machine%20learning/conferences/2011/06/12/listing-of-statistics-and-machine-learning-conferences/"/>
+   <updated>2011-06-12T17:20:00-05:00</updated>
+   <id>http://ramhiser.com/statistics/statistical%20learning/machine%20learning/conferences/2011/06/12/listing-of-statistics-and-machine-learning-conferences</id>
+   <content type="html">&lt;p&gt;Occasionally, I will query Google with “statistics conferences”, “machine learning conferences” or “pattern recognition conferences” and the like. But often, it is difficult to obtain anything
+meaningful other than the conferences of which I&amp;#39;m already aware (such as JSM, ICML, some IEEE conferences). Today, I found &lt;a href=&quot;http://www.wikicfp.com/cfp/&quot;&gt;WikiCFP&lt;/a&gt;, which is a &lt;strong&gt;A Wiki for Calls for
+Papers&lt;/strong&gt;. This seems to be what I needed. In particular, the following are very useful to me:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wikicfp.com/cfp/call?conference=machine%20learning&quot;&gt;Machine Learning on WikiCFP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wikicfp.com/cfp/call?conference=statistics&quot;&gt;Statistics on WikiCFP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It seems limited for statistics though, as JSM is not even listed.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Conway's Game of Life in R with ggplot2 and animation</title>
+   <link href="http://ramhiser.com/r/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/"/>
+   <updated>2011-06-05T19:04:00-05:00</updated>
+   <id>http://ramhiser.com/r/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation</id>
+   <content type="html">&lt;p&gt;In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with &lt;a href=&quot;http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life&quot;&gt;Conway&amp;#39;s Game of Life&lt;/a&gt;. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.&lt;/p&gt;
+
+&lt;p&gt;The basic idea is to start with a grid of cells, where each cell is either a zero (dead) or a one (alive). We are interested in watching the population behavior over time to see if the population dies off, has some sort of equilibrium, etc. &lt;a href=&quot;http://en.wikipedia.org/wiki/John_Horton_Conway&quot;&gt;John Conway&lt;/a&gt; studied many possible ways to examine population behaviors and ultimately decided on the following rules, which we apply to each cell for the current tick (or generation).&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Any live cell with fewer than two live neighbours dies, as if caused by under-population.&lt;/li&gt;
+&lt;li&gt;Any live cell with two or three live neighbours lives on to the next generation.&lt;/li&gt;
+&lt;li&gt;Any live cell with more than three live neighbours dies, as if by overcrowding.&lt;/li&gt;
+&lt;li&gt;Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Although there are &lt;a href=&quot;http://www.statisticsblog.com/2010/05/game-of-life-in-r/&quot;&gt;other versions&lt;/a&gt; of this in R, I decided to give it a shot myself. I am not going to provide a walkthrough of the code as I may normally do, but the code should be simple enough to understand for one proficient in R. It may have been unnecessary to implement this with the foreach package, but I wanted to get some more familiarity with foreach, so I did.&lt;/p&gt;
+
+&lt;p&gt;The set of grids is stored as a list, where each element is a matrix of zeros and ones. Each matrix is then converted to an image with ggplot2, and the sequence of images is exported as a MP4 video with the &lt;a href=&quot;http://cran.r-project.org/web/packages/animation/index.html&quot;&gt;animation package&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let me know if you improve on my code any. I&amp;#39;m always interested in learning how to do things better.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;foreach&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;ggplot2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;animation&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;reshape2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Determines how many neighboring cells around the (j,k)th cell have living organisms.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# The conditionals are used to check if we are at a boundary of the grid.&lt;/span&gt;
+how_many_neighbors &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  size &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;j &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; size&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;j &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; size&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; size&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; size&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; count &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  count
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Creates a list of matrices, each of which is an iteration of the Game of Life.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Arguments&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# size: the edge length of the square&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# prob: a vector (of length 2) that generates cells with probability of death and life, respectively&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# returns a list of grids (matrices)&lt;/span&gt;
+game_of_life &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;size &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; num_reps &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  grid &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;replicate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;size&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; size&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; replace &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; prob&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  dev_null &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; foreach&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;seq_len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;num_reps&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%do%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
+    foreach&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;j &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;seq_len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;size&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%:%&lt;/span&gt;
+      foreach&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;k &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;seq_len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;size&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%do%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# Apply game rules.&lt;/span&gt;
+        num_neighbors &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; how_many_neighbors&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt; j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; k&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        alive &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;alive &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; num_neighbors &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;alive &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; num_neighbors &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;alive &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; num_neighbors &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;i&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;j&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;k&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  grid
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Converts the current grid (matrix) to a ggplot2 image&lt;/span&gt;
+grid_to_ggplot &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Permutes the matrix so that melt labels this correctly.&lt;/span&gt;
+  grid &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; grid&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;seq.int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  grid &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; melt&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  grid&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;value &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;value&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Alive&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Dead&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  p &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Var1&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Var2&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; z &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; value&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; color &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; value&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  p &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; p &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; geom_tile&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;fill &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; value&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  p  &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; scale_fill_manual&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;values &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Dead&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;white&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Alive&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;black&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As an example, I have created a 50-by-50 grid with a 10% chance that its initial values will be alive. The simulation has 500 iterations. You may add more, but this takes long enough already. Note
+that the default frame rate, which is controlled by &lt;strong&gt;interval&lt;/strong&gt;, is 1 second. I set it to 0.05
+based to give a decent video.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+game_grids &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; game_of_life&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;size &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; num_reps &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; prob &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+grid_ggplot &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;game_grids&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; grid_to_ggplot&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+saveVideo&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;grid_ggplot&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; video.name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;animation.mp4&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; clean &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; interval &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.05&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I uploaded the resulting video to YouTube for your viewing pleasure.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;420&quot; src=&quot;http://www.youtube.com/embed/TkH9qwHLwxk?color=white&amp;theme=light&quot;&gt;&lt;/iframe&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Getting Started with Some Baseball Data</title>
+   <link href="http://ramhiser.com/statistics/sql/baseball/2011/05/24/getting-started-with-some-baseball-data/"/>
+   <updated>2011-05-24T21:34:00-05:00</updated>
+   <id>http://ramhiser.com/statistics/sql/baseball/2011/05/24/getting-started-with-some-baseball-data</id>
+   <content type="html">&lt;p&gt;With all of the discussions (hype?) regarding applied statistics, machine learning, and data science, I have been looking for a go-to source of data unrelated to my day-to-day work. I loved baseball as
+a kid. I love baseball now. I love baseball stats. Why not do a grown-up version of what I used to do when I spent hours staring at and memorizing baseball stats on the back of a few pieces of cardboard
+on which I spent my allowance?&lt;/p&gt;
+
+&lt;p&gt;To get started, I purchased a copy of &lt;a href=&quot;http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;amp;qid=1306290220&amp;amp;sr=8-1&quot;&gt;Baseball Hacks&lt;/a&gt;. The author suggests the usage of MySQL,
+so I will oblige. First, I downloaded some baseball data in MySQL format on my web server (Ubuntu 10.04) and decompressed it; when I downloaded the data, it was timestamped as 28 March 2011, so
+double-check if there is an updated version.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir baseball
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;baseball
+wget http://www.baseball-databank.org/files/BDB-sql-2011-03-28.sql.zip
+unzip BDB-sql-2011-03-28.sql.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, in MySQL I created a user named &lt;strong&gt;baseball&lt;/strong&gt;, a database entitled &lt;strong&gt;bbdatabank&lt;/strong&gt; and granted all privileges on this database to the user &lt;strong&gt;baseball&lt;/strong&gt;. To do this, first open MySQL as root:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mysql -u root -p
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;At the MySQL prompt, type: (Note the tick marks (`) around &lt;strong&gt;bbdatabank&lt;/strong&gt; when granting privileges.)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;USER&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;baseball&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IDENTIFIED&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;YourPassword&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;database&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bbdatabank&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;GRANT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ALL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIVILEGES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbdatabank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TO&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;baseball&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;FLUSH&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIVILEGES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;quit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, we read the data into the database we just created by:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mysql -u baseball -p -s bbdatabank &amp;lt; BDB-sql-2011-03-28.sql
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That’s it! Most of this code has been adapted from &lt;a href=&quot;http://www.amazon.com/Baseball-Hacks-Joseph-Adler/dp/0596009429/ref=sr_1_1?ie=UTF8&amp;amp;qid=1306290220&amp;amp;sr=8-1&quot;&gt;Baseball Hacks&lt;/a&gt;, although I’ve tweaked a
+couple of things. As I progress through the book, I will continue to add interesting finds and code as posts. Eventually, I will move away from the book’s code as it focuses too much on the
+&amp;quot;Intro to Data Exploration&amp;quot; reader with constant mentions of MS Access/Excel. The author means well though as he urges the reader to use *nix/Mac OS X.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>

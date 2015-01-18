@@ -1,0 +1,26 @@
+# Dependencies
+markdown:            redcarpet
+highlighter:         pygments
+
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+relative_permalinks: true
+
+# Setup
+title:               John Ramey
+tagline:             'Statistics and Machine Learning'
+description:         'The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.'
+url:                 http://ramhiser.com
+baseurl:             /
+paginate:            5
+
+# About/contact
+author:
+  name:              John Ramey
+  url:               https://twitter.com/ramhiser
+  email:             johnramey@gmail.com
+
+# Custom vars
+version:             1.0.0

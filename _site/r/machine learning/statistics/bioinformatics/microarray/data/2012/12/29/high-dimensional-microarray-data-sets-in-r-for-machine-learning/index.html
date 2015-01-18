@@ -27,6 +27,12 @@
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
 </head>
 
 
@@ -142,7 +148,7 @@
 
 <p>My goal has been to find several alternative data sets and provide them in a convenient location so that I could load and analyze them easily and then incorporate the results into my papers. Initially, I aimed to identify a few more data sets, but after I got going on this effort, I found a lot more. What started as a small project turned into something that has saved me a lot of time. I have created the <a href="https://github.com/ramey/datamicroarray">datamicroarray package available from my GitHub account</a>. For each data set included in the package, I have provided a script to download, clean, and save the data set as a named list. See the <a href="https://github.com/ramey/datamicroarray/blob/master/README.md">README file</a> for more details about how the data are stored.</p>
 
-<p>Currently, the package consists of 20 small-sample, high-dimensional data sets to assess machine learning algorithms and models. I have also included a <a href="https://github.com/ramey/datamicroarray/wiki">wiki on the package&#39;s GitHub repository</a> that describes each data set and provides additional information, including a link to the original papers.</p>
+<p>Currently, the package consists of 20 small-sample, high-dimensional data sets to assess machine learning algorithms and models. I have also included a <a href="https://github.com/ramey/datamicroarray/wiki">wiki on the package’s GitHub repository</a> that describes each data set and provides additional information, including a link to the original papers.</p>
 
 <p>The biggest drawback at the moment is the file size of the R package because I store an RData file for each data set. I am investigating alternative approaches to download the data dynamically and am open to suggestions. Also note that the data descriptions are incomplete, so assistance is appreciated.</p>
 

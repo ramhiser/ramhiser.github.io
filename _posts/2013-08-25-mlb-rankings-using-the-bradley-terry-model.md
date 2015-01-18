@@ -77,8 +77,7 @@ organize the analysis and to minimize boiler-plate code.
 After scraping the matchup records from ESPN, the following R code prettifies
 the data and then fits the BT model to both data sets.
 
-
-```r
+{% highlight r %}
 # Cleans the American League (AL) and National League (NL) data scraped from
 # ESPN's MLB Grid
 AL_cleaned <- clean_ESPN_grid_data(AL.standings, league = "AL")
@@ -95,7 +94,7 @@ names(AL_abilities) <- AL_cleaned$teams
 
 NL_abilities <- data.frame(BTabilities(NL_model))$ability
 names(NL_abilities) <- NL_cleaned$teams
-```
+{% endhighlight %}
 
 
 Next, we create a heatmap of probabilities winning for each matchup by first
@@ -105,7 +104,7 @@ confusing situation, we set these probabilities to 0. The point is that these
 events can never happen unless you play for Houston or have A-Rod on your team.
 
 
-```r
+{% highlight r %}
 AL_probs <- outer(AL_abilities, AL_abilities, prob_BT)
 diag(AL_probs) <- 0
 AL_probs <- melt(AL_probs)
@@ -115,7 +114,7 @@ diag(NL_probs) <- 0
 NL_probs <- melt(NL_probs)
 
 colnames(AL_probs) <- colnames(NL_probs) <- c("Team", "Opponent", "Probability")
-```
+{% endhighlight %}
 
 
 Now that the rankings and matchup probabilities have been computed, let's take a
@@ -130,7 +129,7 @@ estimates. Let's first look at the estimates.
 
 
 
-```
+{% highlight r %}
 ## |     | ability | s.e.  |
 ## |-----+---------+-------|
 ## | ARI | 0.000   | 0.000 |
@@ -148,8 +147,7 @@ estimates. Let's first look at the estimates.
 ## | SF  | -0.100  | 0.251 |
 ## | STL | 0.389   | 0.262 |
 ## | WSH | -0.013  | 0.265 |
-```
-
+{% endhighlight %}
 
 (Please excuse the crude tabular output. I'm not a fan of how [Octopress](http://octopress.org/) renders tables. Suggestions?)
 
@@ -206,7 +204,7 @@ Here, we repeat the same analysis for the National League.
 
 
 
-```
+{% highlight r %}
 ## |     | ability | s.e.  |
 ## |-----+---------+-------|
 ## | ARI | 0.000   | 0.000 |
@@ -224,7 +222,7 @@ Here, we repeat the same analysis for the National League.
 ## | SF  | -0.100  | 0.251 |
 ## | STL | 0.389   | 0.262 |
 ## | WSH | -0.013  | 0.265 |
-```
+{% endhighlight %}
 
 
 For the National League, Arizona is the reference team having an ability of
@@ -253,21 +251,22 @@ average team.
 
 
 
-```r
+{% highlight r %}
 ATL_probs <- subset(NL_probs, Team == "ATL" & Opponent != "ATL")
 prob_ATL_SF <- subset(ATL_probs, Opponent == "SF")$Probability
 series_probs <- data.frame(Wins = 0:3, Probability = dbinom(0:3, 3, prob_ATL_SF))
 print(ascii(series_probs, include.rownames = FALSE, digits = 3), type = "org")
-```
+{% endhighlight %}
 
-```
+
+{% highlight r %}
 ## | Wins  | Probability |
 ## |-------+-------------|
 ## | 0.000 | 0.048       |
 ## | 1.000 | 0.252       |
 ## | 2.000 | 0.442       |
 ## | 3.000 | 0.258       |
-```
+{% endhighlight %}
 
 
 I find it very interesting that the probability Atlanta beats any other NL team

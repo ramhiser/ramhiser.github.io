@@ -27,6 +27,12 @@
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
 </head>
 
 
@@ -138,17 +144,17 @@
   <span class="post-date">23 Nov 2012</span>
   <p>Recently I started playing with <a href="http://kaggle.com">Kaggle</a>. I quickly became frustrated that in order to download their data I had to use their website. I prefer instead the option to download the data programmatically. After some Googling, <a href="http://www.kaggle.com/c/ClaimPredictionChallenge/forums/t/772/downloading-the-data-from-kaggle-to-remote-linux-instance">the best recommendation I found</a> was to use <a href="http://en.wikipedia.org/wiki/Lynx_(web_browser)">lynx</a>. <a href="http://twitter.com/amcclosky">My friend Anthony</a> recommended that alternatively I should write a Python script.</p>
 
-<p>Although Python is not my primary language, I was intrigued by how simple it was to write the script using <a href="http://docs.python-requests.org/">requests.py</a>. In this example, I download the training data set from <a href="http://www.kaggle.com/c/digit-recognizer/data">Kaggle&#39;s Digit Recognizer competition</a>.</p>
+<p>Although Python is not my primary language, I was intrigued by how simple it was to write the script using <a href="http://docs.python-requests.org/">requests.py</a>. In this example, I download the training data set from <a href="http://www.kaggle.com/c/digit-recognizer/data">Kaggle’s Digit Recognizer competition</a>.</p>
 
 <p>The idea is simple:</p>
 
 <ol>
-<li>Attempt to download a file from Kaggle but get blocked because you are not logged in.</li>
-<li>Login with <a href="http://docs.python-requests.org/">requests.py</a>.</li>
-<li>Download the data.</li>
+  <li>Attempt to download a file from Kaggle but get blocked because you are not logged in.</li>
+  <li>Login with <a href="http://docs.python-requests.org/">requests.py</a>.</li>
+  <li>Download the data.</li>
 </ol>
 
-<p>Here&#39;s the code:</p>
+<p>Here’s the code:</p>
 
 <script src="https://gist.github.com/4121260.js"> </script>
 

@@ -22,7 +22,7 @@ The set of grids is stored as a list, where each element is a matrix of zeros an
 Let me know if you improve on my code any. I'm always interested in learning how to do things better.
 
 
-``` r
+{% highlight r %}
 library('foreach')
 library('ggplot2')
 library('animation')
@@ -82,18 +82,18 @@ grid_to_ggplot <- function(grid) {
   p <- p + geom_tile(aes(fill = value))
   p  + scale_fill_manual(values = c("Dead" = "white", "Alive" = "black"))
 }
-```
+{% endhighlight %}
 
 As an example, I have created a 50-by-50 grid with a 10% chance that its initial values will be alive. The simulation has 500 iterations. You may add more, but this takes long enough already. Note
 that the default frame rate, which is controlled by __interval__, is 1 second. I set it to 0.05
 based to give a decent video.
 
-``` r
+{% highlight r %}
 set.seed(42)
 game_grids <- game_of_life(size = 50, num_reps = 500, prob = c(0.1, 0.9))
 grid_ggplot <- lapply(game_grids, grid_to_ggplot)
 saveVideo(lapply(grid_ggplot, print), video.name = "animation.mp4", clean = TRUE, interval = 0.05)
-```
+{% endhighlight %}
 
 I uploaded the resulting video to YouTube for your viewing pleasure.
 

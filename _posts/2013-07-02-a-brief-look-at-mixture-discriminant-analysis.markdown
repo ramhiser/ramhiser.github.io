@@ -69,7 +69,7 @@ dimension increases relative to the sample size.
 
 ![MDA Decision Boundaries](http://i.imgur.com/lw0iBxe.png)
 
-```r
+{% highlight r %}
 library(MASS)
 library(mvtnorm)
 library(mda)
@@ -120,4 +120,4 @@ p + stat_contour(aes(x = X1, y = X2, z = y), data = qda_predict)
   + ggtitle("QDA Decision Boundaries")
 p + stat_contour(aes(x = X1, y = X2, z = y), data = mda_predict)
   + ggtitle("MDA Decision Boundaries")
-```
+{% endhighlight %}

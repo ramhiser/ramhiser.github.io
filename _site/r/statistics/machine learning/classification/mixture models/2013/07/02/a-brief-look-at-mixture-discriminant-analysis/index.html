@@ -27,6 +27,12 @@
 
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
 </head>
 
 
@@ -148,12 +154,16 @@ necessarily adjacent.</p>
 variants!) to applying finite mixture models to classfication:</p>
 
 <ol>
-<li><p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">the mclust R package</a></p></li>
-<li><p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a> via <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda R package</a></p></li>
+  <li>
+    <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">the mclust R package</a></p>
+  </li>
+  <li>
+    <p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a> via <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda R package</a></p>
+  </li>
 </ol>
 
 <p>Although the methods are similar, I opted for exploring the latter method. Here
-is the general idea. There are $$K \ge 2$$ classes, and each class is assumed to
+is the general idea. There are <script type="math/tex">K \ge 2</script> classes, and each class is assumed to
 be a Gaussian mixuture of subclasses. Hence, the model formulation is generative,
 and the posterior probability of class membership is used to classify an
 unlabeled observation. Each subclass is assumed to have its own mean vector, but
@@ -194,11 +204,12 @@ deviations from this assumption. Moreover, perhaps a more important investigatio
 would be to determine how well the MDA classifier performs as the feature
 dimension increases relative to the sample size.</p>
 
-<p><img src="http://i.imgur.com/LIQPL0u.png" alt="LDA Decision Boundaries"></p>
+<p><img src="http://i.imgur.com/LIQPL0u.png" alt="LDA Decision Boundaries" /></p>
 
-<p><img src="http://i.imgur.com/GeyXCsf.png" alt="QDA Decision Boundaries"></p>
+<p><img src="http://i.imgur.com/GeyXCsf.png" alt="QDA Decision Boundaries" /></p>
 
-<p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries"></p>
+<p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries" /></p>
+
 <div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>mvtnorm<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>mda<span class="p">)</span>
@@ -248,8 +259,9 @@ p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p
 p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> qda_predict<span class="p">)</span>
   <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;QDA Decision Boundaries&quot;</span><span class="p">)</span>
 p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> mda_predict<span class="p">)</span>
-  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span>
-</code></pre></div>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span></code></pre></div>
+
+
 </div>
 
 <div class="related">

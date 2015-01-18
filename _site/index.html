@@ -473,66 +473,57 @@ dimension increases relative to the sample size.</p>
 <p><img src="http://i.imgur.com/GeyXCsf.png" alt="QDA Decision Boundaries"></p>
 
 <p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries"></p>
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>mvtnorm<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>mda<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
 
-<p>``` r Comparison of LDA, QDA, and MDA
-library(MASS)
-library(mvtnorm)
-library(mda)
-library(ggplot2)</p>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
+n <span class="o">&lt;-</span> <span class="m">500</span>
 
-<p>set.seed(42)
-n &lt;- 500</p>
+<span class="c1"># Randomly sample data</span>
+x11 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+x12 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x13 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
 
-<h1>Randomly sample data</h1>
+x21 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x22 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x23 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
 
-<p>x11 &lt;- rmvnorm(n = n, mean = c(-4, -4))
-x12 &lt;- rmvnorm(n = n, mean = c(0, 4))
-x13 &lt;- rmvnorm(n = n, mean = c(4, -4))</p>
+x31 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+x32 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+x33 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
 
-<p>x21 &lt;- rmvnorm(n = n, mean = c(-4, 4))
-x22 &lt;- rmvnorm(n = n, mean = c(4, 4))
-x23 &lt;- rmvnorm(n = n, mean = c(0, 0))</p>
+x <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">(</span>x11<span class="p">,</span> x12<span class="p">,</span> x13<span class="p">,</span> x21<span class="p">,</span> x22<span class="p">,</span> x23<span class="p">,</span> x31<span class="p">,</span> x32<span class="p">,</span> x33<span class="p">)</span>
+train_data <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>x<span class="p">,</span> y <span class="o">=</span> <span class="kp">gl</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span> <span class="o">*</span> n<span class="p">))</span>
 
-<p>x31 &lt;- rmvnorm(n = n, mean = c(-4, 0))
-x32 &lt;- rmvnorm(n = n, mean = c(0, -4))
-x33 &lt;- rmvnorm(n = n, mean = c(4, 0))</p>
+<span class="c1"># Trains classifiers</span>
+lda_out <span class="o">&lt;-</span> lda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+qda_out <span class="o">&lt;-</span> qda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+mda_out <span class="o">&lt;-</span> mda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
 
-<p>x &lt;- rbind(x11, x12, x13, x21, x22, x23, x31, x32, x33)
-train_data &lt;- data.frame(x, y = gl(3, 3 * n))</p>
+<span class="c1"># Generates test data that will be used to generate the decision boundaries via</span>
+<span class="c1"># contours</span>
+contour_data <span class="o">&lt;-</span> <span class="kp">expand.grid</span><span class="p">(</span>X1 <span class="o">=</span> <span class="kp">seq</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">),</span>
+                            X2 <span class="o">=</span> <span class="kp">seq</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">))</span>
 
-<h1>Trains classifiers</h1>
+<span class="c1"># Classifies the test data</span>
+lda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>lda_out<span class="p">,</span> contour_data<span class="p">)</span><span class="o">$</span><span class="kp">class</span><span class="p">))</span>
+qda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>qda_out<span class="p">,</span> contour_data<span class="p">)</span><span class="o">$</span><span class="kp">class</span><span class="p">))</span>
+mda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>mda_out<span class="p">,</span> contour_data<span class="p">)))</span>
 
-<p>lda<em>out &lt;- lda(y ~ ., data = train</em>data)
-qda<em>out &lt;- qda(y ~ ., data = train</em>data)
-mda<em>out &lt;- mda(y ~ ., data = train</em>data)</p>
-
-<h1>Generates test data that will be used to generate the decision boundaries via</h1>
-
-<h1>contours</h1>
-
-<p>contour_data &lt;- expand.grid(X1 = seq(-8, 8, length = 300),
-                            X2 = seq(-8, 8, length = 300))</p>
-
-<h1>Classifies the test data</h1>
-
-<p>lda<em>predict &lt;- data.frame(contour</em>data,
-                          y = as.numeric(predict(lda<em>out, contour</em>data)$class))
-qda<em>predict &lt;- data.frame(contour</em>data,
-                          y = as.numeric(predict(qda<em>out, contour</em>data)$class))
-mda<em>predict &lt;- data.frame(contour</em>data,
-                          y = as.numeric(predict(mda<em>out, contour</em>data)))</p>
-
-<h1>Generates plots</h1>
-
-<p>p &lt;- ggplot(train<em>data, aes(x = X1, y = X2, color = y)) + geom</em>point()
-p + stat<em>contour(aes(x = X1, y = X2, z = y), data = lda</em>predict)
-  + ggtitle(&quot;LDA Decision Boundaries&quot;)
-p + stat<em>contour(aes(x = X1, y = X2, z = y), data = qda</em>predict)
-  + ggtitle(&quot;QDA Decision Boundaries&quot;)
-p + stat<em>contour(aes(x = X1, y = X2, z = y), data = mda</em>predict)
-  + ggtitle(&quot;MDA Decision Boundaries&quot;)
-```</p>
-
+<span class="c1"># Generates plots</span>
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>train_data<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> color <span class="o">=</span> y<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> lda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;LDA Decision Boundaries&quot;</span><span class="p">)</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> qda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;QDA Decision Boundaries&quot;</span><span class="p">)</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> mda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span>
+</code></pre></div>
   </div>
   
   <div class="post">

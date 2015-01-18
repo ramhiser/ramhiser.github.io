@@ -69,7 +69,7 @@ dimension increases relative to the sample size.
 
 ![MDA Decision Boundaries](http://i.imgur.com/lw0iBxe.png)
 
-``` r Comparison of LDA, QDA, and MDA
+```r
 library(MASS)
 library(mvtnorm)
 library(mda)

@@ -7,7 +7,7 @@ footer: true
 
 I am a data scientist for [BlackLocus](http://blacklocus.com), the Home Depot
 Innovation Lab. My current work focuses on the automation of data-driven
-merchandising via statistics and machine learning.
+merchandising actions and decisions via statistics and machine learning.
 
 Previously, I was a postdoctoral research fellow in statistical genetics at the
 [Fred Hutchinson Cancer Research Center](http://www.fhcrc.org) in the [Gottardo

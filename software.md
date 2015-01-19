@@ -15,6 +15,10 @@ footer: true
   collection of various regional information determined by the U.S. Census
   Bureau along with demographic data.
 
+* [clusteval](https://github.com/ramhiser/clusteval) - An R package that
+  provides a suite of tools to evaluate clustering algorithms, clusterings, and
+  individual clusters.
+
 * [sparsediscrim](https://github.com/ramhiser/sparsediscrim) - An R package that
   is a collection of sparse and regularized classification models intended for
   small-sample, high-dimensional data sets. The models include the well-known

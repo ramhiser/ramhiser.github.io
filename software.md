@@ -26,6 +26,9 @@ footer: true
   classifier and generalizations of the [Naive Bayes
   classifier](http://en.wikipedia.org/wiki/Naive_Bayes_classifier).
 
+* [pocketknife](https://github.com/ramhiser/pocketknife) - A collection of
+  useful utility functions in R.
+
 * [activelearning](https://github.com/ramhiser/activelearning) - An R package
   that implements [active
   learning](http://en.wikipedia.org/wiki/Active_learning_%28machine_learning%29),

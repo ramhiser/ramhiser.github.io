@@ -15,8 +15,7 @@ description:         'The personal site of <a href="http://ramhiser.com">John Ra
 url:                 http://ramhiser.com
 baseurl:             /
 paginate:            5
-paginate_path:       "page:num/"
-permalink:           "blog/:year/:month/:day/:title/"
+permalink:           ":year/:month/:day/:title/"
 
 # About/contact
 author:

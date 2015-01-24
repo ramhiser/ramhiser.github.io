@@ -16,7 +16,7 @@ url:                 http://ramhiser.com
 baseurl:             /
 paginate:            5
 paginate_path:       "page:num/"
-permalink:           "blog/:year/:month/:day/:title.html"
+permalink:           "blog/:year/:month/:day/:title/"
 
 # About/contact
 author:

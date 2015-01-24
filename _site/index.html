@@ -143,6 +143,114 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/python/scikit-learn/scipy/mac/data-science/2015/01/24/installing-python-data-science-stack-on-yosemite/">
+        Installing Python Data Science Stack on Yosemite
+      </a>
+    </h1>
+
+    <span class="post-date">24 Jan 2015</span>
+
+    <p>I was attempting to install the Python data-science stack within a fresh virtual
+environment on my Mac with OS X 10.10.1 (Yosemite) but encountered various
+frustrating errors. I logged my steps below that eventually yielded a successful
+installation.</p>
+
+<p>My primary goal was actually to install version 0.15.2 of
+<a href="http://scikit-learn.org/">scikit-learn</a> via <code>pip install -U scikit-learn</code>, but
+I encountered some errors during the <code>scipy</code> installation. The process
+successfully added <code>numpy 1.9.1</code> but failed on <code>scipy 0.15.1</code>. I then tried to
+install that version of <code>scipy</code> individually but received the following error.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">In file included from /usr/include/dispatch/dispatch.h:51:0,
+
+  from /System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h:56,
+
+  from /System/Library/Frameworks/CoreGraphics.framework/Headers/CGDisplayConfiguration.h:8,
+
+  from /System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h:41,
+
+  from /System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers/vImage_Utilities.h:14,
+
+  from /System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers/vImage.h:200,
+
+  from /System/Library/Frameworks/Accelerate.framework/Headers/Accelerate.h:24,
+
+  from /Users/ramhiser/.virtualenvs/dossier/build/scipy/scipy/_build_utils/src/wrap_accelerate_c.c:1:
+
+  /usr/include/dispatch/object.h:143:15: error: expected identifier or <span class="s1">&#39;(&#39;</span> before <span class="s1">&#39;^&#39;</span> token
+
+   typedef void <span class="o">(</span>^dispatch_block_t<span class="o">)(</span>void<span class="o">)</span><span class="p">;</span>
+
+                 ^
+
+  /usr/include/dispatch/object.h:362:3: error: unknown <span class="nb">type </span>name <span class="s1">&#39;dispatch_block_t&#39;</span>
+
+   dispatch_block_t notification_block<span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<p>After a few Google searches and a bit of trial and error, I followed
+instructions in this <a href="http://stackoverflow.com/a/19850962/234233">StackOverflow
+post</a> to attempt a fix. As mentioned
+below, I still received an error. Here were my initial steps:</p>
+
+<ol>
+  <li>
+    <p>Download and install XCode Command Line Tools from <a href="https://developer.apple.com">Apple</a></p>
+  </li>
+  <li>
+    <p>Installing <code>scipy</code> still failed at this point</p>
+  </li>
+  <li>
+    <p><code>sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/</code></p>
+  </li>
+  <li>
+    <p><code>brew update</code></p>
+  </li>
+  <li>
+    <p><code>brew doctor</code></p>
+  </li>
+  <li>
+    <p><code>pip install -U scipy</code> still failed with same error message.</p>
+  </li>
+  <li>
+    <p>A few hints from a random <a href="https://github.com/robotastic/homebrew-hackrf#troubleshooting">README
+file</a> suggested
+that I do the following:</p>
+  </li>
+</ol>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++
+<span class="nb">export </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s1">&#39;-L/opt/X11/lib&#39;</span>
+<span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-I/opt/X11/include -I/opt/X11/include/freetype2&#39;</span></code></pre></div>
+
+<p>Well, a new error message at this point.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="s2">&quot;_main&quot;</span>, referenced from:
+
+       implicit entry/start <span class="k">for</span> main executable
+
+  ld: symbol<span class="o">(</span>s<span class="o">)</span> not found <span class="k">for</span> architecture x86_64
+
+  collect2: error: ld returned <span class="m">1</span> <span class="nb">exit </span>status</code></pre></div>
+
+<p>Based on <a href="http://stackoverflow.com/a/11798574/234233">a couple</a> <a href="http://forrestbao.blogspot.com/2010/04/compiling-numpy-and-scipy-on-centos.html">more
+posts</a>,
+I next unset <code>LDFLAGS</code> and <code>CFLAGS</code>. I attempted to install at this point and
+again saw the latter error message.</p>
+
+<p>At this point, I was quite frustrated. I closed my terminal
+<a href="http://iterm2.com">iTerm2</a> and reopened it. Forgoing the <code>LDFLAGS</code> and <code>CFLAGS</code>
+options, I set:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></div>
+
+<p>This time I was able to install both <code>scipy</code> and <code>scikit-learn</code> successfully.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/r/python/baseball/rankings/bradley-terry/statistics/2013/08/31/mlb-rankings-using-the-bradley-terry-model/">
         MLB Rankings Using the Bradley-Terry Model
       </a>
@@ -603,62 +711,6 @@ p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p
 <script src="https://gist.github.com/4121260.js"> </script>
 
 <p>Simply change <code>my_username</code> and <code>my_password</code> to your Kaggle login info. Feel free to optimize the chunk size to your liking.</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/r/workflow/2012/08/28/setting-up-the-development-version-of-r/">
-        Setting Up the Development Version of R
-      </a>
-    </h1>
-
-    <span class="post-date">28 Aug 2012</span>
-
-    <p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
-the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
-This post details how I have set up the development version of R on our Linux server,
-which I use remotely because it is much faster than my Mac.</p>
-
-<p>First, I downloaded the <code>R-devel</code> source into <code>~/local/</code>, which is short for <code>/home/jramey/local/</code> via Subversion, configured my
-installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
-if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
-<span class="nb">cd</span> ~/local/R-devel
-./tools/rsync-recommended
-./configure --prefix<span class="o">=</span>/home/jramey/local/
-make
-make install</code></pre></div>
-
-<p>The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
-
-<p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
-<span class="nb">export </span>PATH
-
-<span class="c"># Never save or restore when running R</span>
-<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></div>
-
-<p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
-
-<p>Next, I install the R packages that I use the most.</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
-                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></div>
-
-<p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
-
-<script src="https://gist.github.com/1378639.js?file=.bash_profile"> </script>
-
-<p>Finally, my <a href="http://rglab.org">coworkers</a> focus on <a href="http://en.wikipedia.org/wiki/Flow_cytometry">flow cytometry</a> data, and our group
-maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
-them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
-biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></div>
-
 
   </div>
   

@@ -143,6 +143,62 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/r/workflow/2012/08/28/setting-up-the-development-version-of-r/">
+        Setting Up the Development Version of R
+      </a>
+    </h1>
+
+    <span class="post-date">28 Aug 2012</span>
+
+    <p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
+the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
+This post details how I have set up the development version of R on our Linux server,
+which I use remotely because it is much faster than my Mac.</p>
+
+<p>First, I downloaded the <code>R-devel</code> source into <code>~/local/</code>, which is short for <code>/home/jramey/local/</code> via Subversion, configured my
+installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
+if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+<span class="nb">cd</span> ~/local/R-devel
+./tools/rsync-recommended
+./configure --prefix<span class="o">=</span>/home/jramey/local/
+make
+make install</code></pre></div>
+
+<p>The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
+
+<p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+<span class="nb">export </span>PATH
+
+<span class="c"># Never save or restore when running R</span>
+<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></div>
+
+<p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
+
+<p>Next, I install the R packages that I use the most.</p>
+
+<div class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></div>
+
+<p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
+
+<script src="https://gist.github.com/1378639.js?file=.bash_profile"> </script>
+
+<p>Finally, my <a href="http://rglab.org">coworkers</a> focus on <a href="http://en.wikipedia.org/wiki/Flow_cytometry">flow cytometry</a> data, and our group
+maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
+them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
+
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></div>
+
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/textbook/solutions/bioinformatics/statistics/2012/08/14/chapter-2-solutions-statistical-methods-in-bioinformatics/">
         Chapter 2 Solutions - Statistical Methods in Bioinformatics
       </a>
@@ -319,60 +375,6 @@ Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
 had a Ph.D. to complete, and quite frankly, it demanded much higher priority. Now that I have submitted my dissertation and completed my Ph.D. requirements, I have several half-finished posts that will
 appear soon. Also, since I have made the switch to <a href="http://octopress.org/">Octopress</a>, I will be relocating selected posts from my previous Wordpress blog.</p>
 
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/thoughts/goals/2012/01/09/goals-for-2012/">
-        Goals for 2012
-      </a>
-    </h1>
-
-    <span class="post-date">09 Jan 2012</span>
-
-    <p>I have never been one to set New Year’s resolutions. Personally, they instill a dangerous personal freedom that often yield naive, subconscious mentalities, such as I can do anything I want until December 31, and I will change abruptly the next day. However, my Ph.D. adviser has shown me the importance of setting goals in all things that I wish to accomplish as well as envisioning the finale to an arduous journey like a small child (read “John Ramey”) that pictures the waning warmth of fresh chocolate chip cookies smeared on his face. My adviser has always encouraged short-term and long-term goals but never required them. As I recently found out, my employer does. In addition, these goals are reviewed at the end of the fiscal year so that employees are realistic and held accountable.</p>
-
-<p>Now that I must list these formally at work, I have decided to post a number of career and personal goals here in order to hold myself accountable at the end of 2012 with the implicit assumption that <a href="http://en.wikipedia.org/wiki/2012_phenomenon">the world does not end</a>. So, one year from now, if we are still here (<strong>chuckle</strong>), I will review my goal-completion success.</p>
-
-<ul>
-  <li>Read to my son (almost) nightly.</li>
-  <li>Hear my son laugh (almost) nightly.</li>
-  <li>Take my wife out for a date night each week.</li>
-  <li>Treat my wife to a significant outing each month.</li>
-  <li>Finish dissertation.</li>
-  <li>Successfully defend dissertation.</li>
-  <li>Submit 4-6 articles for publication.</li>
-  <li>Submit at least 3 R packages to <a href="http://cran.r-project.org/">CRAN</a>.</li>
-  <li>Attend at least three conferences.</li>
-  <li>Make at least two conference presentations.</li>
-  <li>Find/maintain employment.</li>
-  <li>Construct detailed plan and outline for my textbook.</li>
-  <li>Take a real vacation.</li>
-  <li>Run a half marathon. (I will consider this a success if I have signed up for an early 2013 race.)</li>
-  <li>Transition my personal website from Wordpress to Octopress.</li>
-  <li>Blog more.</li>
-  <li>Check Tweets and email twice daily at a scheduled time.</li>
-  <li>Spend time with my extended family.</li>
-  <li>Read the literature at a scheduled time.</li>
-  <li>Finish reading Izenman’s Multivariate text.</li>
-  <li>Read Lehmann’s <a href="http://www.amazon.com/Reminiscences-Statistician-Company-Kept-ebook/dp/B0016Q4P26/ref=wl_it_dp_o_npd?ie=UTF8&amp;coliid=I3T6NZ0PE0490O&amp;colid=2LV0B8J7GGR69">Reminiscences of a Statistician: The Company I Kept</a>.</li>
-  <li>Read Ewens and Grant’s bioinformatics text.</li>
-  <li>Read Bishop’s PRML text.</li>
-  <li>Read Gaussian Processes for Machine Learning.</li>
-  <li>Read Barber’s <a href="http://web4.cs.ucl.ac.uk/staff/D.Barber/pmwiki/pmwiki.php?n=Main.Textbook">Bayesian Reasoning and Machine Learning</a>.</li>
-  <li>Read a significant portion of Devroye et al.’s Probabilistic Theory of Pattern Recognition text.</li>
-  <li>Reread Robert’s The Bayesian Choice.</li>
-  <li>Read Jaynes’ Probability Theory text.</li>
-  <li>Read Berger’s Decision Theory text.</li>
-  <li>Watch Boyd’s Convex Optimization lectures.</li>
-  <li>Read the Boyd Convex Optimization text.</li>
-  <li>Finish reading Reamde.</li>
-  <li>Read Rothfuss’ The Name of the Wind.</li>
-  <li>Become more proficient at debugging in R.</li>
-</ul>
-
-<p>As I have assuredly not remembered the goals that I have verbally set, this list may change over the next few days.</p>
 
   </div>
   

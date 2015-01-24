@@ -143,6 +143,60 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/thoughts/goals/2012/01/09/goals-for-2012/">
+        Goals for 2012
+      </a>
+    </h1>
+
+    <span class="post-date">09 Jan 2012</span>
+
+    <p>I have never been one to set New Year’s resolutions. Personally, they instill a dangerous personal freedom that often yield naive, subconscious mentalities, such as I can do anything I want until December 31, and I will change abruptly the next day. However, my Ph.D. adviser has shown me the importance of setting goals in all things that I wish to accomplish as well as envisioning the finale to an arduous journey like a small child (read “John Ramey”) that pictures the waning warmth of fresh chocolate chip cookies smeared on his face. My adviser has always encouraged short-term and long-term goals but never required them. As I recently found out, my employer does. In addition, these goals are reviewed at the end of the fiscal year so that employees are realistic and held accountable.</p>
+
+<p>Now that I must list these formally at work, I have decided to post a number of career and personal goals here in order to hold myself accountable at the end of 2012 with the implicit assumption that <a href="http://en.wikipedia.org/wiki/2012_phenomenon">the world does not end</a>. So, one year from now, if we are still here (<strong>chuckle</strong>), I will review my goal-completion success.</p>
+
+<ul>
+  <li>Read to my son (almost) nightly.</li>
+  <li>Hear my son laugh (almost) nightly.</li>
+  <li>Take my wife out for a date night each week.</li>
+  <li>Treat my wife to a significant outing each month.</li>
+  <li>Finish dissertation.</li>
+  <li>Successfully defend dissertation.</li>
+  <li>Submit 4-6 articles for publication.</li>
+  <li>Submit at least 3 R packages to <a href="http://cran.r-project.org/">CRAN</a>.</li>
+  <li>Attend at least three conferences.</li>
+  <li>Make at least two conference presentations.</li>
+  <li>Find/maintain employment.</li>
+  <li>Construct detailed plan and outline for my textbook.</li>
+  <li>Take a real vacation.</li>
+  <li>Run a half marathon. (I will consider this a success if I have signed up for an early 2013 race.)</li>
+  <li>Transition my personal website from Wordpress to Octopress.</li>
+  <li>Blog more.</li>
+  <li>Check Tweets and email twice daily at a scheduled time.</li>
+  <li>Spend time with my extended family.</li>
+  <li>Read the literature at a scheduled time.</li>
+  <li>Finish reading Izenman’s Multivariate text.</li>
+  <li>Read Lehmann’s <a href="http://www.amazon.com/Reminiscences-Statistician-Company-Kept-ebook/dp/B0016Q4P26/ref=wl_it_dp_o_npd?ie=UTF8&amp;coliid=I3T6NZ0PE0490O&amp;colid=2LV0B8J7GGR69">Reminiscences of a Statistician: The Company I Kept</a>.</li>
+  <li>Read Ewens and Grant’s bioinformatics text.</li>
+  <li>Read Bishop’s PRML text.</li>
+  <li>Read Gaussian Processes for Machine Learning.</li>
+  <li>Read Barber’s <a href="http://web4.cs.ucl.ac.uk/staff/D.Barber/pmwiki/pmwiki.php?n=Main.Textbook">Bayesian Reasoning and Machine Learning</a>.</li>
+  <li>Read a significant portion of Devroye et al.’s Probabilistic Theory of Pattern Recognition text.</li>
+  <li>Reread Robert’s The Bayesian Choice.</li>
+  <li>Read Jaynes’ Probability Theory text.</li>
+  <li>Read Berger’s Decision Theory text.</li>
+  <li>Watch Boyd’s Convex Optimization lectures.</li>
+  <li>Read the Boyd Convex Optimization text.</li>
+  <li>Finish reading Reamde.</li>
+  <li>Read Rothfuss’ The Name of the Wind.</li>
+  <li>Become more proficient at debugging in R.</li>
+</ul>
+
+<p>As I have assuredly not remembered the goals that I have verbally set, this list may change over the next few days.</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/thoughts/2012/01/07/when-i-was-29-dot-dot-dot/">
         When I was 29...
       </a>
@@ -283,108 +337,6 @@ Papers</strong>. This seems to be what I needed. In particular, the following ar
 </ul>
 
 <p>It seems limited for statistics though, as JSM is not even listed.</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/r/2011/06/05/conways-game-of-life-in-r-with-ggplot2-and-animation/">
-        Conway's Game of Life in R with ggplot2 and animation
-      </a>
-    </h1>
-
-    <span class="post-date">05 Jun 2011</span>
-
-    <p>In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.</p>
-
-<p>The basic idea is to start with a grid of cells, where each cell is either a zero (dead) or a one (alive). We are interested in watching the population behavior over time to see if the population dies off, has some sort of equilibrium, etc. <a href="http://en.wikipedia.org/wiki/John_Horton_Conway">John Conway</a> studied many possible ways to examine population behaviors and ultimately decided on the following rules, which we apply to each cell for the current tick (or generation).</p>
-
-<ol>
-  <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
-  <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
-  <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
-  <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction</li>
-</ol>
-
-<p>Although there are <a href="http://www.statisticsblog.com/2010/05/game-of-life-in-r/">other versions</a> of this in R, I decided to give it a shot myself. I am not going to provide a walkthrough of the code as I may normally do, but the code should be simple enough to understand for one proficient in R. It may have been unnecessary to implement this with the foreach package, but I wanted to get some more familiarity with foreach, so I did.</p>
-
-<p>The set of grids is stored as a list, where each element is a matrix of zeros and ones. Each matrix is then converted to an image with ggplot2, and the sequence of images is exported as a MP4 video with the <a href="http://cran.r-project.org/web/packages/animation/index.html">animation package</a>.</p>
-
-<p>Let me know if you improve on my code any. I’m always interested in learning how to do things better.</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span><span class="s">&#39;foreach&#39;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&#39;ggplot2&#39;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&#39;animation&#39;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&#39;reshape2&#39;</span><span class="p">)</span>
- 
-<span class="c1"># Determines how many neighboring cells around the (j,k)th cell have living organisms.</span>
-<span class="c1"># The conditionals are used to check if we are at a boundary of the grid.</span>
-how_many_neighbors <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>grid<span class="p">,</span> j<span class="p">,</span> k<span class="p">)</span> <span class="p">{</span>
-  size <span class="o">&lt;-</span> <span class="kp">nrow</span><span class="p">(</span>grid<span class="p">)</span>
-  count <span class="o">&lt;-</span> <span class="m">0</span>
-  <span class="kr">if</span><span class="p">(</span>j <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
-    count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">-1</span><span class="p">,</span> k<span class="p">]</span>
-    <span class="kr">if</span> <span class="p">(</span>k <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">-1</span><span class="p">,</span> k<span class="m">-1</span><span class="p">]</span>
-    <span class="kr">if</span> <span class="p">(</span>k <span class="o">&lt;</span> size<span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">-1</span><span class="p">,</span> k<span class="m">+1</span><span class="p">]</span>
-  <span class="p">}</span>
-  <span class="kr">if</span><span class="p">(</span>j <span class="o">&lt;</span> size<span class="p">)</span> <span class="p">{</span>
-    count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">+1</span><span class="p">,</span>k<span class="p">]</span>
-    <span class="kr">if</span> <span class="p">(</span>k <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">+1</span><span class="p">,</span> k<span class="m">-1</span><span class="p">]</span>
-    <span class="kr">if</span> <span class="p">(</span>k <span class="o">&lt;</span> size<span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="m">+1</span><span class="p">,</span> k<span class="m">+1</span><span class="p">]</span>
-  <span class="p">}</span>
-  <span class="kr">if</span><span class="p">(</span>k <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="p">,</span> k<span class="m">-1</span><span class="p">]</span>
-  <span class="kr">if</span><span class="p">(</span>k <span class="o">&lt;</span> size<span class="p">)</span> count <span class="o">&lt;-</span> count <span class="o">+</span> grid<span class="p">[</span>j<span class="p">,</span> k<span class="m">+1</span><span class="p">]</span>
-  count
-<span class="p">}</span>
- 
-<span class="c1"># Creates a list of matrices, each of which is an iteration of the Game of Life.</span>
-<span class="c1"># Arguments</span>
-<span class="c1"># size: the edge length of the square</span>
-<span class="c1"># prob: a vector (of length 2) that generates cells with probability of death and life, respectively</span>
-<span class="c1"># returns a list of grids (matrices)</span>
-game_of_life <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>size <span class="o">=</span> <span class="m">10</span><span class="p">,</span> num_reps <span class="o">=</span> <span class="m">50</span><span class="p">,</span> prob <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">0.5</span><span class="p">))</span> <span class="p">{</span>
-  grid <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">()</span>
-  grid<span class="p">[[</span><span class="m">1</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="kp">replicate</span><span class="p">(</span>size<span class="p">,</span> <span class="kp">sample</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">),</span> size<span class="p">,</span> replace <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> prob <span class="o">=</span> prob<span class="p">))</span>
-  dev_null <span class="o">&lt;-</span> foreach<span class="p">(</span>i <span class="o">=</span> <span class="kp">seq_len</span><span class="p">(</span>num_reps<span class="p">)</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span> <span class="o">%do%</span> <span class="p">{</span>
-    grid<span class="p">[[</span>i<span class="p">]]</span> <span class="o">&lt;-</span> grid<span class="p">[[</span>i<span class="m">-1</span><span class="p">]]</span>
-    foreach<span class="p">(</span>j <span class="o">=</span> <span class="kp">seq_len</span><span class="p">(</span>size<span class="p">))</span> <span class="o">%:%</span>
-      foreach<span class="p">(</span>k <span class="o">=</span> <span class="kp">seq_len</span><span class="p">(</span>size<span class="p">))</span> <span class="o">%do%</span> <span class="p">{</span>
- 
-        <span class="c1"># Apply game rules.</span>
-        num_neighbors <span class="o">&lt;-</span> how_many_neighbors<span class="p">(</span>grid<span class="p">[[</span>i<span class="p">]],</span> j<span class="p">,</span> k<span class="p">)</span>
-        alive <span class="o">&lt;-</span> grid<span class="p">[[</span>i<span class="p">]][</span>j<span class="p">,</span>k<span class="p">]</span> <span class="o">==</span> <span class="m">1</span>
-        <span class="kr">if</span><span class="p">(</span>alive <span class="o">&amp;&amp;</span> num_neighbors <span class="o">&lt;=</span> <span class="m">1</span><span class="p">)</span> grid<span class="p">[[</span>i<span class="p">]][</span>j<span class="p">,</span>k<span class="p">]</span> <span class="o">&lt;-</span> <span class="m">0</span>
-        <span class="kr">if</span><span class="p">(</span>alive <span class="o">&amp;&amp;</span> num_neighbors <span class="o">&gt;=</span> <span class="m">4</span><span class="p">)</span> grid<span class="p">[[</span>i<span class="p">]][</span>j<span class="p">,</span>k<span class="p">]</span> <span class="o">&lt;-</span> <span class="m">0</span>
-        <span class="kr">if</span><span class="p">(</span><span class="o">!</span>alive <span class="o">&amp;&amp;</span> num_neighbors <span class="o">==</span> <span class="m">3</span><span class="p">)</span> grid<span class="p">[[</span>i<span class="p">]][</span>j<span class="p">,</span>k<span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1</span>
-      <span class="p">}</span>
-  <span class="p">}</span>
-  grid
-<span class="p">}</span>
- 
-<span class="c1"># Converts the current grid (matrix) to a ggplot2 image</span>
-grid_to_ggplot <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>grid<span class="p">)</span> <span class="p">{</span>
-  <span class="c1"># Permutes the matrix so that melt labels this correctly.</span>
-  grid <span class="o">&lt;-</span> grid<span class="p">[</span><span class="kp">seq.int</span><span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>grid<span class="p">),</span> <span class="m">1</span><span class="p">),</span> <span class="p">]</span>
-  grid <span class="o">&lt;-</span> melt<span class="p">(</span>grid<span class="p">)</span>
-  grid<span class="o">$</span>value <span class="o">&lt;-</span> <span class="kp">factor</span><span class="p">(</span><span class="kp">ifelse</span><span class="p">(</span>grid<span class="o">$</span>value<span class="p">,</span> <span class="s">&quot;Alive&quot;</span><span class="p">,</span> <span class="s">&quot;Dead&quot;</span><span class="p">))</span>
-  p <span class="o">&lt;-</span> ggplot<span class="p">(</span>grid<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Var1<span class="p">,</span> y<span class="o">=</span>Var2<span class="p">,</span> z <span class="o">=</span> value<span class="p">,</span> color <span class="o">=</span> value<span class="p">))</span>
-  p <span class="o">&lt;-</span> p <span class="o">+</span> geom_tile<span class="p">(</span>aes<span class="p">(</span>fill <span class="o">=</span> value<span class="p">))</span>
-  p  <span class="o">+</span> scale_fill_manual<span class="p">(</span>values <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Dead&quot;</span> <span class="o">=</span> <span class="s">&quot;white&quot;</span><span class="p">,</span> <span class="s">&quot;Alive&quot;</span> <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">))</span>
-<span class="p">}</span></code></pre></div>
-
-<p>As an example, I have created a 50-by-50 grid with a 10% chance that its initial values will be alive. The simulation has 500 iterations. You may add more, but this takes long enough already. Note
-that the default frame rate, which is controlled by <strong>interval</strong>, is 1 second. I set it to 0.05
-based to give a decent video.</p>
-
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kp">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
-game_grids <span class="o">&lt;-</span> game_of_life<span class="p">(</span>size <span class="o">=</span> <span class="m">50</span><span class="p">,</span> num_reps <span class="o">=</span> <span class="m">500</span><span class="p">,</span> prob <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span> <span class="m">0.9</span><span class="p">))</span>
-grid_ggplot <span class="o">&lt;-</span> <span class="kp">lapply</span><span class="p">(</span>game_grids<span class="p">,</span> grid_to_ggplot<span class="p">)</span>
-saveVideo<span class="p">(</span><span class="kp">lapply</span><span class="p">(</span>grid_ggplot<span class="p">,</span> <span class="kp">print</span><span class="p">),</span> video.name <span class="o">=</span> <span class="s">&quot;animation.mp4&quot;</span><span class="p">,</span> clean <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> interval <span class="o">=</span> <span class="m">0.05</span><span class="p">)</span></code></pre></div>
-
-<p>I uploaded the resulting video to YouTube for your viewing pleasure.</p>
-
-<p><strong>Update</strong>: After migrating to Jekyll 2.0 on GitHub pages, Jekyll is run in <strong>safe</strong> mode, so 3rd-party plugins are disabled. This includes the <strong>youtube</strong> plugin I was using previously. Maybe one day I’ll be able to add the video here via: <code>%youtube TkH9qwHLwxk%</code></p>
-
 
   </div>
   

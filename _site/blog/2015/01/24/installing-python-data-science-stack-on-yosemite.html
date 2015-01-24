@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Installing Python Data Science Stack on Yosemite &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll.html">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/index.html">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software.html">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Installing Python Data Science Stack on Yosemite</h1>
+  <span class="post-date">24 Jan 2015</span>
+  <p>I was attempting to install the Python data-science stack within a fresh virtual
+environment on my Mac with OS X 10.10.1 (Yosemite) but encountered various
+frustrating errors. I logged my steps below that eventually yielded a successful
+installation.</p>
+
+<p>My primary goal was actually to install version 0.15.2 of
+<a href="http://scikit-learn.org/">scikit-learn</a> via <code>pip install -U scikit-learn</code>, but
+I encountered some errors during the <code>scipy</code> installation. The process
+successfully added <code>numpy 1.9.1</code> but failed on <code>scipy 0.15.1</code>. I then tried to
+install that version of <code>scipy</code> individually but received the following error.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">In file included from /usr/include/dispatch/dispatch.h:51:0,
+
+  from /System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h:56,
+
+  from /System/Library/Frameworks/CoreGraphics.framework/Headers/CGDisplayConfiguration.h:8,
+
+  from /System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h:41,
+
+  from /System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers/vImage_Utilities.h:14,
+
+  from /System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers/vImage.h:200,
+
+  from /System/Library/Frameworks/Accelerate.framework/Headers/Accelerate.h:24,
+
+  from /Users/ramhiser/.virtualenvs/dossier/build/scipy/scipy/_build_utils/src/wrap_accelerate_c.c:1:
+
+  /usr/include/dispatch/object.h:143:15: error: expected identifier or <span class="s1">&#39;(&#39;</span> before <span class="s1">&#39;^&#39;</span> token
+
+   typedef void <span class="o">(</span>^dispatch_block_t<span class="o">)(</span>void<span class="o">)</span><span class="p">;</span>
+
+                 ^
+
+  /usr/include/dispatch/object.h:362:3: error: unknown <span class="nb">type </span>name <span class="s1">&#39;dispatch_block_t&#39;</span>
+
+   dispatch_block_t notification_block<span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<p>After a few Google searches and a bit of trial and error, I followed
+instructions in this <a href="http://stackoverflow.com/a/19850962/234233">StackOverflow
+post</a> to attempt a fix. As mentioned
+below, I still received an error. Here were my initial steps:</p>
+
+<ol>
+  <li>
+    <p>Download and install XCode Command Line Tools from <a href="https://developer.apple.com">Apple</a></p>
+  </li>
+  <li>
+    <p>Installing <code>scipy</code> still failed at this point</p>
+  </li>
+  <li>
+    <p><code>sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/</code></p>
+  </li>
+  <li>
+    <p><code>brew update</code></p>
+  </li>
+  <li>
+    <p><code>brew doctor</code></p>
+  </li>
+  <li>
+    <p><code>pip install -U scipy</code> still failed with same error message.</p>
+  </li>
+  <li>
+    <p>A few hints from a random <a href="https://github.com/robotastic/homebrew-hackrf#troubleshooting">README
+file</a> suggested
+that I do the following:</p>
+  </li>
+</ol>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++
+<span class="nb">export </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s1">&#39;-L/opt/X11/lib&#39;</span>
+<span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-I/opt/X11/include -I/opt/X11/include/freetype2&#39;</span></code></pre></div>
+
+<p>Well, a new error message at this point.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="s2">&quot;_main&quot;</span>, referenced from:
+
+       implicit entry/start <span class="k">for</span> main executable
+
+  ld: symbol<span class="o">(</span>s<span class="o">)</span> not found <span class="k">for</span> architecture x86_64
+
+  collect2: error: ld returned <span class="m">1</span> <span class="nb">exit </span>status</code></pre></div>
+
+<p>Based on <a href="http://stackoverflow.com/a/11798574/234233">a couple</a> <a href="http://forrestbao.blogspot.com/2010/04/compiling-numpy-and-scipy-on-centos.html">more
+posts</a>,
+I next unset <code>LDFLAGS</code> and <code>CFLAGS</code>. I attempted to install at this point and
+again saw the latter error message.</p>
+
+<p>At this point, I was quite frustrated. I closed my terminal
+<a href="http://iterm2.com">iTerm2</a> and reopened it. Forgoing the <code>LDFLAGS</code> and <code>CFLAGS</code>
+options, I set:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></div>
+
+<p>This time I was able to install both <code>scipy</code> and <code>scikit-learn</code> successfully.</p>
+
+</div>
+
+<div class="disqus">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'ramhiser'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//blog/2013/08/31/mlb-rankings-using-the-bradley-terry-model.html">
+            MLB Rankings Using the Bradley-Terry Model
+            <small>31 Aug 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//blog/2013/07/02/a-brief-look-at-mixture-discriminant-analysis.html">
+            A Brief Look at Mixture Discriminant Analysis
+            <small>02 Jul 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning.html">
+            High-Dimensional Microarray Data Sets in R for Machine Learning
+            <small>29 Dec 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

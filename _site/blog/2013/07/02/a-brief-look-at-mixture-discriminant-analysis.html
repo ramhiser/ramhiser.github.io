@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      A Brief Look at Mixture Discriminant Analysis &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/blogroll.html">Blogroll</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/research/index.html">Publications/Technical Reports</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software.html">Software</a>
+        
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">A Brief Look at Mixture Discriminant Analysis</h1>
+  <span class="post-date">02 Jul 2013</span>
+  <p>Lately, I have been working with finite mixture models for my postdoctoral work
+on data-driven automated <a href="http://en.wikipedia.org/wiki/Gate_%28cytometry%29">gating</a>.
+Given that I had barely scratched the surface with mixture models in the
+classroom, I am becoming increasingly comfortable with them. With this in mind,
+I wanted to explore their application to classification because there are times
+when a single class is clearly made up of multiple subclasses that are not
+necessarily adjacent.</p>
+
+<p>As far as I am aware, there are two main approaches (there are lots and lots of
+variants!) to applying finite mixture models to classfication:</p>
+
+<ol>
+  <li>
+    <p>The <a href="http://www.stat.washington.edu/raftery/Research/PDF/fraley2002.pdf">Fraley and Raftery approach</a> via <a href="http://cran.r-project.org/web/packages/mclust/index.html">the mclust R package</a></p>
+  </li>
+  <li>
+    <p>The <a href="http://www.jstor.org/stable/2346171">Hastie and Tibshirani approach</a> via <a href="http://cran.r-project.org/web/packages/mda/index.html">the mda R package</a></p>
+  </li>
+</ol>
+
+<p>Although the methods are similar, I opted for exploring the latter method. Here
+is the general idea. There are <script type="math/tex">K \ge 2</script> classes, and each class is assumed to
+be a Gaussian mixuture of subclasses. Hence, the model formulation is generative,
+and the posterior probability of class membership is used to classify an
+unlabeled observation. Each subclass is assumed to have its own mean vector, but
+all subclasses share the same covariance matrix for model parsimony. The model
+parameters are estimated via <a href="http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">the EM algorithm</a>.</p>
+
+<p>Because the details of the likelihood in the paper are brief, I realized I was a
+bit confused with how to write the likelihood in order to determine how much
+each observation contributes to estimating the common covariance matrix in the
+M-step of the EM algorithm. Had each subclass had its own covariance matrix, the
+likelihood would simply be the product of the individual class likelihoods and
+would have been straightforward. The source of my confusion was how to write
+the complete data likelihood when the classes share parameters.</p>
+
+<p>I decided to write up a document that explicitly defined the likelihood and
+provided the details of the EM algorithm used to estimate the model parameters.
+<a href="http://ramhiser.com/research/mixture-discriminant-analysis.html">The document is available here</a>
+along with <a href="https://github.com/ramey/tech-reports/tree/master/mixture-discrim-analysis">the LaTeX and R code</a>.
+If you are inclined to read the document, please let me know if any notation is
+confusing or poorly defined. Note that I did not include the additional topics
+on reduced-rank discrimination and shrinkage.</p>
+
+<p>To see how well the mixture discriminant analysis (MDA) model worked, I
+constructed a simple toy example consisting of 3 bivariate classes each having 3
+subclasses. The subclasses were placed so that within a class, no subclass is
+adjacent. The result is that no class is Gaussian. I was interested in seeing
+if the MDA classifier could identify the subclasses and also comparing its
+decision boundaries with those of <a href="http://en.wikipedia.org/wiki/Linear_discriminant_analysis">linear discriminant analysis (LDA)</a>
+and <a href="http://en.wikipedia.org/wiki/Quadratic_classifier#Quadratic_discriminant_analysis">quadratic discriminant analysis (QDA)</a>.
+I used the implementation of the LDA and QDA classifiers in <a href="http://cran.r-project.org/web/packages/MASS/index.html">the MASS package</a>.
+From the scatterplots and decision boundaries given below,
+the LDA and QDA classifiers yielded puzzling decision boundaries as expected.
+Contrarily, we can see that the MDA classifier does a good job of identifying
+the subclasses. It is important to note that all subclasses in this example have
+the same covariance matrix, which caters to the assumption employed in the MDA
+classifier. It would be interesting to see how sensitive the classifier is to
+deviations from this assumption. Moreover, perhaps a more important investigation
+would be to determine how well the MDA classifier performs as the feature
+dimension increases relative to the sample size.</p>
+
+<p><img src="http://i.imgur.com/LIQPL0u.png" alt="LDA Decision Boundaries" /></p>
+
+<p><img src="http://i.imgur.com/GeyXCsf.png" alt="QDA Decision Boundaries" /></p>
+
+<p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries" /></p>
+
+<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>mvtnorm<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>mda<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
+n <span class="o">&lt;-</span> <span class="m">500</span>
+
+<span class="c1"># Randomly sample data</span>
+x11 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+x12 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x13 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+
+x21 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x22 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+x23 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+
+x31 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+x32 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">-4</span><span class="p">))</span>
+x33 <span class="o">&lt;-</span> rmvnorm<span class="p">(</span>n <span class="o">=</span> n<span class="p">,</span> mean <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+
+x <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">(</span>x11<span class="p">,</span> x12<span class="p">,</span> x13<span class="p">,</span> x21<span class="p">,</span> x22<span class="p">,</span> x23<span class="p">,</span> x31<span class="p">,</span> x32<span class="p">,</span> x33<span class="p">)</span>
+train_data <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>x<span class="p">,</span> y <span class="o">=</span> <span class="kp">gl</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span> <span class="o">*</span> n<span class="p">))</span>
+
+<span class="c1"># Trains classifiers</span>
+lda_out <span class="o">&lt;-</span> lda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+qda_out <span class="o">&lt;-</span> qda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+mda_out <span class="o">&lt;-</span> mda<span class="p">(</span>y <span class="o">~</span> <span class="m">.</span><span class="p">,</span> data <span class="o">=</span> train_data<span class="p">)</span>
+
+<span class="c1"># Generates test data that will be used to generate the decision boundaries via</span>
+<span class="c1"># contours</span>
+contour_data <span class="o">&lt;-</span> <span class="kp">expand.grid</span><span class="p">(</span>X1 <span class="o">=</span> <span class="kp">seq</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">),</span>
+                            X2 <span class="o">=</span> <span class="kp">seq</span><span class="p">(</span><span class="m">-8</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> length <span class="o">=</span> <span class="m">300</span><span class="p">))</span>
+
+<span class="c1"># Classifies the test data</span>
+lda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>lda_out<span class="p">,</span> contour_data<span class="p">)</span><span class="o">$</span><span class="kp">class</span><span class="p">))</span>
+qda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>qda_out<span class="p">,</span> contour_data<span class="p">)</span><span class="o">$</span><span class="kp">class</span><span class="p">))</span>
+mda_predict <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>contour_data<span class="p">,</span>
+                          y <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>predict<span class="p">(</span>mda_out<span class="p">,</span> contour_data<span class="p">)))</span>
+
+<span class="c1"># Generates plots</span>
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>train_data<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> color <span class="o">=</span> y<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> lda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;LDA Decision Boundaries&quot;</span><span class="p">)</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> qda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;QDA Decision Boundaries&quot;</span><span class="p">)</span>
+p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> mda_predict<span class="p">)</span>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span></code></pre></div>
+
+
+</div>
+
+<div class="disqus">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'ramhiser'; // required: replace example with your forum shortname
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//blog/2015/01/24/installing-python-data-science-stack-on-yosemite.html">
+            Installing Python Data Science Stack on Yosemite
+            <small>24 Jan 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//blog/2013/08/31/mlb-rankings-using-the-bradley-terry-model.html">
+            MLB Rankings Using the Bradley-Terry Model
+            <small>31 Aug 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//blog/2012/12/29/high-dimensional-microarray-data-sets-in-r-for-machine-learning.html">
+            High-Dimensional Microarray Data Sets in R for Machine Learning
+            <small>29 Dec 2012</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

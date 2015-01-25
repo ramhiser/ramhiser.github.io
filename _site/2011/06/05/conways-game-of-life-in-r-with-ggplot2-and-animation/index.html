@@ -142,8 +142,19 @@
 
       <div class="container content">
         <div class="post">
+  
   <h1 class="post-title">Conway's Game of Life in R with ggplot2 and animation</h1>
   <span class="post-date">05 Jun 2011</span>
+
+  <div class="tweet-post">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="ramhiser">Tweet</a>
+
+    <!-- Put this just before the closing body tag -->
+    <script>!function(d,s,id){var
+      js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    </script>
+  </div>
+
   <p>In undergrad I had a computer science professor that piqued my interest in applied mathematics, beginning with <a href="http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life</a>. At first, the Game of Life (not the board game) appears to be quite simple — perhaps, too simple — but it has been widely explored and is useful for modeling systems over time. It has been forever since I wrote my first version of this in C++, and I happily report that there will be no nonsense here.</p>
 
 <p>The basic idea is to start with a grid of cells, where each cell is either a zero (dead) or a one (alive). We are interested in watching the population behavior over time to see if the population dies off, has some sort of equilibrium, etc. <a href="http://en.wikipedia.org/wiki/John_Horton_Conway">John Conway</a> studied many possible ways to examine population behaviors and ultimately decided on the following rules, which we apply to each cell for the current tick (or generation).</p>

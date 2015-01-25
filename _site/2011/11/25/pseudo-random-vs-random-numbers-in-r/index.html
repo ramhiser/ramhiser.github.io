@@ -142,8 +142,19 @@
 
       <div class="container content">
         <div class="post">
+  
   <h1 class="post-title">Pseudo-Random vs. Random Numbers in R</h1>
   <span class="post-date">25 Nov 2011</span>
+
+  <div class="tweet-post">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="ramhiser">Tweet</a>
+
+    <!-- Put this just before the closing body tag -->
+    <script>!function(d,s,id){var
+      js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    </script>
+  </div>
+
   <p>Earlier, I found <a href="http://www.boallen.com/random-numbers.html">an interesting post from Bo Allen</a> on <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">pseudo-random</a> vs <a href="http://en.wikipedia.org/wiki/Random_number">random numbers</a>, where the author uses a simple bitmap (<a href="http://en.wikipedia.org/wiki/Heat_map">heat map</a>) to show that the <strong>rand</strong> function in <a href="http://www.php.net/">PHP</a> has a systematic pattern and compares these to <strong>truly random</strong> numbers obtained from <a href="http://www.random.org/">random.org</a>. The post’s results suggest that pseudo-randomness in <a href="http://www.php.net/">PHP</a> is faulty and, in general, should not be underestimated in practice. Of course, the findings should not be too surprising, as there is a large body of literature on the subtleties, philosophies, and implications of the <strong>pseudo</strong> aspect of the most common approaches to random number generation. However, it is silly that <a href="http://www.php.net/">PHP</a>’s <a href="http://en.wikipedia.org/wiki/Random_number_generation">random number generator (RNG)</a> displays such an obvious pattern nowadays because there are several decent, well-studied pseudo-RNG algorithms available as well as numerous tests for randomness.  For a good introduction to <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a>, I recommend <a href="http://www.johndcook.com/blog/2010/12/06/how-to-test-a-random-number-generator-2/">John D. Cook’s discussion on testing a random number generator</a>.</p>
 
 <p>Now, I would never use <a href="http://www.php.net/">PHP</a> for any (serious) statistical analysis, partly due to my fondness for <a href="http://www.r-project.org/">R</a>, nor do I doubt the practicality of the <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> in <a href="http://www.r-project.org/">R</a>. But I was curious to see what would happen. So, created equivalent plots in <a href="http://www.r-project.org/">R</a> to see if a <strong>rand</strong> equivalent would exhibit a systematic pattern like in <a href="http://www.php.net/">PHP</a>, even if less severe. Also, for comparison, I chose to use <a href="http://cran.r-project.org/web/packages/random/index.html">the <strong>random</strong> package</a>, from <a href="http://dirk.eddelbuettel.com/">Dirk Eddelbuettel</a>, to draw <strong>truly random</strong> numbers from <a href="http://www.random.org/">random.org</a>. Until today, I had only heard of <a href="http://cran.r-project.org/web/packages/random/index.html">the <strong>random</strong> package</a> but had never used it.</p>

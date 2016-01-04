@@ -5,24 +5,13 @@ sharing: false
 footer: true
 ---
 
-I am a data scientist for [BlackLocus](http://blacklocus.com), the Home Depot
-Innovation Lab. My current work focuses on the automation of data-driven
-merchandising actions and decisions via statistics and machine learning.
+Some things about me:
 
-Previously, I was a postdoctoral research fellow in statistical genetics at the
-[Fred Hutchinson Cancer Research Center](http://www.fhcrc.org) in the [Gottardo
-Lab](http://rglab.org/). My focus was on developing methods for the automated
-analysis of high-throughput, multidimensional clinical flow cytometry
-data. Prior to my postdoc, I was a research associate in the [National Security
-Internship Program](http://science-ed.pnnl.gov/nsip/) at the [Pacific Northwest
-National Laboratory](http://www.pnnl.gov/). Also, I have a Ph.D. in
-[Statistics](http://www.baylor.edu/Statistics/) from [Baylor
-University](http://www.baylor.edu/), where my Ph.D. adviser was [Dr. Dean
-Young](http://www.baylor.edu/Statistics/index.php?id=77525).
+* Lead Data Scientist at [uStudio](http://ustudio.com).
+* Enamored with machine learning.
+* Write lots of Python and R code.
+* Passionate about exercise and nutrition.
+* Huge [Baylor football](https://twitter.com/BUFootball) fan. Sic 'em, Bears!
+* Soccer referee for over 20 years.
 
-My research interests are primarily in statistics in the areas of statistical
-pattern recognition, machine learning, modern multivariate analysis,
-computational statistics, and Bayesian methods. I write a lot of R and Python
-code and work regularly with large data sets and high-performance computing.
-
-<img src="/images/johnramey.jpg" alt="John Ramey"/>
+<img src="/images/daddy-and-aj-on-hike.jpg" alt="John Ramey"/>

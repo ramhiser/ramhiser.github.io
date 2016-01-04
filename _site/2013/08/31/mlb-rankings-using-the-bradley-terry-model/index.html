@@ -122,7 +122,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2015. All rights reserved.
+      &copy; 2016. All rights reserved.
     </p>
   </div>
 </div>
@@ -181,6 +181,8 @@ future post though, I will incorporate these data.</p>
 
 <p>Here’s the Python code. Feel free to fork it.</p>
 
+<noscript><pre>400: Invalid request
+</pre></noscript>
 <script src="https://gist.github.com/6331163.js"> </script>
 
 <h2 id="bradley-terry-model">Bradley-Terry Model</h2>
@@ -194,9 +196,7 @@ know only the win-loss records between any two teams. (If curious, <a href="http
 probability <script type="math/tex">p_{ij}</script> that team <script type="math/tex">i</script> will beat team <script type="math/tex">j</script>. Then, with the BT
 model we define</p>
 
-<script type="math/tex; mode=display">
-\text{logit}(p_{ij}) = \lambda_i - \lambda_j,
-</script>
+<script type="math/tex; mode=display">\text{logit}(p_{ij}) = \lambda_i - \lambda_j,</script>
 
 <p>where <script type="math/tex">\lambda_i</script> and <script type="math/tex">\lambda_j</script> denote the abilities of teams <script type="math/tex">i</script> and
 <script type="math/tex">j</script>, respectively. Besides calculating the probability of one team beating
@@ -264,7 +264,7 @@ look at the results for each league.</p>
 <p>The BT model provides a natural way of ranking teams based on the team-ability
 estimates. Let’s first look at the estimates.</p>
 
-<p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot" /> </p>
+<p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot" /></p>
 
 <div class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span>
 <span class="c1">## |-----+---------+-------|</span>
@@ -304,21 +304,21 @@ will beat another.</p>
 probability of beating another AL team is less than 50%. The best team, Tampa
 Bay, has more than a 50% chance of beating any other AL team.</p>
 
-<p><img src="http://i.imgur.com/9IfSUag.png" alt="plot of chunk AL_matchup_heatmaps" /> </p>
+<p><img src="http://i.imgur.com/9IfSUag.png" alt="plot of chunk AL_matchup_heatmaps" /></p>
 
 <p>While the heatmap is useful for comparing any two teams at a glance, bar graphs
 provide a more precise representation of who will win. Here are the
 probabilities that the best and worst teams in the AL will beat any other AL
 team. A horizontal red threshold is drawn at 50%.</p>
 
-<p><img src="http://i.imgur.com/WAD1Cc3.png" alt="plot of chunk AL_probs_top_team" /> </p>
+<p><img src="http://i.imgur.com/WAD1Cc3.png" alt="plot of chunk AL_probs_top_team" /></p>
 
-<p><img src="http://i.imgur.com/JRUd5Bj.png" alt="plot of chunk AL_probs_bottom_team" /> </p>
+<p><img src="http://i.imgur.com/JRUd5Bj.png" alt="plot of chunk AL_probs_bottom_team" /></p>
 
 <p>An important thing to notice here is that Tampa Bay is not unbeatable, according
 to the BT model, the Astros have a shot at winning against any other AL team.</p>
 
-<p><img src="http://i.imgur.com/q3CB6tp.png" alt="plot of chunk AL_probs_middle_team" /> </p>
+<p><img src="http://i.imgur.com/q3CB6tp.png" alt="plot of chunk AL_probs_middle_team" /></p>
 
 <p>I have also found that a useful gauge is to look at the probability that an
 average team will beat any other team. For instance, Cleveland is ranked in the
@@ -331,7 +331,7 @@ Astros.</p>
 
 <p>Here, we repeat the same analysis for the National League.</p>
 
-<p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot" /> </p>
+<p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot" /></p>
 
 <div class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span>
 <span class="c1">## |-----+---------+-------|</span>
@@ -362,7 +362,7 @@ when the standard error is taken into account.</p>
 
 <p>As before, let’s look at the matchup probabilities.</p>
 
-<p><img src="http://i.imgur.com/aVpVIDK.png" alt="plot of chunk NL_matchup_heatmaps" /> </p>
+<p><img src="http://i.imgur.com/aVpVIDK.png" alt="plot of chunk NL_matchup_heatmaps" /></p>
 
 <p>From the heatmap we can see that the Braves have at least a 72% chance of
 beating the Marlins, according to the BT model. All other winning probabilities
@@ -372,7 +372,7 @@ winning.</p>
 <p>Again, we plot the probabilities for the best and the worst teams along with an
 average team.</p>
 
-<p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team" /> </p>
+<p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team" /></p>
 
 <div class="highlight"><pre><code class="language-r" data-lang="r">ATL_probs <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>NL_probs<span class="p">,</span> Team <span class="o">==</span> <span class="s">&quot;ATL&quot;</span> <span class="o">&amp;</span> Opponent <span class="o">!=</span> <span class="s">&quot;ATL&quot;</span><span class="p">)</span>
 prob_ATL_SF <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>ATL_probs<span class="p">,</span> Opponent <span class="o">==</span> <span class="s">&quot;SF&quot;</span><span class="p">)</span><span class="o">$</span>Probability
@@ -392,7 +392,7 @@ Atlanta has a three-game series with the Giants, odds are good that Atlanta will
 win 2 of the 3 games. Moreover, as we can see in the table above, there is less
 than a 5% chance that the Giants will sweep Atlanta.</p>
 
-<p><img src="http://i.imgur.com/E24KZ1Z.png" alt="plot of chunk NL_probs_bottom_team" /> </p>
+<p><img src="http://i.imgur.com/E24KZ1Z.png" alt="plot of chunk NL_probs_bottom_team" /></p>
 
 <p>The BT model indicates that the Miami Marlins are the worst team in the National
 League. Despite their poor performance this season, except for the Braves and
@@ -400,7 +400,7 @@ the Cardinals, the Marlins have a legitimate chance to beat other NL teams. This
 is especially the case against the other bottom NL teams, such as the Cubs and
 the Mets.</p>
 
-<p><img src="http://i.imgur.com/ikAMFQS.png" alt="plot of chunk NL_probs_middle_team" /> </p>
+<p><img src="http://i.imgur.com/ikAMFQS.png" alt="plot of chunk NL_probs_middle_team" /></p>
 
 <h2 id="whats-next">What’s Next?</h2>
 

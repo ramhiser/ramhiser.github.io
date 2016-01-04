@@ -122,7 +122,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2015. All rights reserved.
+      &copy; 2016. All rights reserved.
     </p>
   </div>
 </div>
@@ -164,9 +164,7 @@
 
 <p>The question first asks us to how that the three random variables are pairwise independent but not independent. The pairwise independence comes directly from the bolded phrase in the problem statement. Now, to show that the three random variables are not independent, denote by <script type="math/tex">p_j</script> the probability that <script type="math/tex">I_j = 1</script>, <script type="math/tex">j = 1, 2, 3</script>. If we had independence, then the following statement would be true:</p>
 
-<script type="math/tex; mode=display">
-P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
-</script>
+<script type="math/tex; mode=display">P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).</script>
 
 <p>However, notice that the event in the lefthand side can never happen because if <script type="math/tex">I_1 = 1</script> and <script type="math/tex">I_2 = 1</script>, then <script type="math/tex">I_3</script> must be 1. Hence, the lefthand side must equal 0, while the righthand side equals 1/8. Therefore, the three random variables are not independent.</p>
 
@@ -182,75 +180,59 @@ P(I_1 = 1, I_2 = 1, I_3 = 0) = p_1 p_2 (1 - p_3).
 
 <p>This set of questions is concerned with the mean and variance of the sample median, <script type="math/tex">X_{(m + 1)}</script>, where <script type="math/tex">X_{(i)}</script> denotes the <script type="math/tex">i</script>th <a href="http://en.wikipedia.org/wiki/Order_statistic">order statistic</a>. First, note that the mean and variance of the minimum value <script type="math/tex">X_{(1)}</script> are <script type="math/tex">1/(n\lambda)</script> and <script type="math/tex">1/(n\lambda)^2</script>, respectively. From the <a href="http://en.wikipedia.org/wiki/Memorylessness#The_memoryless_distributions_are_the_exponential_distributions">memoryless property</a> of the <a href="http://en.wikipedia.org/wiki/Exponential_distribution">exponential distribution</a>, the mean value of the time until the next protein degrades is independent of the previous. However, there are now <script type="math/tex">n - 1</script> proteins remaining. Thus, the mean and variance of <script type="math/tex">X_{(2)}</script> are <script type="math/tex">1/(n\lambda) + 1/((n-1)\lambda)</script> and <script type="math/tex">1/(n\lambda)^2 + 1/((n-1)\lambda)^2</script>, respectively. Continuining in this manner, we have</p>
 
-<script type="math/tex; mode=display">
-E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}
-</script>
+<script type="math/tex; mode=display">E[X_{(m + 1)}] = \frac{1}{(2m + 1)\lambda} + \frac{1}{(2m)\lambda} + \ldots + \frac{1}{(m + 1)\lambda}</script>
 
 <p>and</p>
 
-<script type="math/tex; mode=display">
-Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.
-</script>
+<script type="math/tex; mode=display">Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.</script>
 
 <h3 id="approximation-of-exm--1">Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
 
 <p>Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have</p>
 
-<script type="math/tex; mode=display">
-\sum_{k=1}^n \frac{1}{k} \approx \log n + \gamma,
-</script>
+<script type="math/tex; mode=display">\sum_{k=1}^n \frac{1}{k} \approx \log n + \gamma,</script>
 
 <p>where <script type="math/tex">\gamma</script> is <a href="http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant">Euler’s constant</a>. Then, we can write the expected sample median as</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-
 \begin{aligned}
 E[X_{(m + 1)}] &= \frac{1}{\lambda} \sum_{k=m+1}^{2m+1} \frac{1}{k}\\
 &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
 &\approx \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\\
 &= \frac{1}{\lambda} \log \left(2 + \frac{1}{m} \right).
-\end{aligned}
- %]]></script>
+\end{aligned} %]]></script>
 
-<p>Hence, as <script type="math/tex">n \rightarrow \infty</script>, this approximation goes to <script type="math/tex"> \frac{\log 2}{\lambda}</script>, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to <script type="math/tex">F_X(x) = 1/2</script>, where <script type="math/tex">F_X</script> denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable <script type="math/tex">X</script>.</p>
+<p>Hence, as <script type="math/tex">n \rightarrow \infty</script>, this approximation goes to <script type="math/tex">\frac{\log 2}{\lambda}</script>, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to <script type="math/tex">F_X(x) = 1/2</script>, where <script type="math/tex">F_X</script> denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable <script type="math/tex">X</script>.</p>
 
 <h3 id="improved-approximation-of-exm--1">Improved Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
 
 <p>It turns out that we can improve this approximation with the following two results:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-
 \begin{aligned}
 \sum_{k=1}^n \frac{1}{k} &= \log n + \frac{1}{2n} + o\left(\frac{1}{n}\right),\\
 \log \left(\frac{2m + 1}{m}\right) &= \log 2 + \frac{1}{2m} + o\left(\frac{1}{m}\right).
-\end{aligned}
- %]]></script>
+\end{aligned} %]]></script>
 
 <p>Following the derivation of our above approximation, we have that</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-
 \begin{aligned}
 E[X_{(m + 1)}] &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{k=1}^{m} \frac{1}{k} \right)\\
 &= \frac{1}{\lambda} \left( \log (2m + 1) + \gamma - \log m - \gamma \right)\\
 &= \frac{1}{\lambda} \left[ \log \left( \frac{2m + 1}{m} \right) + \frac{1}{2(2m+1)} - \frac{1}{2m} + o\left(\frac{1}{m}\right)  \right]\\
 &= \frac{\log 2}{\lambda} + \frac{1}{2\lambda (2m + 1)} + o\left(\frac{1}{m}\right).
-\end{aligned}
- %]]></script>
+\end{aligned} %]]></script>
 
 <h3 id="approximation-of-varxm--1">Approximation of <script type="math/tex">Var[X_{(m + 1)}]</script></h3>
 
 <p>We can also approximate <script type="math/tex">Var[X_{(m + 1)}]</script> using the approximation</p>
 
-<script type="math/tex; mode=display">
-\frac{1}{a^2} + \frac{1}{(a+1)^2} + \ldots + \frac{1}{b^2} \approx \frac{1}{a - 1/2} - \frac{1}{b + 1/2}.
-</script>
+<script type="math/tex; mode=display">\frac{1}{a^2} + \frac{1}{(a+1)^2} + \ldots + \frac{1}{b^2} \approx \frac{1}{a - 1/2} - \frac{1}{b + 1/2}.</script>
 
 <p>With <script type="math/tex">a = m+1</script> and <script type="math/tex">b = 2m + 1</script>, we have</p>
 
-<script type="math/tex; mode=display">
-Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).
-</script>
+<script type="math/tex; mode=display">Var[X_{(m + 1)}] \approx \frac{2}{\lambda^2} + o\left(\frac{1}{n^2}\right).</script>
 
 </div>
 

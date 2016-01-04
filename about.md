@@ -5,8 +5,6 @@ sharing: false
 footer: true
 ---
 
-Some things about me:
-
 * Lead Data Scientist at [uStudio](http://ustudio.com).
 * Enamored with machine learning.
 * Write lots of Python and R code.

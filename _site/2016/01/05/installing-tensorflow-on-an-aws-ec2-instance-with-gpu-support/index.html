@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Installing TensorFlow on an AWS EC2 Instance with GPU Support &middot; John Ramey
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  <!-- MathJax -->
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The personal site of <a href="http://ramhiser.com">John Ramey</a> to discuss statistics, machine learning, and other endeavors.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/software.html">Software</a>
+        
+      
+    
+
+    <a class="sidebar-nav-item" href="https://scholar.google.com/citations?user=1g4uXl8AAAAJ&hl=en">Publications</a>
+    <a class="sidebar-nav-item" href="http://github.com/ramhiser">GitHub</a>
+    <a class="sidebar-nav-item" href="http://twitter.com/ramhiser">@ramhiser</a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2016. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">John Ramey</a>
+            <small>Statistics and Machine Learning</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  
+  <h1 class="post-title">Installing TensorFlow on an AWS EC2 Instance with GPU Support</h1>
+  <span class="post-date">05 Jan 2016</span>
+
+  <div class="tweet-post">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="ramhiser">Tweet</a>
+
+    <!-- Put this just before the closing body tag -->
+    <script>!function(d,s,id){var
+      js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    </script>
+  </div>
+
+  <p>The following post describes how to install TensorFlow 0.6 on an Amazon EC2
+Instance with GPU Support. I also created a
+<a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-70c59a1a">Public AMI</a> (ami-70c59a1a) with the resulting setup. Feel free to use it.</p>
+
+<p>The following things are installed:</p>
+
+<ul>
+  <li>Essentials</li>
+  <li>Cuda Toolkit 7.0</li>
+  <li>cuDNN Toolkit 6.5</li>
+  <li>Bazel 0.1.1 (Java 8 is a dependency)</li>
+  <li>TensorFlow 0.6</li>
+</ul>
+
+<p>To get going, I recommend requesting a spot instance. Can your instance go away?
+Sure. But $0.07/hr is much nicer than $0.65/hr when you are figuring things out.
+I launched a single <code>g2.2xlarge</code> instance using the Ubuntu Server 14.04 LTS AMI.</p>
+
+<p>After launching your instance, install the essentials:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip
+sudo pip install -U pip</code></pre></div>
+
+<p>TensorFlow requires installing CUDA Toolkit 7.0. To do this, run:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1410/x86_64/cuda-repo-ubuntu1410_7.0-28_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1410_7.0-28_amd64.deb
+rm cuda-repo-ubuntu1410_7.0-28_amd64.deb
+sudo apt-get update
+sudo apt-get install -y cuda</code></pre></div>
+
+<p>At some point, you get the following message: <code>Reboot your computer and verify
+that the NVIDIA graphics driver can be loaded.</code> I mean, it’s 2016. But
+whatevs. We’ll reboot in a moment. Now, we need to download
+<a href="https://developer.nvidia.com/rdp/assets/cudnn-65-linux-v2-asset">cuDNN from Nvidia’s site</a>.</p>
+
+<p>After filling out an annoying questionnaire, you’ll download a file named
+<code>cudnn-6.5-linux-x64-v2.tgz</code>. You need to transfer it to your EC2 instance: I
+did this by adding it to my Dropbox folder and using
+<a href="https://www.gnu.org/software/wget/">wget</a> to upload it. Once you have uploaded
+it to your home directory, run the following:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxf cudnn-6.5-linux-x64-v2.tgz <span class="o">&amp;&amp;</span> rm cudnn-6.5-linux-x64-v2.tgz
+sudo cp -R cudnn-6.5-linux-x64-v2/lib* /usr/local/cuda/lib64/
+sudo cp cudnn-6.5-linux-x64-v2/cudnn.h /usr/local/cuda/include/</code></pre></div>
+
+<p>Okay, now reboot:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo reboot</code></pre></div>
+
+<p>Next up, we’ll add some environment variables. You may wish to add these to your
+<code>~/.bashrc</code>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CUDA_HOME</span><span class="o">=</span>/usr/local/cuda
+<span class="nb">export </span><span class="nv">CUDA_ROOT</span><span class="o">=</span>/usr/local/cuda
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$CUDA_ROOT</span>/bin
+<span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:<span class="nv">$CUDA_ROOT</span>/lib64</code></pre></div>
+
+<p>Getting closer. We need to install
+<a href="https://github.com/bazelbuild/bazel/releases/tag/0.1.1">Bazel 0.1.1</a>, which
+requires Java 8. For more details, see
+<a href="https://gist.github.com/erikbern/78ba519b97b440e10640#gistcomment-1645032">this comment</a>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+<span class="c"># Must agree to Oracle’s license agreement</span>
+sudo apt-get install -y oracle-java8-installer</code></pre></div>
+
+<p>Okay, almost done. Let’s clone the TensorFlow repo and initialize all submodules
+using their default settings.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git clone --recurse-submodules https://github.com/tensorflow/tensorflow
+<span class="nb">cd </span>tensorflow</code></pre></div>
+
+<p>Finally, we are going to build TensorFlow with GPU support using CUDA version
+3.0 (currently required on AWS) via the unofficial settings.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">TF_UNOFFICIAL_SETTING</span><span class="o">=</span><span class="m">1</span> ./configure</code></pre></div>
+
+<p>When you see the following message, type <code>3.0</code> to use CUDA version 3.0:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Please specify a list of comma-separated Cuda compute capabilities you want to build with.
+You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
+Please note that each additional compute capability significantly increases your build <span class="nb">time </span>and binary size.
+<span class="o">[</span>Default is: <span class="s2">&quot;3.5,5.2&quot;</span><span class="o">]</span>: 3.0</code></pre></div>
+
+<p>If you forget to type <code>3.0</code>, you’ll get the following error later on:</p>
+
+<blockquote>
+  <p>Ignoring gpu device (device: 0, name: GRID K520, pci bus id: 0000:00:03.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.</p>
+</blockquote>
+
+<p>Other than that, I went with all the default options, resulting in the nice
+message:</p>
+
+<blockquote>
+  <p>WARNING: You are configuring unofficial settings in TensorFlow. Because some
+external libraries are not backward compatible, these settings are largely
+untested and unsupported.</p>
+</blockquote>
+
+<p>Pffft. Anyway, last steps. These take quite a while (~24 minutes for me).</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">bazel build -c opt --config<span class="o">=</span>cuda //tensorflow/cc:tutorials_example_trainer
+bazel build -c opt --config<span class="o">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+sudo pip install --upgrade /tmp/tensorflow_pkg/tensorflow-0.6.0-cp27-none-linux_x86_64.whl</code></pre></div>
+
+<p>Congrats! TensorFlow is installed. At this point, if you launch Python and run
+the following code, you’ll see a lot of nice messages indicating your GPU is set
+up properly:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="n">tf_session</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tf_session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span></code></pre></div>
+
+<p>You can also check that TensorFlow is working by training a
+<a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">CNN</a> on the
+<a href="http://yann.lecun.com/exdb/mnist/">MNIST data set</a>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">python ~/tensorflow/tensorflow/models/image/mnist/convolutional.py
+
+<span class="c"># Lots of output followed by GPU-related things...</span>
+I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:909<span class="o">]</span> successful NUMA node <span class="nb">read </span>from SysFS had negative value <span class="o">(</span>-1<span class="o">)</span>, but there must be at least one NUMA node, so returning NUMA node zero
+I tensorflow/core/common_runtime/gpu/gpu_init.cc:103<span class="o">]</span> Found device <span class="m">0</span> with properties:
+name: GRID K520
+major: <span class="m">3</span> minor: <span class="m">0</span> memoryClockRate <span class="o">(</span>GHz<span class="o">)</span> 0.797
+pciBusID 0000:00:03.0
+Total memory: 4.00GiB
+Free memory: 3.95GiB
+I tensorflow/core/common_runtime/gpu/gpu_init.cc:127<span class="o">]</span> DMA: 0
+I tensorflow/core/common_runtime/gpu/gpu_init.cc:137<span class="o">]</span> 0:   Y
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:702<span class="o">]</span> Creating TensorFlow device <span class="o">(</span>/gpu:0<span class="o">)</span> -&gt; <span class="o">(</span>device: 0, name: GRID K520, pci bus id: 0000:00:03.0<span class="o">)</span>
+I tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:42<span class="o">]</span> Allocating 3.66GiB bytes.
+I tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:52<span class="o">]</span> GPU <span class="m">0</span> memory begins at 0x7023e0000 extends to 0x7ec556000
+I tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:66<span class="o">]</span> Creating bin of max chunk size 1.0KiB
+I tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:66<span class="o">]</span> Creating bin of max chunk size 2.0KiB
+...
+Initialized!
+Epoch 0.00
+Minibatch loss: 12.053, learning rate: 0.010000
+Minibatch error: 90.6%
+Validation error: 84.6%
+Epoch 0.12
+Minibatch loss: 3.282, learning rate: 0.010000
+Minibatch error: 6.2%
+Validation error: 6.9%
+Epoch 0.23
+Minibatch loss: 3.466, learning rate: 0.010000
+Minibatch error: 12.5%
+Validation error: 3.7%
+Epoch 0.35
+Minibatch loss: 3.191, learning rate: 0.010000
+Minibatch error: 7.8%
+Validation error: 3.4%
+Epoch 0.47
+Minibatch loss: 3.201, learning rate: 0.010000
+Minibatch error: 4.7%
+Validation error: 2.7%
+...</code></pre></div>
+
+<p>I borrowed instructions from
+<a href="http://erikbern.com/2015/11/12/installing-tensorflow-on-aws/">a</a>
+<a href="https://groups.google.com/a/tensorflow.org/forum/#!msg/discuss/jRkkvsB1iWA/qv8gJwV_CgAJ">few</a>
+<a href="https://gist.github.com/dennybritz/8c2ca115b72ea98e5192">sources</a>, so thanks
+very much to them. If you want more information about the various options, check
+out <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/g3doc/get_started/os_setup.md">TensorFlow’s installation instructions</a>.</p>
+
+</div>
+
+<div class="disqus">
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'ramhiser'; // required: replace example with your forum shortname
+  var disqus_identifier = '/2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/';
+  var disqus_url = 'http://ramhiser.com/2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/';
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
+            Configuring IPython Notebook Support for PySpark
+            <small>01 Feb 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//2015/01/24/installing-python-data-science-stack-on-yosemite/">
+            Installing Python Data Science Stack on Yosemite
+            <small>24 Jan 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="//2013/08/31/mlb-rankings-using-the-bradley-terry-model/">
+            MLB Rankings Using the Bradley-Terry Model
+            <small>31 Aug 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

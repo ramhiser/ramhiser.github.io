@@ -61,7 +61,11 @@
     
       
         
-          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
         
       
     
@@ -79,11 +83,7 @@
     
       
         
-      
-    
-      
-        
-          <a class="sidebar-nav-item" href="/software.html">Software</a>
+          <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
     
@@ -196,7 +196,7 @@ dimension increases relative to the sample size.</p>
 
 <p><img src="http://i.imgur.com/lw0iBxe.png" alt="MDA Decision Boundaries" /></p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>mvtnorm<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>mda<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
@@ -245,7 +245,7 @@ p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p
 p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> qda_predict<span class="p">)</span>
   <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;QDA Decision Boundaries&quot;</span><span class="p">)</span>
 p <span class="o">+</span> stat_contour<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> X1<span class="p">,</span> y <span class="o">=</span> X2<span class="p">,</span> z <span class="o">=</span> y<span class="p">),</span> data <span class="o">=</span> mda_predict<span class="p">)</span>
-  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span></code></pre></div>
+  <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;MDA Decision Boundaries&quot;</span><span class="p">)</span></code></pre></figure>
 
 
 </div>

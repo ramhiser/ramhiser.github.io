@@ -61,7 +61,11 @@
     
       
         
-          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
         
       
     
@@ -79,11 +83,7 @@
     
       
         
-      
-    
-      
-        
-          <a class="sidebar-nav-item" href="/software.html">Software</a>
+          <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
     
@@ -139,7 +139,7 @@ I encountered some errors during the <code>scipy</code> installation. The proces
 successfully added <code>numpy 1.9.1</code> but failed on <code>scipy 0.15.1</code>. I then tried to
 install that version of <code>scipy</code> individually but received the following error.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">In file included from /usr/include/dispatch/dispatch.h:51:0,
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">In file included from /usr/include/dispatch/dispatch.h:51:0,
 
   from /System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h:56,
 
@@ -163,7 +163,7 @@ install that version of <code>scipy</code> individually but received the followi
 
   /usr/include/dispatch/object.h:362:3: error: unknown <span class="nb">type </span>name <span class="s1">&#39;dispatch_block_t&#39;</span>
 
-   dispatch_block_t notification_block<span class="o">)</span><span class="p">;</span></code></pre></div>
+   dispatch_block_t notification_block<span class="o">)</span><span class="p">;</span></code></pre></figure>
 
 <p>After a few Google searches and a bit of trial and error, I followed
 instructions in this <a href="http://stackoverflow.com/a/19850962/234233">StackOverflow
@@ -196,20 +196,20 @@ that I do the following:</p>
   </li>
 </ol>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
 <span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++
 <span class="nb">export </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s1">&#39;-L/opt/X11/lib&#39;</span>
-<span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-I/opt/X11/include -I/opt/X11/include/freetype2&#39;</span></code></pre></div>
+<span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-I/opt/X11/include -I/opt/X11/include/freetype2&#39;</span></code></pre></figure>
 
 <p>Well, a new error message at this point.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="s2">&quot;_main&quot;</span>, referenced from:
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="s2">&quot;_main&quot;</span>, referenced from:
 
        implicit entry/start <span class="k">for</span> main executable
 
   ld: symbol<span class="o">(</span>s<span class="o">)</span> not found <span class="k">for</span> architecture x86_64
 
-  collect2: error: ld returned <span class="m">1</span> <span class="nb">exit </span>status</code></pre></div>
+  collect2: error: ld returned <span class="m">1</span> <span class="nb">exit </span>status</code></pre></figure>
 
 <p>Based on <a href="http://stackoverflow.com/a/11798574/234233">a couple</a> <a href="http://forrestbao.blogspot.com/2010/04/compiling-numpy-and-scipy-on-centos.html">more
 posts</a>,
@@ -220,8 +220,8 @@ again saw the latter error message.</p>
 <a href="http://iterm2.com">iTerm2</a> and reopened it. Forgoing the <code>LDFLAGS</code> and <code>CFLAGS</code>
 options, I set:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
-<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></figure>
 
 <p>This time I was able to install both <code>scipy</code> and <code>scikit-learn</code> successfully.</p>
 

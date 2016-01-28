@@ -61,7 +61,11 @@
     
       
         
-          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
         
       
     
@@ -79,11 +83,7 @@
     
       
         
-      
-    
-      
-        
-          <a class="sidebar-nav-item" href="/software.html">Software</a>
+          <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
     
@@ -137,29 +137,29 @@ which I use remotely because it is much faster than my Mac.</p>
 installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
 if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
 <span class="nb">cd</span> ~/local/R-devel
 ./tools/rsync-recommended
 ./configure --prefix<span class="o">=</span>/home/jramey/local/
 make
-make install</code></pre></div>
+make install</code></pre></figure>
 
 <p>The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
 
 <p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
 <span class="nb">export </span>PATH
 
 <span class="c"># Never save or restore when running R</span>
-<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></div>
+<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></figure>
 
 <p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
 
 <p>Next, I install the R packages that I use the most.</p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
-                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></figure>
 
 <p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
 
@@ -171,8 +171,8 @@ make install</code></pre></div>
 maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
 them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
-biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></figure>
 
 
 </div>

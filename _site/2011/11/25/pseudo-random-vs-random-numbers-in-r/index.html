@@ -61,7 +61,11 @@
     
       
         
-          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
         
       
     
@@ -79,11 +83,7 @@
     
       
         
-      
-    
-      
-        
-          <a class="sidebar-nav-item" href="/software.html">Software</a>
+          <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
     
@@ -145,7 +145,7 @@
 
 <p>Below, I have plotted 500 x 500 bitmaps based on the <em>random</em> bits from both of <a href="http://www.r-project.org/">R</a> and <a href="http://www.random.org/">random.org</a>. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the <a href="http://www.php.net/">PHP</a> code. I am unsure if the <a href="http://www.php.net/">PHP</a> folks formally tested their <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms for <strong>randomness</strong>, but even if they did, the code in both <a href="http://www.r-project.org/">R</a> and <a href="http://www.php.net/">PHP</a> is straightforward and provides a quick eyeball test. Armed with similar plots alone, the <a href="http://www.php.net/">PHP</a> devs could have sought for better <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms — perhaps, borrowed those from <a href="http://www.r-project.org/">R</a>.</p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span><span class="s">&quot;plyr&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span><span class="s">&quot;plyr&quot;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span><span class="s">&quot;pixmap&quot;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
 
@@ -186,12 +186,12 @@ rand_bit_matrix <span class="o">&lt;-</span> <span class="kr">function</span><sp
 
 bit_mats <span class="o">&lt;-</span> rand_bit_matrix<span class="p">(</span>num_rows <span class="o">=</span> <span class="m">500</span><span class="p">,</span> num_cols <span class="o">=</span> <span class="m">500</span><span class="p">,</span> seed <span class="o">=</span> <span class="m">42</span><span class="p">)</span>
 
-<span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> R<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>R<span class="p">),</span> ncol <span class="o">=</span> <span class="kp">ncol</span><span class="p">(</span>R<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;R&quot;</span><span class="p">))</span></code></pre></div>
+<span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> R<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>R<span class="p">),</span> ncol <span class="o">=</span> <span class="kp">ncol</span><span class="p">(</span>R<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;R&quot;</span><span class="p">))</span></code></pre></figure>
 
 <p><img src="http://i.imgur.com/hZd2N.png" alt="plot of chunk code" /></p>
 
-<div class="highlight"><pre><code class="language-r" data-lang="r"><span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> random.org<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>random.org<span class="p">),</span> 
-    ncol <span class="o">=</span> <span class="kp">ncol</span><span class="p">(</span>random.org<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;random.org&quot;</span><span class="p">))</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> random.org<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>random.org<span class="p">),</span> 
+    ncol <span class="o">=</span> <span class="kp">ncol</span><span class="p">(</span>random.org<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;random.org&quot;</span><span class="p">))</span></code></pre></figure>
 
 <p><img src="http://i.imgur.com/E59lB.png" alt="plot of chunk code" /></p>
 

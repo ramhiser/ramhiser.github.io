@@ -61,7 +61,11 @@
     
       
         
-          <a class="sidebar-nav-item" href="/about.html">About Me</a>
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/about/">About Me</a>
         
       
     
@@ -79,11 +83,7 @@
     
       
         
-      
-    
-      
-        
-          <a class="sidebar-nav-item" href="/software.html">Software</a>
+          <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
     
@@ -130,7 +130,12 @@
 
   <p>The following post describes how to install TensorFlow 0.6 on an Amazon EC2
 Instance with GPU Support. I also created a
-<a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-70c59a1a">Public AMI</a> (ami-70c59a1a) with the resulting setup. Feel free to use it.</p>
+<a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-e191b38b">Public AMI</a> (ami-e191b38b) with the resulting setup. Feel free to use it.</p>
+
+<p><strong>UPDATED (28 Jan 2016)</strong>: The latest TensorFlow build requires Bazel 0.1.4. Post now reflects
+this. Thanks to <a href="https://github.com/jasimpson">Jim Simpson</a> for his assistance.</p>
+
+<p><strong>UPDATED (28 Jan 2016)</strong>: The AMI provided now exports env variables in <code>~/.bashrc</code>.</p>
 
 <p>The following things are installed:</p>
 
@@ -138,7 +143,7 @@ Instance with GPU Support. I also created a
   <li>Essentials</li>
   <li>Cuda Toolkit 7.0</li>
   <li>cuDNN Toolkit 6.5</li>
-  <li>Bazel 0.1.1 (Java 8 is a dependency)</li>
+  <li>Bazel 0.1.4 (Java 8 is a dependency)</li>
   <li>TensorFlow 0.6</li>
 </ul>
 
@@ -148,18 +153,18 @@ I launched a single <code>g2.2xlarge</code> instance using the Ubuntu Server 14.
 
 <p>After launching your instance, install the essentials:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip
-sudo pip install -U pip</code></pre></div>
+sudo apt-get install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip wget pkg-config zip g++ zlib1g-dev
+sudo pip install -U pip</code></pre></figure>
 
 <p>TensorFlow requires installing CUDA Toolkit 7.0. To do this, run:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1410/x86_64/cuda-repo-ubuntu1410_7.0-28_amd64.deb
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1410/x86_64/cuda-repo-ubuntu1410_7.0-28_amd64.deb
 sudo dpkg -i cuda-repo-ubuntu1410_7.0-28_amd64.deb
 rm cuda-repo-ubuntu1410_7.0-28_amd64.deb
 sudo apt-get update
-sudo apt-get install -y cuda</code></pre></div>
+sudo apt-get install -y cuda</code></pre></figure>
 
 <p>At some point, you get the following message: <code>Reboot your computer and verify
 that the NVIDIA graphics driver can be loaded.</code> I mean, it’s 2016. But
@@ -172,49 +177,61 @@ did this by adding it to my Dropbox folder and using
 <a href="https://www.gnu.org/software/wget/">wget</a> to upload it. Once you have uploaded
 it to your home directory, run the following:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxf cudnn-6.5-linux-x64-v2.tgz <span class="o">&amp;&amp;</span> rm cudnn-6.5-linux-x64-v2.tgz
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">tar -zxf cudnn-6.5-linux-x64-v2.tgz <span class="o">&amp;&amp;</span> rm cudnn-6.5-linux-x64-v2.tgz
 sudo cp -R cudnn-6.5-linux-x64-v2/lib* /usr/local/cuda/lib64/
-sudo cp cudnn-6.5-linux-x64-v2/cudnn.h /usr/local/cuda/include/</code></pre></div>
+sudo cp cudnn-6.5-linux-x64-v2/cudnn.h /usr/local/cuda/include/</code></pre></figure>
 
 <p>Okay, now reboot:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo reboot</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo reboot</code></pre></figure>
 
 <p>Next up, we’ll add some environment variables. You may wish to add these to your
 <code>~/.bashrc</code>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CUDA_HOME</span><span class="o">=</span>/usr/local/cuda
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CUDA_HOME</span><span class="o">=</span>/usr/local/cuda
 <span class="nb">export </span><span class="nv">CUDA_ROOT</span><span class="o">=</span>/usr/local/cuda
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$CUDA_ROOT</span>/bin
-<span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:<span class="nv">$CUDA_ROOT</span>/lib64</code></pre></div>
+<span class="nb">export </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:<span class="nv">$CUDA_ROOT</span>/lib64</code></pre></figure>
 
 <p>Getting closer. We need to install
-<a href="https://github.com/bazelbuild/bazel/releases/tag/0.1.1">Bazel 0.1.1</a>, which
+<a href="https://github.com/bazelbuild/bazel/releases/tag/0.1.4">Bazel 0.1.4</a>, which
 requires Java 8. For more details, see
 <a href="https://gist.github.com/erikbern/78ba519b97b440e10640#gistcomment-1645032">this comment</a>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo add-apt-repository -y ppa:webupd8team/java
+<p>Install Java 8 first.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
-<span class="c"># Must agree to Oracle’s license agreement</span>
-sudo apt-get install -y oracle-java8-installer</code></pre></div>
+<span class="c"># Hack to silently agree license agreement</span>
+<span class="nb">echo </span>debconf shared/accepted-oracle-license-v1-1 <span class="k">select</span> <span class="nb">true</span> <span class="p">|</span> sudo debconf-set-selections
+<span class="nb">echo </span>debconf shared/accepted-oracle-license-v1-1 seen <span class="nb">true</span> <span class="p">|</span> sudo debconf-set-selections
+sudo apt-get install -y oracle-java8-installer</code></pre></figure>
+
+<p>Now for Bazel. (Thanks to Jim Simpson for this block.)</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install pkg-config zip g++ zlib1g-dev
+https://github.com/bazelbuild/bazel/releases/download/0.1.4/bazel-0.1.4-installer-linux-x86_64.sh
+chmod +x bazel-0.1.4-installer-linux-x86_64.sh
+./bazel-0.1.4-installer-linux-x86_64.sh --user
+rm bazel-0.1.4-installer-linux-x86_64.sh</code></pre></figure>
 
 <p>Okay, almost done. Let’s clone the TensorFlow repo and initialize all submodules
 using their default settings.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git clone --recurse-submodules https://github.com/tensorflow/tensorflow
-<span class="nb">cd </span>tensorflow</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone --recurse-submodules https://github.com/tensorflow/tensorflow
+<span class="nb">cd </span>tensorflow</code></pre></figure>
 
 <p>Finally, we are going to build TensorFlow with GPU support using CUDA version
 3.0 (currently required on AWS) via the unofficial settings.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">TF_UNOFFICIAL_SETTING</span><span class="o">=</span><span class="m">1</span> ./configure</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">TF_UNOFFICIAL_SETTING</span><span class="o">=</span><span class="m">1</span> ./configure</code></pre></figure>
 
 <p>When you see the following message, type <code>3.0</code> to use CUDA version 3.0:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Please specify a list of comma-separated Cuda compute capabilities you want to build with.
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Please specify a list of comma-separated Cuda compute capabilities you want to build with.
 You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
 Please note that each additional compute capability significantly increases your build <span class="nb">time </span>and binary size.
-<span class="o">[</span>Default is: <span class="s2">&quot;3.5,5.2&quot;</span><span class="o">]</span>: 3.0</code></pre></div>
+<span class="o">[</span>Default is: <span class="s2">&quot;3.5,5.2&quot;</span><span class="o">]</span>: 3.0</code></pre></figure>
 
 <p>If you forget to type <code>3.0</code>, you’ll get the following error later on:</p>
 
@@ -233,26 +250,26 @@ untested and unsupported.</p>
 
 <p>Pffft. Anyway, last steps. These take quite a while (~24 minutes for me).</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">bazel build -c opt --config<span class="o">=</span>cuda //tensorflow/cc:tutorials_example_trainer
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">bazel build -c opt --config<span class="o">=</span>cuda //tensorflow/cc:tutorials_example_trainer
 bazel build -c opt --config<span class="o">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
 bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-sudo pip install --upgrade /tmp/tensorflow_pkg/tensorflow-0.6.0-cp27-none-linux_x86_64.whl</code></pre></div>
+sudo pip install --upgrade /tmp/tensorflow_pkg/tensorflow-0.6.0-cp27-none-linux_x86_64.whl</code></pre></figure>
 
 <p>Congrats! TensorFlow is installed. At this point, if you launch Python and run
 the following code, you’ll see a lot of nice messages indicating your GPU is set
 up properly:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 <span class="n">tf_session</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">tf_session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span></code></pre></div>
+<span class="n">tf_session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span></code></pre></figure>
 
 <p>You can also check that TensorFlow is working by training a
 <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">CNN</a> on the
 <a href="http://yann.lecun.com/exdb/mnist/">MNIST data set</a>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">python ~/tensorflow/tensorflow/models/image/mnist/convolutional.py
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python ~/tensorflow/tensorflow/models/image/mnist/convolutional.py
 
 <span class="c"># Lots of output followed by GPU-related things...</span>
 I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:909<span class="o">]</span> successful NUMA node <span class="nb">read </span>from SysFS had negative value <span class="o">(</span>-1<span class="o">)</span>, but there must be at least one NUMA node, so returning NUMA node zero
@@ -291,7 +308,7 @@ Epoch 0.47
 Minibatch loss: 3.201, learning rate: 0.010000
 Minibatch error: 4.7%
 Validation error: 2.7%
-...</code></pre></div>
+...</code></pre></figure>
 
 <p>I borrowed instructions from
 <a href="http://erikbern.com/2015/11/12/installing-tensorflow-on-aws/">a</a>

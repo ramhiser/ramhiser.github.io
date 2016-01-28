@@ -8,7 +8,12 @@ categories: [TensorFlow, Deep Learning, Python]
 
 The following post describes how to install TensorFlow 0.6 on an Amazon EC2
 Instance with GPU Support. I also created a
-[Public AMI](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-70c59a1a) (ami-70c59a1a) with the resulting setup. Feel free to use it.
+[Public AMI](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:ami=ami-e191b38b) (ami-e191b38b) with the resulting setup. Feel free to use it.
+
+**UPDATED (28 Jan 2016)**: The latest TensorFlow build requires Bazel 0.1.4. Post now reflects
+this. Thanks to [Jim Simpson](https://github.com/jasimpson) for his assistance.
+
+**UPDATED (28 Jan 2016)**: The AMI provided now exports env variables in `~/.bashrc`.
 
 The following things are installed:
 
@@ -27,7 +32,7 @@ After launching your instance, install the essentials:
 {% highlight bash %}
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip
+sudo apt-get install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip wget pkg-config zip g++ zlib1g-dev
 sudo pip install -U pip
 {% endhighlight %}
 
@@ -79,11 +84,25 @@ Getting closer. We need to install
 requires Java 8. For more details, see
 [this comment](https://gist.github.com/erikbern/78ba519b97b440e10640#gistcomment-1645032).
 
+Install Java 8 first.
+
 {% highlight bash %}
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
-# Must agree to Oracle’s license agreement
+# Hack to silently agree license agreement
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 sudo apt-get install -y oracle-java8-installer
+{% endhighlight %}
+
+Now for Bazel. (Thanks to Jim Simpson for this block.)
+
+{% highlight bash %}
+sudo apt-get install pkg-config zip g++ zlib1g-dev
+https://github.com/bazelbuild/bazel/releases/download/0.1.4/bazel-0.1.4-installer-linux-x86_64.sh
+chmod +x bazel-0.1.4-installer-linux-x86_64.sh
+./bazel-0.1.4-installer-linux-x86_64.sh --user
+rm bazel-0.1.4-installer-linux-x86_64.sh
 {% endhighlight %}
 
 Okay, almost done. Let's clone the TensorFlow repo and initialize all submodules

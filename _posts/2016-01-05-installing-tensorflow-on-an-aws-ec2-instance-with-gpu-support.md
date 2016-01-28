@@ -15,7 +15,7 @@ The following things are installed:
 * Essentials
 * Cuda Toolkit 7.0
 * cuDNN Toolkit 6.5
-* Bazel 0.1.1 (Java 8 is a dependency)
+* Bazel 0.1.4 (Java 8 is a dependency)
 * TensorFlow 0.6
 
 To get going, I recommend requesting a spot instance. Can your instance go away?
@@ -75,7 +75,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64
 {% endhighlight %}
 
 Getting closer. We need to install
-[Bazel 0.1.1](https://github.com/bazelbuild/bazel/releases/tag/0.1.1), which
+[Bazel 0.1.4](https://github.com/bazelbuild/bazel/releases/tag/0.1.4), which
 requires Java 8. For more details, see
 [this comment](https://gist.github.com/erikbern/78ba519b97b440e10640#gistcomment-1645032).
 

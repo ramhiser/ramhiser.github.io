@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Serverless API around Google Cloud Vision
+title: Serverless API around Google Cloud Vision with the Serverless Framework
 date: 2016-09-05 11:32
 comments: true
 categories: [Serverless, AWS, Python, Computer Vision]

@@ -19,7 +19,7 @@ ease deployment via:
 Although the Serverless Framework
 [does not yet support Google Cloud Functions](https://github.com/serverless/serverless/issues/1510),
 it is designed to support a variety of event-driven compute services, including
-[AWS Lambda](https://aws.amazon.com/lambda/) and
+[AWS Lambda](https://aws.amazon.com/lambda/) and (eventually)
 [Google Cloud Functions](https://cloud.google.com/functions/). If you're not
 familiar with serverless computing, I recommend you start with
 [Martin Fowler's overview](http://martinfowler.com/bliki/Serverless.html).

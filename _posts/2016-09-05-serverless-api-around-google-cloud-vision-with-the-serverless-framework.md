@@ -80,7 +80,7 @@ account. Fortunately, Google provides a
 
 Next, you will need to create Google Application Credentials. You will need to
 create a **Service Account Key** by following the instructions given
-[here](https://cloud.google.com/vision/docs/auth-template/cloud-api-auth).
+[here](https://cloud.google.com/vision/docs/common/auth#set_up_a_service_account).
 After creating a **Service Account Key**, I downloaded a JSON file with my
 application credentials into
 [my app](https://github.com/ramhiser/serverless-cloud-vision) and renamed the

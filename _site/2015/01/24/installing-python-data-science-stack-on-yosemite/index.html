@@ -136,12 +136,12 @@ frustrating errors. I logged my steps below that eventually yielded a successful
 installation.</p>
 
 <p>My primary goal was actually to install version 0.15.2 of
-<a href="http://scikit-learn.org/">scikit-learn</a> via <code>pip install -U scikit-learn</code>, but
-I encountered some errors during the <code>scipy</code> installation. The process
-successfully added <code>numpy 1.9.1</code> but failed on <code>scipy 0.15.1</code>. I then tried to
-install that version of <code>scipy</code> individually but received the following error.</p>
+<a href="http://scikit-learn.org/">scikit-learn</a> via <code class="highlighter-rouge">pip install -U scikit-learn</code>, but
+I encountered some errors during the <code class="highlighter-rouge">scipy</code> installation. The process
+successfully added <code class="highlighter-rouge">numpy 1.9.1</code> but failed on <code class="highlighter-rouge">scipy 0.15.1</code>. I then tried to
+install that version of <code class="highlighter-rouge">scipy</code> individually but received the following error.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>In file included from /usr/include/dispatch/dispatch.h:51:0,
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">In file included from /usr/include/dispatch/dispatch.h:51:0,
 
   from /System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h:56,
 
@@ -157,13 +157,13 @@ install that version of <code>scipy</code> individually but received the followi
 
   from /Users/ramhiser/.virtualenvs/dossier/build/scipy/scipy/_build_utils/src/wrap_accelerate_c.c:1:
 
-  /usr/include/dispatch/object.h:143:15: error: expected identifier or <span class="s1">&#39;(&#39;</span> before <span class="s1">&#39;^&#39;</span> token
+  /usr/include/dispatch/object.h:143:15: error: expected identifier or <span class="s1">'('</span> before <span class="s1">'^'</span> token
 
    typedef void <span class="o">(</span>^dispatch_block_t<span class="o">)(</span>void<span class="o">)</span><span class="p">;</span>
 
                  ^
 
-  /usr/include/dispatch/object.h:362:3: error: unknown <span class="nb">type</span> name <span class="s1">&#39;dispatch_block_t&#39;</span>
+  /usr/include/dispatch/object.h:362:3: error: unknown <span class="nb">type </span>name <span class="s1">'dispatch_block_t'</span>
 
    dispatch_block_t notification_block<span class="o">)</span><span class="p">;</span></code></pre></figure>
 
@@ -177,19 +177,19 @@ below, I still received an error. Here were my initial steps:</p>
     <p>Download and install XCode Command Line Tools from <a href="https://developer.apple.com">Apple</a></p>
   </li>
   <li>
-    <p>Installing <code>scipy</code> still failed at this point</p>
+    <p>Installing <code class="highlighter-rouge">scipy</code> still failed at this point</p>
   </li>
   <li>
-    <p><code>sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/</code></p>
+    <p><code class="highlighter-rouge">sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer/</code></p>
   </li>
   <li>
-    <p><code>brew update</code></p>
+    <p><code class="highlighter-rouge">brew update</code></p>
   </li>
   <li>
-    <p><code>brew doctor</code></p>
+    <p><code class="highlighter-rouge">brew doctor</code></p>
   </li>
   <li>
-    <p><code>pip install -U scipy</code> still failed with same error message.</p>
+    <p><code class="highlighter-rouge">pip install -U scipy</code> still failed with same error message.</p>
   </li>
   <li>
     <p>A few hints from a random <a href="https://github.com/robotastic/homebrew-hackrf#troubleshooting">README
@@ -198,34 +198,34 @@ that I do the following:</p>
   </li>
 </ol>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">export</span> <span class="nv">CC</span><span class="o">=</span>clang
-<span class="nb">export</span> <span class="nv">CXX</span><span class="o">=</span>clang++
-<span class="nb">export</span> <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s1">&#39;-L/opt/X11/lib&#39;</span>
-<span class="nb">export</span> <span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-I/opt/X11/include -I/opt/X11/include/freetype2&#39;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++
+<span class="nb">export </span><span class="nv">LDFLAGS</span><span class="o">=</span><span class="s1">'-L/opt/X11/lib'</span>
+<span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">'-I/opt/X11/include -I/opt/X11/include/freetype2'</span></code></pre></figure>
 
 <p>Well, a new error message at this point.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>  <span class="s2">&quot;_main&quot;</span>, referenced from:
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  <span class="s2">"_main"</span>, referenced from:
 
-       implicit entry/start <span class="k">for</span> main executable
+       implicit entry/start <span class="k">for </span>main executable
 
-  ld: symbol<span class="o">(</span>s<span class="o">)</span> not found <span class="k">for</span> architecture x86_64
+  ld: symbol<span class="o">(</span>s<span class="o">)</span> not found <span class="k">for </span>architecture x86_64
 
-  collect2: error: ld returned <span class="m">1</span> <span class="nb">exit</span> status</code></pre></figure>
+  collect2: error: ld returned 1 <span class="nb">exit </span>status</code></pre></figure>
 
 <p>Based on <a href="http://stackoverflow.com/a/11798574/234233">a couple</a> <a href="http://forrestbao.blogspot.com/2010/04/compiling-numpy-and-scipy-on-centos.html">more
 posts</a>,
-I next unset <code>LDFLAGS</code> and <code>CFLAGS</code>. I attempted to install at this point and
+I next unset <code class="highlighter-rouge">LDFLAGS</code> and <code class="highlighter-rouge">CFLAGS</code>. I attempted to install at this point and
 again saw the latter error message.</p>
 
 <p>At this point, I was quite frustrated. I closed my terminal
-<a href="http://iterm2.com">iTerm2</a> and reopened it. Forgoing the <code>LDFLAGS</code> and <code>CFLAGS</code>
+<a href="http://iterm2.com">iTerm2</a> and reopened it. Forgoing the <code class="highlighter-rouge">LDFLAGS</code> and <code class="highlighter-rouge">CFLAGS</code>
 options, I set:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">export</span> <span class="nv">CC</span><span class="o">=</span>clang
-<span class="nb">export</span> <span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">export </span><span class="nv">CC</span><span class="o">=</span>clang
+<span class="nb">export </span><span class="nv">CXX</span><span class="o">=</span>clang++</code></pre></figure>
 
-<p>This time I was able to install both <code>scipy</code> and <code>scikit-learn</code> successfully.</p>
+<p>This time I was able to install both <code class="highlighter-rouge">scipy</code> and <code class="highlighter-rouge">scikit-learn</code> successfully.</p>
 
 </div>
 

@@ -131,39 +131,39 @@
   </div>
 
   <p>My <a href="http://rglab.org">coworkers</a> at <a href="http://fhcrc.org">Fred Hutchinson</a> regularly use
-the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code>R-devel</code>) and have urged me to do the same.
+the development version of <a href="http://www.r-project.org/">R</a> (i.e., <code class="highlighter-rouge">R-devel</code>) and have urged me to do the same.
 This post details how I have set up the development version of R on our Linux server,
 which I use remotely because it is much faster than my Mac.</p>
 
-<p>First, I downloaded the <code>R-devel</code> source into <code>~/local/</code>, which is short for <code>/home/jramey/local/</code> via Subversion, configured my
+<p>First, I downloaded the <code class="highlighter-rouge">R-devel</code> source into <code class="highlighter-rouge">~/local/</code>, which is short for <code class="highlighter-rouge">/home/jramey/local/</code> via Subversion, configured my
 installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
-if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
+if you are building from source. Here are the commands to install <code class="highlighter-rouge">R-devel</code>.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
 <span class="nb">cd</span> ~/local/R-devel
 ./tools/rsync-recommended
-./configure --prefix<span class="o">=</span>/home/jramey/local/
+./configure <span class="nt">--prefix</span><span class="o">=</span>/home/jramey/local/
 make
 make install</code></pre></figure>
 
 <p>The third command downloads the recommended R packages and is crucial because the source for the recommended R packages is not included in the SVN repository. For more about this, <a href="http://cran.r-project.org/doc/manuals/R-admin.html#Using-Subversion-and-rsync">go here</a>.</p>
 
-<p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
+<p>We have the release version (currently, it is 2.15.1) installed in <code class="highlighter-rouge">/usr/local/bin</code>. But the goal here is to give priority to <code class="highlighter-rouge">R-devel</code>. So, I add the following to my <code class="highlighter-rouge">~/.bashrc</code> file:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
-<span class="nb">export</span> PATH
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+<span class="nb">export </span>PATH
 
-<span class="c1"># Never save or restore when running R</span>
-<span class="nb">alias</span> <span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></figure>
+<span class="c"># Never save or restore when running R</span>
+<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">'R --no-save --no-restore-data --quiet'</span></code></pre></figure>
 
-<p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
+<p>Notice that the last line that I add to my <code class="highlighter-rouge">~/.bashrc</code> file is to load <code class="highlighter-rouge">R-devel</code> quietly without saving or restoring.</p>
 
 <p>Next, I install the R packages that I use the most.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
-                   <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">install.packages</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s1">'devtools'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ProjectTemplate'</span><span class="p">,</span><span class="w"> </span><span class="s1">'knitr'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ggplot2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'reshape2'</span><span class="p">,</span><span class="w">
+                   </span><span class="s1">'plyr'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Rcpp'</span><span class="p">,</span><span class="w"> </span><span class="s1">'mvtnorm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'caret'</span><span class="p">),</span><span class="w"> </span><span class="n">dep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span></code></pre></figure>
 
-<p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
+<p>Then, I update my <code class="highlighter-rouge">.Rprofile</code> file, which I keep in a Github gist.</p>
 
 <noscript><pre>400: Invalid request
 </pre></noscript>
@@ -173,8 +173,8 @@ make install</code></pre></figure>
 maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
 them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
-biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">source</span><span class="p">(</span><span class="s2">"http://bioconductor.org/biocLite.R"</span><span class="p">)</span><span class="w">
+</span><span class="n">biocLite</span><span class="p">(</span><span class="s2">"flowWorkspace"</span><span class="p">)</span></code></pre></figure>
 
 
 </div>

@@ -138,7 +138,7 @@ coworker, we were curious whether PySpark could run from within an <a href="http
 Notebook</a>.  It turns out that this is fairly
 straightforward by setting up an IPython profile.</p>
 
-<p>Here’s the <code>tl;dr</code> summary:</p>
+<p>Here’s the <code class="highlighter-rouge">tl;dr</code> summary:</p>
 
 <ol>
   <li>Install Spark</li>
@@ -159,66 +159,66 @@ did much of the work.</p>
 
 <ol>
   <li>Download the <a href="http://spark.apache.org/downloads.html">source for the latest Spark release</a></li>
-  <li>Unzip source to <code>~/spark-1.2.0/</code> (or wherever you wish to install Spark)</li>
-  <li>From the CLI, type: <code>cd ~/spark-1.2.0/</code></li>
-  <li>Install the Scala build tool: <code>brew install sbt</code></li>
-  <li>Build Spark:  <code>sbt assembly</code> (Takes a while)</li>
+  <li>Unzip source to <code class="highlighter-rouge">~/spark-1.2.0/</code> (or wherever you wish to install Spark)</li>
+  <li>From the CLI, type: <code class="highlighter-rouge">cd ~/spark-1.2.0/</code></li>
+  <li>Install the Scala build tool: <code class="highlighter-rouge">brew install sbt</code></li>
+  <li>Build Spark:  <code class="highlighter-rouge">sbt assembly</code> (Takes a while)</li>
 </ol>
 
 <h2 id="create-pyspark-profile-for-ipython">Create PySpark Profile for IPython</h2>
 
 <p>After Spark is installed, let’s start by creating a new IPython profile for PySpark.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>ipython profile create pyspark</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ipython profile create pyspark</code></pre></figure>
 
 <p>To avoid port conflicts with other IPython profiles, I updated the default port
-to <code>42424</code> within <code>~/.ipython/profile_pyspark/ipython_notebook_config.py</code>:</p>
+to <code class="highlighter-rouge">42424</code> within <code class="highlighter-rouge">~/.ipython/profile_pyspark/ipython_notebook_config.py</code>:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
-<span class="c1"># Simply find this line and change the port value</span>
+<span class="c"># Simply find this line and change the port value</span>
 <span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">42424</span></code></pre></figure>
 
-<p>Set the following environment variables in <code>.bashrc</code> or <code>.bash_profile</code>:</p>
+<p>Set the following environment variables in <code class="highlighter-rouge">.bashrc</code> or <code class="highlighter-rouge">.bash_profile</code>:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># set this to whereever you installed spark</span>
-<span class="nb">export</span> <span class="nv">SPARK_HOME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/spark-1.2.0&quot;</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># set this to whereever you installed spark</span>
+<span class="nb">export </span><span class="nv">SPARK_HOME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/spark-1.2.0"</span>
 
-<span class="c1"># Where you specify options you would normally add after bin/pyspark</span>
-<span class="nb">export</span> <span class="nv">PYSPARK_SUBMIT_ARGS</span><span class="o">=</span><span class="s2">&quot;--master local[2]&quot;</span></code></pre></figure>
+<span class="c"># Where you specify options you would normally add after bin/pyspark</span>
+<span class="nb">export </span><span class="nv">PYSPARK_SUBMIT_ARGS</span><span class="o">=</span><span class="s2">"--master local[2]"</span></code></pre></figure>
 
-<p>Create a file named <code>~/.ipython/profile_pyspark/startup/00-pyspark-setup.py</code> containing the following:</p>
+<p>Create a file named <code class="highlighter-rouge">~/.ipython/profile_pyspark/startup/00-pyspark-setup.py</code> containing the following:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># Configure the necessary Spark environment</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># Configure the necessary Spark environment</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">spark_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPARK_HOME&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spark_home</span> <span class="o">+</span> <span class="s2">&quot;/python&quot;</span><span class="p">)</span>
+<span class="n">spark_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'SPARK_HOME'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spark_home</span> <span class="o">+</span> <span class="s">"/python"</span><span class="p">)</span>
 
-<span class="c1"># Add the py4j to the path.</span>
-<span class="c1"># You may need to change the version number to match your install</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spark_home</span><span class="p">,</span> <span class="s1">&#39;python/lib/py4j-0.8.2.1-src.zip&#39;</span><span class="p">))</span>
+<span class="c"># Add the py4j to the path.</span>
+<span class="c"># You may need to change the version number to match your install</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spark_home</span><span class="p">,</span> <span class="s">'python/lib/py4j-0.8.2.1-src.zip'</span><span class="p">))</span>
 
-<span class="c1"># Initialize PySpark to predefine the SparkContext variable &#39;sc&#39;</span>
-<span class="nb">execfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spark_home</span><span class="p">,</span> <span class="s1">&#39;python/pyspark/shell.py&#39;</span><span class="p">))</span></code></pre></figure>
+<span class="c"># Initialize PySpark to predefine the SparkContext variable 'sc'</span>
+<span class="nb">execfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spark_home</span><span class="p">,</span> <span class="s">'python/pyspark/shell.py'</span><span class="p">))</span></code></pre></figure>
 
 <p>Now we are ready to launch a notebook using the PySpark profile</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>ipython notebook --profile<span class="o">=</span>pyspark</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ipython notebook <span class="nt">--profile</span><span class="o">=</span>pyspark</code></pre></figure>
 
 <h2 id="word-count-example">Word Count Example</h2>
 
-<p>Make sure the ipython <code>pyspark</code> profile created a SparkContext by typing <code>sc</code>
+<p>Make sure the ipython <code class="highlighter-rouge">pyspark</code> profile created a SparkContext by typing <code class="highlighter-rouge">sc</code>
 within the notebook. You should see output similar to
-<code>&lt;pyspark.context.SparkContext at 0x1097e8e90&gt;</code>.</p>
+<code class="highlighter-rouge">&lt;pyspark.context.SparkContext at 0x1097e8e90&gt;</code>.</p>
 
 <p>Next, load a text file into a Spark RDD. For example, load the Spark README file:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">os</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">spark_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPARK_HOME&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-<span class="n">text_file</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">spark_home</span> <span class="o">+</span> <span class="s2">&quot;/README.md&quot;</span><span class="p">)</span></code></pre></figure>
+<span class="n">spark_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'SPARK_HOME'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">text_file</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">spark_home</span> <span class="o">+</span> <span class="s">"/README.md"</span><span class="p">)</span></code></pre></figure>
 
 <p>The word count script below is quite simple. It takes the following steps:</p>
 
@@ -228,35 +228,35 @@ within the notebook. You should see output similar to
   <li>Sum up the count for each word</li>
 </ol>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">word_counts</span> <span class="o">=</span> <span class="n">text_file</span> \
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">word_counts</span> <span class="o">=</span> <span class="n">text_file</span> \
     <span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> \
-    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> \
+    <span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> \
     <span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span></code></pre></figure>
 
 <p>At this point, the word count has not been executed (lazy evaluation). To
 actually count the words, execute the pipeline:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">word_counts</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">word_counts</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span></code></pre></figure>
 
 <p>Here’s a portion of the output:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[(</span><span class="sa">u</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;when&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;&quot;local&quot;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;including&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;computation&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Spark](#building-spark).&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;using:&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;guidance&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[(</span><span class="s">u'all'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'when'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'"local"'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'including'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'computation'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'Spark](#building-spark).'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'using:'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'guidance'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
 <span class="o">...</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;spark://&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;programs&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;documentation&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;It&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;graphs&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;./dev/run-tests&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
- <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;latest&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span></code></pre></figure>
+ <span class="p">(</span><span class="s">u'spark://'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'programs'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'documentation'</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'It'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'graphs'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'./dev/run-tests'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'first'</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="s">u'latest'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span></code></pre></figure>
 
 </div>
 

@@ -198,22 +198,22 @@ organize the analysis and to minimize boiler-plate code.</p>
 <p>After scraping the matchup records from ESPN, the following R code prettifies
 the data and then fits the BT model to both data sets.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Cleans the American League (AL) and National League (NL) data scraped from</span>
-<span class="c1"># ESPN&#39;s MLB Grid</span>
-AL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>AL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;AL&quot;</span><span class="p">)</span>
-NL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>NL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;NL&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># Cleans the American League (AL) and National League (NL) data scraped from</span><span class="w">
+</span><span class="c1"># ESPN's MLB Grid</span><span class="w">
+</span><span class="n">AL_cleaned</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clean_ESPN_grid_data</span><span class="p">(</span><span class="n">AL.standings</span><span class="p">,</span><span class="w"> </span><span class="n">league</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"AL"</span><span class="p">)</span><span class="w">
+</span><span class="n">NL_cleaned</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">clean_ESPN_grid_data</span><span class="p">(</span><span class="n">NL.standings</span><span class="p">,</span><span class="w"> </span><span class="n">league</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"NL"</span><span class="p">)</span><span class="w">
 
-<span class="c1"># Fits the Bradley-Terry models for both leagues</span>
-<span class="kp">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
-AL_model <span class="o">&lt;-</span> BTm<span class="p">(</span><span class="kp">cbind</span><span class="p">(</span>Wins<span class="p">,</span> Losses<span class="p">),</span> Team<span class="p">,</span> Opponent<span class="p">,</span> <span class="o">~</span>team_<span class="p">,</span> id <span class="o">=</span> <span class="s">&quot;team_&quot;</span><span class="p">,</span> data <span class="o">=</span> AL_cleaned<span class="o">$</span>standings<span class="p">)</span>
-NL_model <span class="o">&lt;-</span> BTm<span class="p">(</span><span class="kp">cbind</span><span class="p">(</span>Wins<span class="p">,</span> Losses<span class="p">),</span> Team<span class="p">,</span> Opponent<span class="p">,</span> <span class="o">~</span>team_<span class="p">,</span> id <span class="o">=</span> <span class="s">&quot;team_&quot;</span><span class="p">,</span> data <span class="o">=</span> NL_cleaned<span class="o">$</span>standings<span class="p">)</span>
+</span><span class="c1"># Fits the Bradley-Terry models for both leagues</span><span class="w">
+</span><span class="n">set.seed</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="w">
+</span><span class="n">AL_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">BTm</span><span class="p">(</span><span class="n">cbind</span><span class="p">(</span><span class="n">Wins</span><span class="p">,</span><span class="w"> </span><span class="n">Losses</span><span class="p">),</span><span class="w"> </span><span class="n">Team</span><span class="p">,</span><span class="w"> </span><span class="n">Opponent</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="n">team_</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"team_"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AL_cleaned</span><span class="o">$</span><span class="n">standings</span><span class="p">)</span><span class="w">
+</span><span class="n">NL_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">BTm</span><span class="p">(</span><span class="n">cbind</span><span class="p">(</span><span class="n">Wins</span><span class="p">,</span><span class="w"> </span><span class="n">Losses</span><span class="p">),</span><span class="w"> </span><span class="n">Team</span><span class="p">,</span><span class="w"> </span><span class="n">Opponent</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="n">team_</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"team_"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NL_cleaned</span><span class="o">$</span><span class="n">standings</span><span class="p">)</span><span class="w">
 
-<span class="c1"># Extracts team abilities for each league</span>
-AL_abilities <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>BTabilities<span class="p">(</span>AL_model<span class="p">))</span><span class="o">$</span>ability
-<span class="kp">names</span><span class="p">(</span>AL_abilities<span class="p">)</span> <span class="o">&lt;-</span> AL_cleaned<span class="o">$</span>teams
+</span><span class="c1"># Extracts team abilities for each league</span><span class="w">
+</span><span class="n">AL_abilities</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">BTabilities</span><span class="p">(</span><span class="n">AL_model</span><span class="p">))</span><span class="o">$</span><span class="n">ability</span><span class="w">
+</span><span class="nf">names</span><span class="p">(</span><span class="n">AL_abilities</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">AL_cleaned</span><span class="o">$</span><span class="n">teams</span><span class="w">
 
-NL_abilities <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>BTabilities<span class="p">(</span>NL_model<span class="p">))</span><span class="o">$</span>ability
-<span class="kp">names</span><span class="p">(</span>NL_abilities<span class="p">)</span> <span class="o">&lt;-</span> NL_cleaned<span class="o">$</span>teams</code></pre></figure>
+</span><span class="n">NL_abilities</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">BTabilities</span><span class="p">(</span><span class="n">NL_model</span><span class="p">))</span><span class="o">$</span><span class="n">ability</span><span class="w">
+</span><span class="nf">names</span><span class="p">(</span><span class="n">NL_abilities</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">NL_cleaned</span><span class="o">$</span><span class="n">teams</span></code></pre></figure>
 
 <p>Next, we create a heatmap of probabilities winning for each matchup by first
 creating a grid of the probabilities. Given that the inverse logit of 0 is 0.5,
@@ -221,15 +221,15 @@ the probability that team beats itself is estimated as 0.5. To avoid this
 confusing situation, we set these probabilities to 0. The point is that these
 events can never happen unless you play for Houston or have A-Rod on your team.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>AL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>AL_abilities<span class="p">,</span> AL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
-<span class="kp">diag</span><span class="p">(</span>AL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="m">0</span>
-AL_probs <span class="o">&lt;-</span> melt<span class="p">(</span>AL_probs<span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">AL_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">outer</span><span class="p">(</span><span class="n">AL_abilities</span><span class="p">,</span><span class="w"> </span><span class="n">AL_abilities</span><span class="p">,</span><span class="w"> </span><span class="n">prob_BT</span><span class="p">)</span><span class="w">
+</span><span class="n">diag</span><span class="p">(</span><span class="n">AL_probs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="n">AL_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">melt</span><span class="p">(</span><span class="n">AL_probs</span><span class="p">)</span><span class="w">
 
-NL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>NL_abilities<span class="p">,</span> NL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
-<span class="kp">diag</span><span class="p">(</span>NL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="m">0</span>
-NL_probs <span class="o">&lt;-</span> melt<span class="p">(</span>NL_probs<span class="p">)</span>
+</span><span class="n">NL_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">outer</span><span class="p">(</span><span class="n">NL_abilities</span><span class="p">,</span><span class="w"> </span><span class="n">NL_abilities</span><span class="p">,</span><span class="w"> </span><span class="n">prob_BT</span><span class="p">)</span><span class="w">
+</span><span class="n">diag</span><span class="p">(</span><span class="n">NL_probs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="n">NL_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">melt</span><span class="p">(</span><span class="n">NL_probs</span><span class="p">)</span><span class="w">
 
-<span class="kp">colnames</span><span class="p">(</span>AL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="kp">colnames</span><span class="p">(</span>NL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;Team&quot;</span><span class="p">,</span> <span class="s">&quot;Opponent&quot;</span><span class="p">,</span> <span class="s">&quot;Probability&quot;</span><span class="p">)</span></code></pre></figure>
+</span><span class="n">colnames</span><span class="p">(</span><span class="n">AL_probs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">colnames</span><span class="p">(</span><span class="n">NL_probs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Team"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Opponent"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Probability"</span><span class="p">)</span></code></pre></figure>
 
 <p>Now that the rankings and matchup probabilities have been computed, let’s take a
 look at the results for each league.</p>
@@ -241,23 +241,23 @@ estimates. Let’s first look at the estimates.</p>
 
 <p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## |     | ability | s.e.  |</span>
-<span class="c1">## |-----+---------+-------|</span>
-<span class="c1">## | ARI | 0.000   | 0.000 |</span>
-<span class="c1">## | ATL | 0.461   | 0.267 |</span>
-<span class="c1">## | CHC | -0.419  | 0.264 |</span>
-<span class="c1">## | CIN | 0.267   | 0.261 |</span>
-<span class="c1">## | COL | 0.015   | 0.250 |</span>
-<span class="c1">## | LAD | 0.324   | 0.255 |</span>
-<span class="c1">## | MIA | -0.495  | 0.265 |</span>
-<span class="c1">## | MIL | -0.126  | 0.260 |</span>
-<span class="c1">## | NYM | -0.236  | 0.262 |</span>
-<span class="c1">## | PHI | -0.089  | 0.261 |</span>
-<span class="c1">## | PIT | 0.268   | 0.262 |</span>
-<span class="c1">## | SD  | -0.176  | 0.251 |</span>
-<span class="c1">## | SF  | -0.100  | 0.251 |</span>
-<span class="c1">## | STL | 0.389   | 0.262 |</span>
-<span class="c1">## | WSH | -0.013  | 0.265 |</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span><span class="w">
+</span><span class="c1">## |-----+---------+-------|</span><span class="w">
+</span><span class="c1">## | ARI | 0.000   | 0.000 |</span><span class="w">
+</span><span class="c1">## | ATL | 0.461   | 0.267 |</span><span class="w">
+</span><span class="c1">## | CHC | -0.419  | 0.264 |</span><span class="w">
+</span><span class="c1">## | CIN | 0.267   | 0.261 |</span><span class="w">
+</span><span class="c1">## | COL | 0.015   | 0.250 |</span><span class="w">
+</span><span class="c1">## | LAD | 0.324   | 0.255 |</span><span class="w">
+</span><span class="c1">## | MIA | -0.495  | 0.265 |</span><span class="w">
+</span><span class="c1">## | MIL | -0.126  | 0.260 |</span><span class="w">
+</span><span class="c1">## | NYM | -0.236  | 0.262 |</span><span class="w">
+</span><span class="c1">## | PHI | -0.089  | 0.261 |</span><span class="w">
+</span><span class="c1">## | PIT | 0.268   | 0.262 |</span><span class="w">
+</span><span class="c1">## | SD  | -0.176  | 0.251 |</span><span class="w">
+</span><span class="c1">## | SF  | -0.100  | 0.251 |</span><span class="w">
+</span><span class="c1">## | STL | 0.389   | 0.262 |</span><span class="w">
+</span><span class="c1">## | WSH | -0.013  | 0.265 |</span></code></pre></figure>
 
 <p>(Please excuse the crude tabular output. I’m not a fan of how <a href="http://octopress.org/">Octopress</a> renders tables. Suggestions?)</p>
 
@@ -308,23 +308,23 @@ Astros.</p>
 
 <p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## |     | ability | s.e.  |</span>
-<span class="c1">## |-----+---------+-------|</span>
-<span class="c1">## | ARI | 0.000   | 0.000 |</span>
-<span class="c1">## | ATL | 0.461   | 0.267 |</span>
-<span class="c1">## | CHC | -0.419  | 0.264 |</span>
-<span class="c1">## | CIN | 0.267   | 0.261 |</span>
-<span class="c1">## | COL | 0.015   | 0.250 |</span>
-<span class="c1">## | LAD | 0.324   | 0.255 |</span>
-<span class="c1">## | MIA | -0.495  | 0.265 |</span>
-<span class="c1">## | MIL | -0.126  | 0.260 |</span>
-<span class="c1">## | NYM | -0.236  | 0.262 |</span>
-<span class="c1">## | PHI | -0.089  | 0.261 |</span>
-<span class="c1">## | PIT | 0.268   | 0.262 |</span>
-<span class="c1">## | SD  | -0.176  | 0.251 |</span>
-<span class="c1">## | SF  | -0.100  | 0.251 |</span>
-<span class="c1">## | STL | 0.389   | 0.262 |</span>
-<span class="c1">## | WSH | -0.013  | 0.265 |</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span><span class="w">
+</span><span class="c1">## |-----+---------+-------|</span><span class="w">
+</span><span class="c1">## | ARI | 0.000   | 0.000 |</span><span class="w">
+</span><span class="c1">## | ATL | 0.461   | 0.267 |</span><span class="w">
+</span><span class="c1">## | CHC | -0.419  | 0.264 |</span><span class="w">
+</span><span class="c1">## | CIN | 0.267   | 0.261 |</span><span class="w">
+</span><span class="c1">## | COL | 0.015   | 0.250 |</span><span class="w">
+</span><span class="c1">## | LAD | 0.324   | 0.255 |</span><span class="w">
+</span><span class="c1">## | MIA | -0.495  | 0.265 |</span><span class="w">
+</span><span class="c1">## | MIL | -0.126  | 0.260 |</span><span class="w">
+</span><span class="c1">## | NYM | -0.236  | 0.262 |</span><span class="w">
+</span><span class="c1">## | PHI | -0.089  | 0.261 |</span><span class="w">
+</span><span class="c1">## | PIT | 0.268   | 0.262 |</span><span class="w">
+</span><span class="c1">## | SD  | -0.176  | 0.251 |</span><span class="w">
+</span><span class="c1">## | SF  | -0.100  | 0.251 |</span><span class="w">
+</span><span class="c1">## | STL | 0.389   | 0.262 |</span><span class="w">
+</span><span class="c1">## | WSH | -0.013  | 0.265 |</span></code></pre></figure>
 
 <p>For the National League, Arizona is the reference team having an ability of</p>
 <ol>
@@ -351,17 +351,17 @@ average team.</p>
 
 <p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ATL_probs <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>NL_probs<span class="p">,</span> Team <span class="o">==</span> <span class="s">&quot;ATL&quot;</span> <span class="o">&amp;</span> Opponent <span class="o">!=</span> <span class="s">&quot;ATL&quot;</span><span class="p">)</span>
-prob_ATL_SF <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>ATL_probs<span class="p">,</span> Opponent <span class="o">==</span> <span class="s">&quot;SF&quot;</span><span class="p">)</span><span class="o">$</span>Probability
-series_probs <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>Wins <span class="o">=</span> <span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> Probability <span class="o">=</span> dbinom<span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> prob_ATL_SF<span class="p">))</span>
-<span class="kp">print</span><span class="p">(</span>ascii<span class="p">(</span>series_probs<span class="p">,</span> include.rownames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> digits <span class="o">=</span> <span class="m">3</span><span class="p">),</span> type <span class="o">=</span> <span class="s">&quot;org&quot;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">ATL_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">NL_probs</span><span class="p">,</span><span class="w"> </span><span class="n">Team</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"ATL"</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Opponent</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">"ATL"</span><span class="p">)</span><span class="w">
+</span><span class="n">prob_ATL_SF</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">subset</span><span class="p">(</span><span class="n">ATL_probs</span><span class="p">,</span><span class="w"> </span><span class="n">Opponent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"SF"</span><span class="p">)</span><span class="o">$</span><span class="n">Probability</span><span class="w">
+</span><span class="n">series_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">Wins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">Probability</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dbinom</span><span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">prob_ATL_SF</span><span class="p">))</span><span class="w">
+</span><span class="n">print</span><span class="p">(</span><span class="n">ascii</span><span class="p">(</span><span class="n">series_probs</span><span class="p">,</span><span class="w"> </span><span class="n">include.rownames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"org"</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## | Wins  | Probability |</span>
-<span class="c1">## |-------+-------------|</span>
-<span class="c1">## | 0.000 | 0.048       |</span>
-<span class="c1">## | 1.000 | 0.252       |</span>
-<span class="c1">## | 2.000 | 0.442       |</span>
-<span class="c1">## | 3.000 | 0.258       |</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## | Wins  | Probability |</span><span class="w">
+</span><span class="c1">## |-------+-------------|</span><span class="w">
+</span><span class="c1">## | 0.000 | 0.048       |</span><span class="w">
+</span><span class="c1">## | 1.000 | 0.252       |</span><span class="w">
+</span><span class="c1">## | 2.000 | 0.442       |</span><span class="w">
+</span><span class="c1">## | 3.000 | 0.258       |</span></code></pre></figure>
 
 <p>I find it very interesting that the probability Atlanta beats any other NL team
 is usually around 2/3. This makes sense in a lot of ways. For instance, if

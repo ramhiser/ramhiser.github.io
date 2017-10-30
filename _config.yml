@@ -24,8 +24,8 @@ author:
 # Custom vars
 version:             1.0.0
 
-# Gems
-gems: [jekyll-paginate, jekyll-gist]
+# Plugins
+plugins: [jekyll-paginate, jekyll-gist]
 
 # Google services
 google_analytics: UA-33406921-1

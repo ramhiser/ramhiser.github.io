@@ -85,6 +85,10 @@
     
       
         
+      
+    
+      
+        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -97,7 +101,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2016. All rights reserved.
+      &copy; 2017. All rights reserved.
     </p>
   </div>
 </div>
@@ -147,7 +151,7 @@
 
 <p>Below, I have plotted 500 x 500 bitmaps based on the <em>random</em> bits from both of <a href="http://www.r-project.org/">R</a> and <a href="http://www.random.org/">random.org</a>. As far as I can tell, no apparent patterns are visible in either plot, but from the graphics alone, our conclusions are limited to ruling out obvious systematic patterns, which were exhibited from the <a href="http://www.php.net/">PHP</a> code. I am unsure if the <a href="http://www.php.net/">PHP</a> folks formally tested their <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms for <strong>randomness</strong>, but even if they did, the code in both <a href="http://www.r-project.org/">R</a> and <a href="http://www.php.net/">PHP</a> is straightforward and provides a quick eyeball test. Armed with similar plots alone, the <a href="http://www.php.net/">PHP</a> devs could have sought for better <a href="http://en.wikipedia.org/wiki/Random_number_generation">RNG</a> algorithms — perhaps, borrowed those from <a href="http://www.r-project.org/">R</a>.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">library</span><span class="p">(</span><span class="s">&quot;plyr&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;plyr&quot;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span><span class="s">&quot;pixmap&quot;</span><span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
 
@@ -192,7 +196,7 @@ bit_mats <span class="o">&lt;-</span> rand_bit_matrix<span class="p">(</span>num
 
 <p><img src="http://i.imgur.com/hZd2N.png" alt="plot of chunk code" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> random.org<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>random.org<span class="p">),</span> 
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kp">with</span><span class="p">(</span>bit_mats<span class="p">,</span> plot<span class="p">(</span>pixmapGrey<span class="p">(</span>data <span class="o">=</span> random.org<span class="p">,</span> nrow <span class="o">=</span> <span class="kp">nrow</span><span class="p">(</span>random.org<span class="p">),</span> 
     ncol <span class="o">=</span> <span class="kp">ncol</span><span class="p">(</span>random.org<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;random.org&quot;</span><span class="p">))</span></code></pre></figure>
 
 <p><img src="http://i.imgur.com/E59lB.png" alt="plot of chunk code" /></p>
@@ -225,6 +229,15 @@ bit_mats <span class="o">&lt;-</span> rand_bit_matrix<span class="p">(</span>num
     
       <li>
         <h3>
+          <a href="//2017/01/29/how-to-be-a-data-scientist/">
+            How to Become a Data Scientist
+            <small>29 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="//2016/09/05/serverless-api-around-google-cloud-vision-with-the-serverless-framework/">
             Serverless API around Google Cloud Vision with the Serverless Framework
             <small>05 Sep 2016</small>
@@ -237,15 +250,6 @@ bit_mats <span class="o">&lt;-</span> rand_bit_matrix<span class="p">(</span>num
           <a href="//2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/">
             Installing TensorFlow on an AWS EC2 Instance with GPU Support
             <small>05 Jan 2016</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
-            Configuring IPython Notebook Support for PySpark
-            <small>01 Feb 2015</small>
           </a>
         </h3>
       </li>

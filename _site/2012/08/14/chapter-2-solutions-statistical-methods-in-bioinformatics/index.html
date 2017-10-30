@@ -85,6 +85,10 @@
     
       
         
+      
+    
+      
+        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -97,7 +101,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2016. All rights reserved.
+      &copy; 2017. All rights reserved.
     </p>
   </div>
 </div>
@@ -161,7 +165,7 @@
 
 <script type="math/tex; mode=display">Var[X_{(m + 1)}] = \frac{1}{(2m + 1)^2\lambda^2} + \frac{1}{(2m)^2\lambda^2} + \ldots + \frac{1}{(m + 1)^2\lambda^2}.</script>
 
-<h3 id="approximation-of-exm--1">Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
+<h3 id="approximation-of-ex_m--1">Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
 
 <p>Now, we wish to approximate the mean with a much simpler formula. First, from (B.7) in Appendix B, we have</p>
 
@@ -179,7 +183,7 @@ E[X_{(m + 1)}] &= \frac{1}{\lambda} \sum_{k=m+1}^{2m+1} \frac{1}{k}\\
 
 <p>Hence, as <script type="math/tex">n \rightarrow \infty</script>, this approximation goes to <script type="math/tex">\frac{\log 2}{\lambda}</script>, which is the median of an exponentially distributed random variable. Specifically, the median is the solution to <script type="math/tex">F_X(x) = 1/2</script>, where <script type="math/tex">F_X</script> denotes the <a href="http://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> of the random variable <script type="math/tex">X</script>.</p>
 
-<h3 id="improved-approximation-of-exm--1">Improved Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
+<h3 id="improved-approximation-of-ex_m--1">Improved Approximation of <script type="math/tex">E[X_{(m + 1)}]</script></h3>
 
 <p>It turns out that we can improve this approximation with the following two results:</p>
 
@@ -199,7 +203,7 @@ E[X_{(m + 1)}] &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{
 &= \frac{\log 2}{\lambda} + \frac{1}{2\lambda (2m + 1)} + o\left(\frac{1}{m}\right).
 \end{aligned} %]]></script>
 
-<h3 id="approximation-of-varxm--1">Approximation of <script type="math/tex">Var[X_{(m + 1)}]</script></h3>
+<h3 id="approximation-of-varx_m--1">Approximation of <script type="math/tex">Var[X_{(m + 1)}]</script></h3>
 
 <p>We can also approximate <script type="math/tex">Var[X_{(m + 1)}]</script> using the approximation</p>
 
@@ -236,6 +240,15 @@ E[X_{(m + 1)}] &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{
     
       <li>
         <h3>
+          <a href="//2017/01/29/how-to-be-a-data-scientist/">
+            How to Become a Data Scientist
+            <small>29 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="//2016/09/05/serverless-api-around-google-cloud-vision-with-the-serverless-framework/">
             Serverless API around Google Cloud Vision with the Serverless Framework
             <small>05 Sep 2016</small>
@@ -248,15 +261,6 @@ E[X_{(m + 1)}] &= \frac{1}{\lambda} \left(\sum_{k=1}^{2m+1} \frac{1}{k} - \sum_{
           <a href="//2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/">
             Installing TensorFlow on an AWS EC2 Instance with GPU Support
             <small>05 Jan 2016</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
-            Configuring IPython Notebook Support for PySpark
-            <small>01 Feb 2015</small>
           </a>
         </h3>
       </li>

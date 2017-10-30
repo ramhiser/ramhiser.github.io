@@ -85,6 +85,10 @@
     
       
         
+      
+    
+      
+        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -97,7 +101,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2016. All rights reserved.
+      &copy; 2017. All rights reserved.
     </p>
   </div>
 </div>
@@ -139,7 +143,7 @@ which I use remotely because it is much faster than my Mac.</p>
 installation, and compiled the source. I recommend these <a href="http://developer.r-project.org/SVNtips.html">Subversion tips</a>
 if you are building from source. Here are the commands to install <code>R-devel</code>.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">svn co https://svn.r-project.org/R/trunk ~/local/R-devel
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>svn co https://svn.r-project.org/R/trunk ~/local/R-devel
 <span class="nb">cd</span> ~/local/R-devel
 ./tools/rsync-recommended
 ./configure --prefix<span class="o">=</span>/home/jramey/local/
@@ -150,17 +154,17 @@ make install</code></pre></figure>
 
 <p>We have the release version (currently, it is 2.15.1) installed in <code>/usr/local/bin</code>. But the goal here is to give priority to <code>R-devel</code>. So, I add the following to my <code>~/.bashrc</code> file:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
-<span class="nb">export </span>PATH
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nv">PATH</span><span class="o">=</span>~/local/bin:<span class="nv">$PATH</span>
+<span class="nb">export</span> PATH
 
-<span class="c"># Never save or restore when running R</span>
-<span class="nb">alias </span><span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></figure>
+<span class="c1"># Never save or restore when running R</span>
+<span class="nb">alias</span> <span class="nv">R</span><span class="o">=</span><span class="s1">&#39;R --no-save --no-restore-data --quiet&#39;</span></code></pre></figure>
 
 <p>Notice that the last line that I add to my <code>~/.bashrc</code> file is to load <code>R-devel</code> quietly without saving or restoring.</p>
 
 <p>Next, I install the R packages that I use the most.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r">install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>install.packages<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;devtools&#39;</span><span class="p">,</span> <span class="s">&#39;ProjectTemplate&#39;</span><span class="p">,</span> <span class="s">&#39;knitr&#39;</span><span class="p">,</span> <span class="s">&#39;ggplot2&#39;</span><span class="p">,</span> <span class="s">&#39;reshape2&#39;</span><span class="p">,</span>
                    <span class="s">&#39;plyr&#39;</span><span class="p">,</span> <span class="s">&#39;Rcpp&#39;</span><span class="p">,</span> <span class="s">&#39;mvtnorm&#39;</span><span class="p">,</span> <span class="s">&#39;caret&#39;</span><span class="p">),</span> dep <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span></code></pre></figure>
 
 <p>Then, I update my <code>.Rprofile</code> file, which I keep in a Github gist.</p>
@@ -173,7 +177,7 @@ make install</code></pre></figure>
 maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of
 them, we simply install the <a href="http://www.bioconductor.org/packages/2.10/bioc/html/flowWorkspace.html">flowWorkspace</a> package in R:</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">source</span><span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
 biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span><span class="p">)</span></code></pre></figure>
 
 
@@ -204,6 +208,15 @@ biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span>
     
       <li>
         <h3>
+          <a href="//2017/01/29/how-to-be-a-data-scientist/">
+            How to Become a Data Scientist
+            <small>29 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="//2016/09/05/serverless-api-around-google-cloud-vision-with-the-serverless-framework/">
             Serverless API around Google Cloud Vision with the Serverless Framework
             <small>05 Sep 2016</small>
@@ -216,15 +229,6 @@ biocLite<span class="p">(</span><span class="s">&quot;flowWorkspace&quot;</span>
           <a href="//2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/">
             Installing TensorFlow on an AWS EC2 Instance with GPU Support
             <small>05 Jan 2016</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
-            Configuring IPython Notebook Support for PySpark
-            <small>01 Feb 2015</small>
           </a>
         </h3>
       </li>

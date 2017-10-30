@@ -85,6 +85,10 @@
     
       
         
+      
+    
+      
+        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -97,7 +101,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2016. All rights reserved.
+      &copy; 2017. All rights reserved.
     </p>
   </div>
 </div>
@@ -230,7 +234,7 @@ it’s not free, but for our purposes,
 <a href="http://docs.aws.amazon.com/cli/latest/userguide/installing.html">install the <code>aws-cli</code></a>
 and then run the following at the command line:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">aws configure</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>aws configure</code></pre></figure>
 
 <p>For more details, Serverless provides an
 <a href="https://github.com/serverless/serverless/blob/master/docs/02-providers/aws/01-setup.md">AWS overview</a> along with a <a href="https://www.youtube.com/watch?v=weOsx5rLWX0">video walkthrough on YouTube</a>.</p>
@@ -243,7 +247,7 @@ and then run the following at the command line:</p>
 <a href="https://nodejs.org">Node.js 4.0+</a> installed. Then, install the
 <a href="https://github.com/serverless/serverless">Serverless Framework</a>.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install serverless -g</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>npm install serverless -g</code></pre></figure>
 
 <p>The above command makes the <code>serverless</code> command available at the CLI along with
 two shortcuts: <code>sls</code> and <code>slss</code>. If you simply type <code>serverless</code>, the Serverless
@@ -251,15 +255,15 @@ Framework provides some intuitive docs.</p>
 
 <p>If you haven’t already done so, <code>git clone</code> the app with:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone git@github.com:ramhiser/serverless-cloud-vision.git
-<span class="nb">cd </span>serverless-cloud-vision</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>git clone git@github.com:ramhiser/serverless-cloud-vision.git
+<span class="nb">cd</span> serverless-cloud-vision</code></pre></figure>
 
 <p>Here’s one of the best parts about Serverless Framework. We can install any
 Python dependencies we need in our app to a local folder, and those dependencies
 will be deployed along with our app. To see this, install the Python
 dependencies in our <code>requirements.txt</code> to the <code>cloudvision/vendored</code> folder:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pip install -t cloudvision/vendored/ -r requirements.txt</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>pip install -t cloudvision/vendored/ -r requirements.txt</code></pre></figure>
 
 <p><strong>NOTE</strong>: Homebrew + Mac OS users who encounter the <code>DistutilsOptionError</code> error
 should see <a href="http://stackoverflow.com/a/24357384/234233">this SO post</a> for a fix.</p>
@@ -268,7 +272,7 @@ should see <a href="http://stackoverflow.com/a/24357384/234233">this SO post</a>
 to deploy our app to AWS. Type the following at the commandline to deploy the
 wrapper API:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">serverless deploy</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>serverless deploy</code></pre></figure>
 
 <p>This command does the following:</p>
 
@@ -287,14 +291,14 @@ made a change to the code, this command executes much quicker.</p>
 pieces of information, including the API endpoint you’ll need to use your
 microservice:</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">Service Information</span>
-<span class="l-Scalar-Plain">service</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cloudvision</span>
-<span class="l-Scalar-Plain">stage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev</span>
-<span class="l-Scalar-Plain">region</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">us-east-1</span>
-<span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">POST - https://some-api-gateway.execute-api.us-east-1.amazonaws.com/dev/detect_image</span>
-<span class="l-Scalar-Plain">functions</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">lambda-cloudvision</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">arn:aws:lambda:us-east-1:1234567890:function:lambda-cloudvision</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span></span><span class="l l-Scalar l-Scalar-Plain">Service Information</span>
+<span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">cloudvision</span>
+<span class="l l-Scalar l-Scalar-Plain">stage</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="l l-Scalar l-Scalar-Plain">region</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">us-east-1</span>
+<span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">POST - https://some-api-gateway.execute-api.us-east-1.amazonaws.com/dev/detect_image</span>
+<span class="l l-Scalar l-Scalar-Plain">functions</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">lambda-cloudvision</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">arn:aws:lambda:us-east-1:1234567890:function:lambda-cloudvision</span></code></pre></figure>
 
 <p>The endpoint
 <code>https://some-api-gateway.execute-api.us-east-1.amazonaws.com/dev/detect_image</code>
@@ -304,13 +308,13 @@ your implementation.</p>
 <p>Now we have a simple API to apply basic image recognition tasks. For instance,
 the following <code>curl</code> command sends an image URL of my son and me to the API.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST <span class="se">\</span>
 -d <span class="s1">&#39;{&quot;image_url&quot;: &quot;https://raw.githubusercontent.com/ramhiser/serverless-cloud-vision/master/examples/images/ramhiser-and-son.jpg&quot;}&#39;</span> <span class="se">\</span>
 https://some-api-gateway.execute-api.us-east-1.amazonaws.com/dev/detect_image</code></pre></figure>
 
 <p>The response JSON includes a variety of metadata to describe the image and the faces detected:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="p">{</span>
   <span class="s2">&quot;responses&quot;</span><span class="o">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="s2">&quot;faceAnnotations&quot;</span><span class="o">:</span> <span class="p">[</span>
@@ -346,16 +350,16 @@ implementation details, <a href="https://github.com/ramhiser/serverless-cloud-vi
 <p>By default, facial recognition is performed as we can see from the
 <code>lambda_handler</code> function in <code>cloudvision/handler.py</code>:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;AWS Lambda Handler for API Gateway input&quot;&quot;&quot;</span>
-    <span class="n">post_args</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;body&quot;</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">image_url</span> <span class="o">=</span> <span class="n">post_args</span><span class="p">[</span><span class="s">&quot;image_url&quot;</span><span class="p">]</span>
-    <span class="n">detect_type</span> <span class="o">=</span> <span class="n">post_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;detect_type&quot;</span><span class="p">,</span> <span class="s">&quot;FACE_DETECTION&quot;</span><span class="p">)</span>
-    <span class="n">max_results</span> <span class="o">=</span> <span class="n">post_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;max_results&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">post_args</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">image_url</span> <span class="o">=</span> <span class="n">post_args</span><span class="p">[</span><span class="s2">&quot;image_url&quot;</span><span class="p">]</span>
+    <span class="n">detect_type</span> <span class="o">=</span> <span class="n">post_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;detect_type&quot;</span><span class="p">,</span> <span class="s2">&quot;FACE_DETECTION&quot;</span><span class="p">)</span>
+    <span class="n">max_results</span> <span class="o">=</span> <span class="n">post_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Detecting image from URL: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">image_url</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Image detection type: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">detect_type</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Maximum number of results: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">max_results</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Detecting image from URL: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">image_url</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Image detection type: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">detect_type</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Maximum number of results: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">max_results</span><span class="p">)</span>
 
     <span class="n">json_return</span> <span class="o">=</span> <span class="n">detect_image</span><span class="p">(</span><span class="n">image_url</span><span class="p">,</span>
                                <span class="n">detect_type</span><span class="p">,</span>
@@ -375,14 +379,14 @@ uStudio’s, logo</a>:</p>
 
 <p>To do this, let’s run the following <code>curl</code> command:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>curl -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST <span class="se">\</span>
 -d <span class="s1">&#39;{&quot;image_url&quot;: &quot;https://raw.githubusercontent.com/ramhiser/serverless-cloud-vision/master/examples/images/ustudio.jpg&quot;, &quot;detect_type&quot;: &quot;TEXT_DETECTION&quot;}&#39;</span> <span class="se">\</span>
 https://some-api-gateway.execute-api.us-east-1.amazonaws.com/dev/detect_image</code></pre></figure>
 
 <p>The response JSON has a similar form as our facial detection example, but this
 time a bounding box around the logo is given with a <code>description: Ustudio</code>.</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="p">{</span>
   <span class="s2">&quot;responses&quot;</span><span class="o">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="s2">&quot;textAnnotations&quot;</span><span class="o">:</span> <span class="p">[</span>
@@ -423,11 +427,11 @@ and Lambda. There are some gotchas though that you should be aware of.</p>
 structure, so you’ll need to ensure Python is aware of where your dependencies
 are located, as in this snippet from <code>cloudvision/lib/__init__.py</code>:</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">here</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">here</span><span class="p">,</span> <span class="s">&quot;../vendored&quot;</span><span class="p">))</span></code></pre></figure>
+<span class="n">here</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">here</span><span class="p">,</span> <span class="s2">&quot;../vendored&quot;</span><span class="p">))</span></code></pre></figure>
 
 <p>Second, YAML indentation. Grrrrr. My API Gateway endpoints were not working for
 some time (no errors!) because I was missing two spaces in my YAML file. Two
@@ -466,6 +470,15 @@ to deploy simple microservices.</p>
     
       <li>
         <h3>
+          <a href="//2017/01/29/how-to-be-a-data-scientist/">
+            How to Become a Data Scientist
+            <small>29 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="//2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/">
             Installing TensorFlow on an AWS EC2 Instance with GPU Support
             <small>05 Jan 2016</small>
@@ -478,15 +491,6 @@ to deploy simple microservices.</p>
           <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
             Configuring IPython Notebook Support for PySpark
             <small>01 Feb 2015</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="//2015/01/24/installing-python-data-science-stack-on-yosemite/">
-            Installing Python Data Science Stack on Yosemite
-            <small>24 Jan 2015</small>
           </a>
         </h3>
       </li>

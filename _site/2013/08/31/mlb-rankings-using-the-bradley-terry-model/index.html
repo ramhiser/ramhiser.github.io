@@ -85,6 +85,10 @@
     
       
         
+      
+    
+      
+        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -97,7 +101,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2016. All rights reserved.
+      &copy; 2017. All rights reserved.
     </p>
   </div>
 </div>
@@ -198,7 +202,7 @@ organize the analysis and to minimize boiler-plate code.</p>
 <p>After scraping the matchup records from ESPN, the following R code prettifies
 the data and then fits the BT model to both data sets.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1"># Cleans the American League (AL) and National League (NL) data scraped from</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Cleans the American League (AL) and National League (NL) data scraped from</span>
 <span class="c1"># ESPN&#39;s MLB Grid</span>
 AL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>AL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;AL&quot;</span><span class="p">)</span>
 NL_cleaned <span class="o">&lt;-</span> clean_ESPN_grid_data<span class="p">(</span>NL.standings<span class="p">,</span> league <span class="o">=</span> <span class="s">&quot;NL&quot;</span><span class="p">)</span>
@@ -221,7 +225,7 @@ the probability that team beats itself is estimated as 0.5. To avoid this
 confusing situation, we set these probabilities to 0. The point is that these
 events can never happen unless you play for Houston or have A-Rod on your team.</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r">AL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>AL_abilities<span class="p">,</span> AL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>AL_probs <span class="o">&lt;-</span> <span class="kp">outer</span><span class="p">(</span>AL_abilities<span class="p">,</span> AL_abilities<span class="p">,</span> prob_BT<span class="p">)</span>
 <span class="kp">diag</span><span class="p">(</span>AL_probs<span class="p">)</span> <span class="o">&lt;-</span> <span class="m">0</span>
 AL_probs <span class="o">&lt;-</span> melt<span class="p">(</span>AL_probs<span class="p">)</span>
 
@@ -241,7 +245,7 @@ estimates. Let’s first look at the estimates.</p>
 
 <p><img src="http://i.imgur.com/XgwLvtS.png" alt="plot of chunk AL_team_abilities_barplot" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## |     | ability | s.e.  |</span>
 <span class="c1">## |-----+---------+-------|</span>
 <span class="c1">## | ARI | 0.000   | 0.000 |</span>
 <span class="c1">## | ATL | 0.461   | 0.267 |</span>
@@ -308,7 +312,7 @@ Astros.</p>
 
 <p><img src="http://i.imgur.com/5BQt4xM.png" alt="plot of chunk NL_team_abilities_barplot" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## |     | ability | s.e.  |</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## |     | ability | s.e.  |</span>
 <span class="c1">## |-----+---------+-------|</span>
 <span class="c1">## | ARI | 0.000   | 0.000 |</span>
 <span class="c1">## | ATL | 0.461   | 0.267 |</span>
@@ -326,14 +330,16 @@ Astros.</p>
 <span class="c1">## | STL | 0.389   | 0.262 |</span>
 <span class="c1">## | WSH | -0.013  | 0.265 |</span></code></pre></figure>
 
-<p>For the National League, Arizona is the reference team having an ability of
-0. The Braves are ranked as the top team, and the Marlins are the worst team.
+<p>For the National League, Arizona is the reference team having an ability of</p>
+<ol>
+  <li>The Braves are ranked as the top team, and the Marlins are the worst team.
 At first glance, the differences in National League team abilities between two
 consecutively ranked teams are less extreme than the American League. However,
 it is unwise to interpret the abilities in this way. As with the American
 League, we largely ignore the standard errors, although it is interesting to
 note that the top and bottom NL team abilities have more separation between them
-when the standard error is taken into account.</p>
+when the standard error is taken into account.</li>
+</ol>
 
 <p>As before, let’s look at the matchup probabilities.</p>
 
@@ -349,12 +355,12 @@ average team.</p>
 
 <p><img src="http://i.imgur.com/sZXVmFL.png" alt="plot of chunk NL_probs_top_team" /></p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r">ATL_probs <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>NL_probs<span class="p">,</span> Team <span class="o">==</span> <span class="s">&quot;ATL&quot;</span> <span class="o">&amp;</span> Opponent <span class="o">!=</span> <span class="s">&quot;ATL&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ATL_probs <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>NL_probs<span class="p">,</span> Team <span class="o">==</span> <span class="s">&quot;ATL&quot;</span> <span class="o">&amp;</span> Opponent <span class="o">!=</span> <span class="s">&quot;ATL&quot;</span><span class="p">)</span>
 prob_ATL_SF <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>ATL_probs<span class="p">,</span> Opponent <span class="o">==</span> <span class="s">&quot;SF&quot;</span><span class="p">)</span><span class="o">$</span>Probability
 series_probs <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>Wins <span class="o">=</span> <span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> Probability <span class="o">=</span> dbinom<span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> prob_ATL_SF<span class="p">))</span>
 <span class="kp">print</span><span class="p">(</span>ascii<span class="p">(</span>series_probs<span class="p">,</span> include.rownames <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> digits <span class="o">=</span> <span class="m">3</span><span class="p">),</span> type <span class="o">=</span> <span class="s">&quot;org&quot;</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="c1">## | Wins  | Probability |</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1">## | Wins  | Probability |</span>
 <span class="c1">## |-------+-------------|</span>
 <span class="c1">## | 0.000 | 0.048       |</span>
 <span class="c1">## | 1.000 | 0.252       |</span>
@@ -428,6 +434,15 @@ going back to 2002. With this in mind, obvious extensions are:</p>
     
       <li>
         <h3>
+          <a href="//2017/01/29/how-to-be-a-data-scientist/">
+            How to Become a Data Scientist
+            <small>29 Jan 2017</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="//2016/09/05/serverless-api-around-google-cloud-vision-with-the-serverless-framework/">
             Serverless API around Google Cloud Vision with the Serverless Framework
             <small>05 Sep 2016</small>
@@ -440,15 +455,6 @@ going back to 2002. With this in mind, obvious extensions are:</p>
           <a href="//2016/01/05/installing-tensorflow-on-an-aws-ec2-instance-with-gpu-support/">
             Installing TensorFlow on an AWS EC2 Instance with GPU Support
             <small>05 Jan 2016</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="//2015/02/01/configuring-ipython-notebook-support-for-pyspark/">
-            Configuring IPython Notebook Support for PySpark
-            <small>01 Feb 2015</small>
           </a>
         </h3>
       </li>

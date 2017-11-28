@@ -81,10 +81,6 @@
     
       
         
-      
-    
-      
-        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -163,11 +159,26 @@ make install</code></pre></figure>
 <figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">install.packages</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s1">'devtools'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ProjectTemplate'</span><span class="p">,</span><span class="w"> </span><span class="s1">'knitr'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ggplot2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'reshape2'</span><span class="p">,</span><span class="w">
                    </span><span class="s1">'plyr'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Rcpp'</span><span class="p">,</span><span class="w"> </span><span class="s1">'mvtnorm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'caret'</span><span class="p">),</span><span class="w"> </span><span class="n">dep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span></code></pre></figure>
 
-<p>Then, I update my <code class="highlighter-rouge">.Rprofile</code> file, which I keep in a Github gist.</p>
+<p>Here is my <code class="highlighter-rouge">.Rprofile</code> file:</p>
 
-<noscript><pre>400: Invalid request
-</pre></noscript>
-<script src="https://gist.github.com/1378639.js?file=.bash_profile"> </script>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">.First</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">options</span><span class="p">(</span><span class="w">
+    </span><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">CRAN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"http://cran.fhcrc.org/"</span><span class="p">),</span><span class="w">
+    </span><span class="n">browserNLdisabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+    </span><span class="n">deparse.max.lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w">
+  </span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c1"># This code is copied directly from ?savehistory</span><span class="w">
+</span><span class="c1"># It saves the history of commands from interactive sessions to my home path</span><span class="w">
+</span><span class="c1"># when R is closed.</span><span class="w">
+</span><span class="n">.Last</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nf">interactive</span><span class="p">())</span><span class="w"> </span><span class="n">try</span><span class="p">(</span><span class="n">savehistory</span><span class="p">(</span><span class="s2">"~/.Rhistory"</span><span class="p">))</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nf">interactive</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">suppressMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">devtools</span><span class="p">))</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
 
 <p>Finally, my <a href="http://rglab.org">coworkers</a> focus on <a href="http://en.wikipedia.org/wiki/Flow_cytometry">flow cytometry</a> data, and our group
 maintains several <a href="http://www.bioconductor.org/">Bioconductor</a> packages related to this type of data. To install the majority of

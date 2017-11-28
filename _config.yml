@@ -25,7 +25,7 @@ author:
 version:             1.0.0
 
 # Plugins
-plugins: [jekyll-paginate, jekyll-gist]
+plugins: [jekyll-paginate]
 
 # Google services
 google_analytics: UA-33406921-1

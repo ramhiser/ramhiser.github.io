@@ -81,10 +81,6 @@
     
       
         
-      
-    
-      
-        
           <a class="sidebar-nav-item" href="/software/">Software</a>
         
       
@@ -144,9 +140,29 @@
 
 <p>Here’s the code:</p>
 
-<noscript><pre>400: Invalid request
-</pre></noscript>
-<script src="https://gist.github.com/4121260.js"> </script>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c"># The direct link to the Kaggle data set</span>
+<span class="n">data_url</span> <span class="o">=</span> <span class="s">'http://www.kaggle.com/c/digit-recognizer/download/train.csv'</span>
+
+<span class="c"># The local path where the data set is saved.</span>
+<span class="n">local_filename</span> <span class="o">=</span> <span class="s">"train.csv"</span>
+
+<span class="c"># Kaggle Username and Password</span>
+<span class="n">kaggle_info</span> <span class="o">=</span> <span class="p">{</span><span class="s">'UserName'</span><span class="p">:</span> <span class="s">"my_username"</span><span class="p">,</span> <span class="s">'Password'</span><span class="p">:</span> <span class="s">"my_password"</span><span class="p">}</span>
+
+<span class="c"># Attempts to download the CSV file. Gets rejected because we are not logged in.</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
+
+<span class="c"># Login to Kaggle and retrieve the data.</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">kaggle_info</span><span class="p">,</span> <span class="n">prefetch</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># Writes the data to a local file one chunk at a time.</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_filename</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">512</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">):</span> <span class="c"># Reads 512KB at a time into memory</span>
+    <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span> <span class="c"># filter out keep-alive new chunks</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></figure>
 
 <p>Simply change <code class="highlighter-rouge">my_username</code> and <code class="highlighter-rouge">my_password</code> to your Kaggle login info. Feel free to optimize the chunk size to your liking.</p>
 

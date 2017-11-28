@@ -46,9 +46,28 @@ install.packages(c('devtools', 'ProjectTemplate', 'knitr', 'ggplot2', 'reshape2'
                    'plyr', 'Rcpp', 'mvtnorm', 'caret'), dep = TRUE)
 {% endhighlight %}
 
-Then, I update my `.Rprofile` file, which I keep in a Github gist.
+Here is my `.Rprofile` file:
 
-{% gist 1378639 .bash_profile %}
+{% highlight r %}
+.First <- function() {
+  options(
+    repos = c(CRAN = "http://cran.fhcrc.org/"),
+    browserNLdisabled = TRUE,
+    deparse.max.lines = 2
+  )
+}
+
+# This code is copied directly from ?savehistory
+# It saves the history of commands from interactive sessions to my home path
+# when R is closed.
+.Last <- function() {
+  if (interactive()) try(savehistory("~/.Rhistory"))
+}
+
+if (interactive()) {
+  suppressMessages(require(devtools))
+}
+{% endhighlight %}
 
 Finally, my [coworkers](http://rglab.org) focus on [flow cytometry](http://en.wikipedia.org/wiki/Flow_cytometry) data, and our group
 maintains several [Bioconductor](http://www.bioconductor.org/) packages related to this type of data. To install the majority of

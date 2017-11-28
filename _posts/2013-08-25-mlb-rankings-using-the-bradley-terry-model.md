@@ -33,9 +33,60 @@ only, but it is straightforward to modify the code to gather the National League
 data. Below, I use only the data for 2013 and ignore the previous seasons. In a
 future post though, I will incorporate these data.
 
-Here's the Python code. Feel free to fork it.
+Here's the Python code.
 
-{% gist 6331163 %}
+{% highlight python %}
+
+# The following script scrapes ESPN's MLB Standings Grid and writes the
+# standings for each American League (AL) team to a CSV file, which has the following
+# format:
+# Team, Opponent, Wins, Losses
+
+from bs4 import BeautifulSoup
+import urllib2
+import re
+import csv
+
+csv_filename = 'AL-standings.csv'
+
+year = '2013'
+url = 'http://espn.go.com/mlb/standings/grid/_/year/' + year
+
+page = urllib2.urlopen(url)
+soup = BeautifulSoup(page.read())
+
+# Extracts the table for the American League (AL) and the rows for each team
+AL_table = soup.find(text = re.compile("American")).find_parent("table")
+AL_rows = AL_table.findAll('tr', class_ = re.compile("team"))
+
+# Creates a list of the AL teams and then appends NL for National League
+AL_teams = [team_row.find('b').text for team_row in AL_rows]
+AL_teams.append("NL")
+
+# Opens a CSV file for the AL standings
+with open(csv_filename, 'wb') as f:
+    csv_out = csv.writer(f)
+    csv_out.writerow(['Team', 'Opponent', 'Wins', 'Losses'])
+
+    # For each team in the AL table, identifies the team's name, the opponent,
+    # and their wins and losses (WL) against that opponent. Then outputs the
+    # results to the open CSV file
+    for team_row in AL_rows:
+        team = team_row.find('b').text
+
+        # A cell has the following form:
+        # <td align="right">
+        # 7-9</td>
+        WL_cells = team_row.findAll('td', align = "right")
+
+        # Extracts the values for both wins and losses from each WL table cell
+        wins_losses = [td_cell.text.strip('\n').split('-') for td_cell in WL_cells]
+
+        # Writes the current team's standings to the CSV file
+        for i, opponent in enumerate(AL_teams):
+            if team != opponent:
+                csv_out.writerow([team, opponent, wins_losses[i][0], wins_losses[i][1]])
+{% endhighlight %}
 
 ## Bradley-Terry Model
 
@@ -125,7 +176,7 @@ look at the results for each league.
 The BT model provides a natural way of ranking teams based on the team-ability
 estimates. Let's first look at the estimates.
 
-![plot of chunk AL_team_abilities_barplot](http://i.imgur.com/XgwLvtS.png) 
+![plot of chunk AL_team_abilities_barplot](http://i.imgur.com/XgwLvtS.png)
 
 
 
@@ -169,7 +220,7 @@ A quick way to compare any two teams is with a heatmap. Notice how Houston's
 probability of beating another AL team is less than 50%. The best team, Tampa
 Bay, has more than a 50% chance of beating any other AL team.
 
-![plot of chunk AL_matchup_heatmaps](http://i.imgur.com/9IfSUag.png) 
+![plot of chunk AL_matchup_heatmaps](http://i.imgur.com/9IfSUag.png)
 
 
 While the heatmap is useful for comparing any two teams at a glance, bar graphs
@@ -177,16 +228,16 @@ provide a more precise representation of who will win. Here are the
 probabilities that the best and worst teams in the AL will beat any other AL
 team. A horizontal red threshold is drawn at 50%.
 
-![plot of chunk AL_probs_top_team](http://i.imgur.com/WAD1Cc3.png) 
+![plot of chunk AL_probs_top_team](http://i.imgur.com/WAD1Cc3.png)
 
 
-![plot of chunk AL_probs_bottom_team](http://i.imgur.com/JRUd5Bj.png) 
+![plot of chunk AL_probs_bottom_team](http://i.imgur.com/JRUd5Bj.png)
 
 
 An important thing to notice here is that Tampa Bay is not unbeatable, according
 to the BT model, the Astros have a shot at winning against any other AL team.
 
-![plot of chunk AL_probs_middle_team](http://i.imgur.com/q3CB6tp.png) 
+![plot of chunk AL_probs_middle_team](http://i.imgur.com/q3CB6tp.png)
 
 
 I have also found that a useful gauge is to look at the probability that an
@@ -200,7 +251,7 @@ Astros.
 
 Here, we repeat the same analysis for the National League.
 
-![plot of chunk NL_team_abilities_barplot](http://i.imgur.com/5BQt4xM.png) 
+![plot of chunk NL_team_abilities_barplot](http://i.imgur.com/5BQt4xM.png)
 
 
 
@@ -236,7 +287,7 @@ when the standard error is taken into account.
 
 As before, let's look at the matchup probabilities.
 
-![plot of chunk NL_matchup_heatmaps](http://i.imgur.com/aVpVIDK.png) 
+![plot of chunk NL_matchup_heatmaps](http://i.imgur.com/aVpVIDK.png)
 
 
 From the heatmap we can see that the Braves have at least a 72% chance of
@@ -247,7 +298,7 @@ winning.
 Again, we plot the probabilities for the best and the worst teams along with an
 average team.
 
-![plot of chunk NL_probs_top_team](http://i.imgur.com/sZXVmFL.png) 
+![plot of chunk NL_probs_top_team](http://i.imgur.com/sZXVmFL.png)
 
 
 
@@ -275,7 +326,7 @@ Atlanta has a three-game series with the Giants, odds are good that Atlanta will
 win 2 of the 3 games. Moreover, as we can see in the table above, there is less
 than a 5% chance that the Giants will sweep Atlanta.
 
-![plot of chunk NL_probs_bottom_team](http://i.imgur.com/E24KZ1Z.png) 
+![plot of chunk NL_probs_bottom_team](http://i.imgur.com/E24KZ1Z.png)
 
 
 The BT model indicates that the Miami Marlins are the worst team in the National
@@ -284,7 +335,7 @@ the Cardinals, the Marlins have a legitimate chance to beat other NL teams. This
 is especially the case against the other bottom NL teams, such as the Cubs and
 the Mets.
 
-![plot of chunk NL_probs_middle_team](http://i.imgur.com/ikAMFQS.png) 
+![plot of chunk NL_probs_middle_team](http://i.imgur.com/ikAMFQS.png)
 
 
 ## What's Next?
@@ -298,7 +349,7 @@ going back to 2002. With this in mind, obvious extensions are:
 * Examine how ranks change over time.
 
 * Include previous matchup records as prior information for later seasons.
- 
+
 * Predict future games. Standard errors should not be ignored here.
 
 * Add covariates (e.g., home-field advantage) to the BT model.

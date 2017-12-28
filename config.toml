@@ -1,0 +1,47 @@
+# Site settings
+baseurl = "https://ramhiser.com/"
+languageCode = "en-us"
+title = "John Ramey's Blog"
+theme = "hugo-cactus-theme"
+# Enter your tracking code to enable Google Analytics
+googleAnalytics = "UA-33406921-1"
+# Disable comments by leaving disqusShortname empty
+disqusShortname = "ramhiser"
+
+[params]
+	name = "John Ramey"
+	description = "I science data with machines."
+	bio = "I science data with machines"
+	twitter = "ramhiser"
+	enableRSS = true
+  paginate = 5  
+
+  enableRobotsTXT = true
+
+	# Navigation links
+	home = ""
+	subscribe = ""
+	# Pagination links
+	olderPosts = ""
+	newerPosts = ""
+	readMore = ""
+	copyright = ""
+	# Sharing options and author information in posts
+	aboutAuthor = "I science data with machines."
+	tweet = ""
+	share = ""
+	# 404 page
+	title404 = ""
+	subtitle404 = ""
+
+	# Choose a font for the social icons in the footer. Either "mono-social" or "font-awesome"
+	iconFont = "mono-social"
+    # The social icons can be styled differently if you use mono as font - circle, rounded, or empty
+    socialIconStyle = "circle"
+
+# Add additional social link entries underneath
+[social]
+    twitter  = "https://www.twitter.com/ramhiser"
+#    facebook = "https://www.facebook.com/"
+    github   = "https://www.github.com/ramhiser"
+#    dribble  = "https://www.dribbble.com/"

@@ -18,6 +18,9 @@ disqusShortname = "ramhiser"
 
   enableRobotsTXT = true
 
+  # For GitHub Pages. See: https://gohugo.io/hosting-and-deployment/hosting-on-github/
+  publishDir = "docs"
+
 	# Navigation links
 	home = ""
 	subscribe = ""
